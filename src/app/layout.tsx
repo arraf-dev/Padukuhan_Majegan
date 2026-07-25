@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Lora, Plus_Jakarta_Sans } from "next/font/google";
-import { desa } from "@/content/majegan";
+import { desa, situsUrl } from "@/content/majegan";
 import { Reveal } from "@/components/gerak";
 import "./globals.css";
 
@@ -17,11 +17,17 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(situsUrl),
   title: {
     default: `Website Resmi ${desa.nama}`,
     template: `%s · ${desa.nama}`,
   },
   description: `Kanal informasi dan layanan resmi warga ${desa.nama}, ${desa.kalurahan}.`,
+  openGraph: {
+    type: "website",
+    locale: "id_ID",
+    siteName: desa.nama,
+  },
 };
 
 export default function RootLayout({

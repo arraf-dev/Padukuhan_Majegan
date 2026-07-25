@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { alurPengaduan, kategoriPengaduan } from "@/content/majegan";
 import { Identitas } from "@/components/identitas";
@@ -160,6 +161,14 @@ export default async function Pengaduan({
             })}
           </ol>
         </div>
+
+        <Link
+          href="/pengaduan/lacak"
+          className="flex items-center gap-2.5 rounded-[13px] border border-garis bg-kertas px-5 py-4 text-[13.5px] font-semibold text-hutan hover:border-daun"
+        >
+          <Ikon nama="cari" ukuran={16} className="flex-none text-daun" />
+          Sudah pernah lapor? Lacak dengan kode tiket
+        </Link>
 
         <div className="rounded-[13px] border border-emas-garis bg-emas-muda px-5 py-4.5">
           <div className="mb-2 flex items-center gap-2.5">

@@ -87,9 +87,10 @@ export function LencanaKategori({
 /** Kartu berita gaya album dusun — foto 1:1, meta, dan baris reaksi. */
 export function KartuAlbum({ b }: { b: Berita }) {
   return (
-    <article
+    <Link
+      href={`/berita/${b.slug}`}
       data-reveal
-      className="overflow-hidden rounded-2xl border border-garis bg-kertas transition hover:-translate-y-[3px] hover:shadow-[0_10px_24px_rgba(33,50,40,.13)]"
+      className="block overflow-hidden rounded-2xl border border-garis bg-kertas transition hover:-translate-y-[3px] hover:shadow-[0_10px_24px_rgba(33,50,40,.13)]"
     >
       <div className="relative px-2.5 pt-2.5">
         <Foto keterangan={b.foto} className="aspect-square rounded-[11px]" />
@@ -126,14 +127,15 @@ export function KartuAlbum({ b }: { b: Berita }) {
           </span>
         </div>
       </div>
-    </article>
+    </Link>
   );
 }
 
 /** Kartu ringkas untuk Beranda: kolom di desktop, baris di mobile. */
 export function KartuRingkas({ b }: { b: Berita }) {
   return (
-    <article
+    <Link
+      href={`/berita/${b.slug}`}
       data-reveal
       className="flex gap-3 overflow-hidden rounded-xl border border-garis bg-kertas p-3 transition hover:border-daun md:block md:p-0 md:hover:-translate-y-[3px] md:hover:shadow-[0_8px_20px_rgba(33,50,40,.12)]"
     >
@@ -148,6 +150,6 @@ export function KartuRingkas({ b }: { b: Berita }) {
         </h3>
         <div className="text-[11px] text-samar md:text-xs">{tanggalPanjang(b.tanggal)}</div>
       </div>
-    </article>
+    </Link>
   );
 }

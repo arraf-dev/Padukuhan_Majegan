@@ -117,12 +117,16 @@ export function Footer() {
           </div>
           <div>
             <div className="mb-2 text-[12.5px] font-bold tracking-[.08em] text-emas">TAUTAN</div>
+            {/* ponytail: URL tujuan menyusul dari kalurahan — ditulis sebagai teks
+                dulu, bukan tautan mati. Ganti jadi <a href> begitu alamatnya turun. */}
             {["Kalurahan Pandowoharjo", "Kabupaten Sleman", "Lapor! Sleman"].map((t) => (
-              // ponytail: URL tujuan menyusul dari kalurahan — belum ada di brief.
-              <a key={t} href="#" className="block hover:text-emas">
+              <span key={t} className="block text-krem/55">
                 {t}
-              </a>
+              </span>
             ))}
+            <Link href="/pengaduan/lacak" className="mt-1.5 block hover:text-emas">
+              Lacak Pengaduan
+            </Link>
           </div>
         </div>
         <div className="mt-6 flex flex-col gap-1 border-t border-krem/15 pt-4 text-[11.5px] text-krem/55 md:flex-row md:justify-between">

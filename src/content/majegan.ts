@@ -21,6 +21,13 @@ export const desa = {
   koordinat: [-7.69139, 110.37167] as const,
 };
 
+/**
+ * Alamat kanonik situs — dipakai metadataBase, sitemap, dan robots.
+ * ponytail: domain `.desa.id` belum aktif; saat deploy ke Vercel cukup set
+ * NEXT_PUBLIC_URL di environment, tanpa mengubah kode.
+ */
+export const situsUrl = process.env.NEXT_PUBLIC_URL ?? `https://${desa.domain}`;
+
 export const statistik = [
   { angka: 1284, label: "jiwa penduduk" },
   { angka: 402, label: "kepala keluarga" },
@@ -37,12 +44,42 @@ export const kelompokUsia = [
   { rentang: "65+", persen: 44 },
 ];
 
+/**
+ * Ringkasan anggaran padukuhan (APB-1/2/3).
+ *
+ * ponytail: angka contoh berskala padukuhan — izin publikasi APBDes belum turun
+ * dari kalurahan (blocker Minggu 1 di TASKS.md). Halaman menandai dirinya sendiri
+ * sebagai contoh selama `resmi: false`, jadi tidak ada risiko angka palsu
+ * terbaca warga sebagai data resmi.
+ */
+export const anggaran = {
+  tahun: 2026,
+  resmi: false,
+  diperbarui: "2026-07-20",
+  pendapatan: 486_000_000,
+  belanja: 412_500_000,
+  sumber: [
+    { nama: "Dana Desa (DD)", nominal: 268_000_000 },
+    { nama: "Alokasi Dana Desa (ADD)", nominal: 142_000_000 },
+    { nama: "Swadaya & partisipasi warga", nominal: 51_000_000 },
+    { nama: "Pendapatan lain-lain", nominal: 25_000_000 },
+  ],
+  bidang: [
+    { nama: "Pembangunan & infrastruktur", nominal: 196_000_000, catatan: "Cor jalan RT 03, talud kali" },
+    { nama: "Pembinaan kemasyarakatan", nominal: 87_500_000, catatan: "PKK, karang taruna, merti dusun" },
+    { nama: "Penyelenggaraan pemerintahan", nominal: 64_000_000, catatan: "Operasional balai dusun" },
+    { nama: "Pemberdayaan masyarakat", nominal: 45_000_000, catatan: "KWT, pelatihan UMKM" },
+    { nama: "Penanggulangan bencana & darurat", nominal: 20_000_000, catatan: "Cadangan tak terduga" },
+  ],
+};
+
 export const navigasi = [
   { href: "/", label: "Beranda" },
   { href: "/profil", label: "Profil" },
   { href: "/berita", label: "Berita" },
   { href: "/layanan", label: "Layanan" },
   { href: "/pengaduan", label: "Pengaduan" },
+  { href: "/anggaran", label: "Anggaran" },
   { href: "/statistik", label: "Statistik" },
 ];
 
@@ -63,6 +100,7 @@ export type Berita = {
   tanggal: string; // ISO — diformat saat render
   lokasi: string;
   ringkasan: string;
+  isi: string[]; // paragraf badan berita
   foto: string; // keterangan placeholder sampai foto asli masuk
   suka: number;
   tanggapan: number;
@@ -77,6 +115,11 @@ export const berita: Berita[] = [
     lokasi: "Balai Dusun Majegan",
     ringkasan:
       "Kirab budaya keliling padukuhan, kenduri bersama, dan pentas karawitan anak — sampai jumpa akhir Juli!",
+    isi: [
+      "Merti Dusun Majegan tahun ini digelar pada akhir Juli, dibuka dengan kirab budaya keliling padukuhan yang berangkat dari Balai Dusun selepas ashar. Rombongan membawa gunungan hasil bumi sumbangan warga delapan RT.",
+      "Selepas kirab, acara dilanjutkan kenduri bersama di halaman balai dusun. Panitia mengimbau warga membawa wadah sendiri untuk mengurangi sampah plastik.",
+      "Malam harinya, anak-anak sanggar karawitan Majegan tampil membawakan gending-gending klasik. Warga dari padukuhan tetangga dipersilakan hadir — tempat duduk tersedia terbatas, datang lebih awal lebih baik.",
+    ],
     foto: "Foto merti dusun",
     suka: 132,
     tanggapan: 12,
@@ -89,6 +132,11 @@ export const berita: Berita[] = [
     lokasi: "Kali Majegan",
     ringkasan:
       "Warga RT 01–04 bergotong royong membersihkan kali jelang musim hujan. Matur nuwun bapak-ibu yang sudah hadir!",
+    isi: [
+      "Sekitar tujuh puluh warga dari RT 01 sampai RT 04 turun ke Kali Majegan sejak pukul enam pagi. Sasaran utama adalah endapan sampah di sekitar jembatan yang tahun lalu sempat menyumbat aliran saat hujan deras.",
+      "Karang Taruna menyiapkan alat berupa cangkul, arit, dan karung, sementara ibu-ibu PKK mengurus konsumsi. Total sampah yang terangkut mengisi penuh satu bak kendaraan pengangkut.",
+      "Kerja bakti lanjutan untuk RT 05–08 dijadwalkan dua pekan berikutnya. Warga yang berhalangan hadir dipersilakan menyampaikan kabar ke ketua RT masing-masing.",
+    ],
     foto: "Foto kerja bakti",
     suka: 87,
     tanggapan: 8,
@@ -101,6 +149,11 @@ export const berita: Berita[] = [
     lokasi: "Balai Dusun Majegan",
     ringkasan:
       "Posyandu balita & lansia bulan Agustus sudah terjadwal — cek papan pengumuman atau hubungi kader terdekat.",
+    isi: [
+      "Posyandu balita berlangsung setiap Selasa minggu kedua, pukul 08.00–11.00 di Balai Dusun Majegan. Layanan mencakup penimbangan, pengukuran tinggi badan, imunisasi sesuai jadwal, serta pemberian makanan tambahan.",
+      "Posyandu lansia menyusul pada Kamis minggu ketiga dengan jam yang sama. Tersedia pemeriksaan tekanan darah dan gula darah bekerja sama dengan Puskesmas Sleman.",
+      "Orang tua diminta membawa buku KIA, dan peserta lansia membawa kartu berobat. Informasi lebih lanjut dapat ditanyakan ke kader posyandu di masing-masing RT.",
+    ],
     foto: "Foto posyandu",
     suka: 45,
     tanggapan: 3,
@@ -113,6 +166,11 @@ export const berita: Berita[] = [
     lokasi: "Jalan RT 03",
     ringkasan:
       "Pengerjaan dimulai pekan ini; akses sementara dialihkan lewat jalan kampung sisi barat. Mohon maaf atas ketidaknyamanannya.",
+    isi: [
+      "Pengecoran jalan tahap II menyasar ruas sepanjang kurang lebih 180 meter di wilayah RT 03, melanjutkan tahap I yang selesai tahun lalu. Pekerjaan didanai dari Dana Desa tahun anggaran berjalan.",
+      "Selama pengerjaan, kendaraan roda empat dialihkan lewat jalan kampung sisi barat. Pengendara roda dua masih dapat melintas pada jam tertentu sesuai arahan petugas di lapangan.",
+      "Perkiraan waktu pengerjaan sepuluh hari kerja, bergantung pada cuaca. Warga yang membutuhkan akses khusus — misalnya untuk keperluan darurat — dapat menghubungi ketua RT setempat.",
+    ],
     foto: "Foto pengecoran jalan",
     suka: 64,
     tanggapan: 5,
@@ -316,10 +374,35 @@ export const ringkasanAdmin: Record<Peran, { label: string; angka: number; catat
 
 export type StatusPengaduan = "TERKIRIM" | "DIPROSES" | "SELESAI";
 
-export const pengaduanTerbaru: { kode: string; isi: string; status: StatusPengaduan }[] = [
-  { kode: "MJG-2607-4X9K", isi: "Lampu jalan RT 03 mati sejak tiga hari lalu…", status: "TERKIRIM" },
-  { kode: "MJG-2607-7B2M", isi: "Sampah menumpuk di tepi kali dekat jembatan…", status: "DIPROSES" },
-  { kode: "MJG-2606-9C1D", isi: "Usulan perbaikan saluran irigasi sawah blok timur…", status: "SELESAI" },
+export type Pengaduan = {
+  kode: string;
+  isi: string;
+  status: StatusPengaduan;
+  tanggal: string;
+  tanggapan?: string;
+};
+
+export const pengaduanTerbaru: Pengaduan[] = [
+  {
+    kode: "MJG-2607-4X9K",
+    isi: "Lampu jalan RT 03 mati sejak tiga hari lalu…",
+    status: "TERKIRIM",
+    tanggal: "2026-07-22",
+  },
+  {
+    kode: "MJG-2607-7B2M",
+    isi: "Sampah menumpuk di tepi kali dekat jembatan…",
+    status: "DIPROSES",
+    tanggal: "2026-07-19",
+    tanggapan: "Sudah dikoordinasikan dengan Karang Taruna, pengangkutan dijadwalkan akhir pekan ini.",
+  },
+  {
+    kode: "MJG-2606-9C1D",
+    isi: "Usulan perbaikan saluran irigasi sawah blok timur…",
+    status: "SELESAI",
+    tanggal: "2026-06-28",
+    tanggapan: "Perbaikan selesai dikerjakan bersama kelompok tani pada 8 Juli 2026. Terima kasih atas usulannya.",
+  },
 ];
 
 export const aksiCepatAdmin = [
@@ -338,8 +421,8 @@ export const menuAdmin = [
   { href: "/admin", label: "Dashboard", ikon: "kisi" as const },
   { href: "/admin/berita/baru", label: "Berita", ikon: "berita" as const },
   { href: "/admin/pengaduan", label: "Pengaduan", ikon: "obrolan" as const, lencana: 3, belum: true },
-  { href: "/admin/profil", label: "Profil & Struktur", ikon: "warga" as const, superadmin: true },
-  { href: "/admin/layanan", label: "Layanan", ikon: "surat" as const, superadmin: true },
-  { href: "/admin/statistik", label: "Statistik", ikon: "batang" as const, superadmin: true },
-  { href: "/admin/akun", label: "Akun & Pengguna", ikon: "warga" as const, superadmin: true },
+  { href: "/admin/profil", label: "Profil & Struktur", ikon: "warga" as const, superadmin: true, belum: true },
+  { href: "/admin/layanan", label: "Layanan", ikon: "surat" as const, superadmin: true, belum: true },
+  { href: "/admin/statistik", label: "Statistik", ikon: "batang" as const, superadmin: true, belum: true },
+  { href: "/admin/akun", label: "Akun & Pengguna", ikon: "warga" as const, superadmin: true, belum: true },
 ];

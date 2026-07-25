@@ -43,8 +43,14 @@ export default async function Terkirim({
         )}
 
         <Link
-          href="/"
+          href={kode ? `/pengaduan/lacak?kode=${kode}` : "/pengaduan/lacak"}
           className="mt-3.5 block min-h-11 rounded-[9px] bg-emas px-4 py-3.5 text-[13.5px] font-extrabold text-hutan hover:shadow-[0_4px_12px_rgba(0,0,0,.3)]"
+        >
+          Lacak Perkembangan Laporan
+        </Link>
+        <Link
+          href="/"
+          className="mt-2.5 block py-2 text-[12.5px] font-semibold text-krem/70 hover:text-emas"
         >
           Kembali ke Beranda
         </Link>

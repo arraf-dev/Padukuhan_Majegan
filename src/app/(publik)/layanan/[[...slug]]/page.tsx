@@ -4,7 +4,10 @@ import { notFound } from "next/navigation";
 import { desa, layanan } from "@/content/majegan";
 import { CentangKotak, Ikon } from "@/components/ikon";
 
-type Params = { params: Promise<{ slug?: string[] }> };
+type Params = {
+  params: Promise<{ slug?: string[] }>;
+  searchParams: Promise<{ q?: string }>;
+};
 
 /** Tanpa slug = layanan pertama, sama seperti tampilan awal pada mockup. */
 const cari = (slug?: string[]) =>
@@ -30,20 +33,49 @@ function Tebal({ teks }: { teks: string }) {
   );
 }
 
-export default async function Layanan({ params }: Params) {
+export default async function Layanan({ params, searchParams }: Params) {
   const aktif = cari((await params).slug);
   if (!aktif) notFound();
+
+  // ponytail: memakai searchParams membuat rute ini dirender on-demand, bukan
+  // SSG lagi. Ditukar dengan pencarian yang jalan tanpa JavaScript — penting di
+  // HP kentang & sinyal tipis. Pindahkan ke komponen klien kalau nanti butuh SSG.
+  const q = ((await searchParams).q ?? "").trim().toLowerCase();
+  const daftar = q
+    ? layanan.filter((l) => `${l.nama} ${l.deskripsi} ${l.syarat.join(" ")}`.toLowerCase().includes(q))
+    : layanan;
 
   return (
     <div className="grid items-start gap-8 px-4 py-8 md:grid-cols-[300px_1fr] md:px-12 md:pt-8.5 md:pb-11.5">
       {/* ---------- Daftar layanan ---------- */}
       <div>
-        <div className="mb-3 flex items-center gap-2.5 rounded-[10px] border border-garis bg-kertas px-3.5 py-2.5 text-[13px] text-samar">
-          <Ikon nama="cari" ukuran={14} />
-          Cari layanan…
-        </div>
+        {/* form GET biasa: hasil pencarian ikut ke URL, bisa dibagikan & di-back */}
+        <form className="mb-3 flex items-center gap-2.5 rounded-[10px] border border-garis bg-kertas px-3.5 py-1 focus-within:border-daun">
+          <Ikon nama="cari" ukuran={14} className="flex-none text-samar" />
+          <label htmlFor="q" className="sr-only">
+            Cari layanan
+          </label>
+          <input
+            id="q"
+            name="q"
+            type="search"
+            defaultValue={q}
+            placeholder="Cari layanan…"
+            className="min-w-0 flex-1 bg-transparent py-2.5 text-[13px] text-tinta placeholder:text-samar focus:outline-none"
+          />
+        </form>
+
+        {q && (
+          <p className="mb-3 text-[12.5px] text-samar">
+            {daftar.length} layanan cocok dengan &ldquo;{q}&rdquo; ·{" "}
+            <Link href="/layanan" className="font-semibold text-daun underline">
+              tampilkan semua
+            </Link>
+          </p>
+        )}
+
         <nav className="flex flex-col gap-2.5">
-          {layanan.map((l) => {
+          {daftar.map((l) => {
             const ini = l.slug === aktif.slug;
             return (
               <Link
