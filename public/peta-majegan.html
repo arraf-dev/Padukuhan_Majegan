@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Peta Wilayah Padukuhan Majegan</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous"></script>
+<style>
+  html,body{margin:0;height:100%;background:#EFE9D8;font-family:'Plus Jakarta Sans',system-ui,sans-serif}
+  #map{position:absolute;inset:0}
+  .leaflet-container{background:#EFE9D8}
+  .om-wash{position:absolute;inset:0;z-index:250;pointer-events:none;background:#D9C79B;opacity:.26}
+  .om-wash2{position:absolute;inset:0;z-index:251;pointer-events:none;background:#F7F3E8;opacity:.13}
+  .leaflet-control-attribution{font-size:9.5px;background:rgba(255,254,249,.9);color:#647567}
+  .leaflet-control-attribution a{color:#2A5B3C}
+  .leaflet-bar a{background:#FFFEF9;color:#0D3825;border-bottom-color:#E3DCC7}
+  .leaflet-bar a:hover{background:#F7F3E8}
+  .leaflet-top .leaflet-control{margin-top:40px}
+  .om-legend{
+    position:absolute;left:12px;bottom:26px;z-index:500;
+    background:rgba(255,254,249,.94);border:1px solid #E3DCC7;border-radius:10px;
+    padding:8px 11px;font-size:10.5px;line-height:1.4;color:#4B5D50;
+    box-shadow:0 2px 10px rgba(33,50,40,.10);white-space:nowrap
+  }
+  .om-row{display:flex;align-items:center;gap:7px}
+  .om-row + .om-row{margin-top:4px}
+  .om-swatch{width:12px;height:12px;flex:none;border-radius:3px}
+  .om-pin{
+    background:#2A5B3C;border:2px solid #FFFEF9;border-radius:50% 50% 50% 2px;
+    transform:rotate(45deg);box-shadow:0 2px 6px rgba(33,50,40,.35)
+  }
+  .om-label{
+    font:700 11px 'Plus Jakarta Sans',sans-serif;color:#0D3825;white-space:nowrap;
+    background:rgba(255,254,249,.92);border:1px solid #E3DCC7;border-radius:5px;padding:2px 7px;
+    box-shadow:0 1px 4px rgba(33,50,40,.12)
+  }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div class="om-legend">
+  <div class="om-row"><span class="om-swatch" style="background:#2A5B3C"></span> Balai Padukuhan</div>
+  <div class="om-row"><span class="om-swatch" style="background:rgba(42,91,60,.18);border:1.5px dashed #2A5B3C"></span> Perkiraan area dusun</div>
+</div>
+<script>
+  var MAJEGAN = [-7.69139, 110.37167];
+
+  var map = L.map('map', { center: MAJEGAN, zoom: 15, zoomControl: true, scrollWheelZoom: false });
+
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+
+  var w1 = document.createElement('div'); w1.className = 'om-wash';
+  var w2 = document.createElement('div'); w2.className = 'om-wash2';
+  document.getElementById('map').appendChild(w1);
+  document.getElementById('map').appendChild(w2);
+
+  L.circle(MAJEGAN, {
+    radius: 430,
+    color: '#2A5B3C', weight: 2, dashArray: '6 5',
+    fillColor: '#2A5B3C', fillOpacity: 0.12
+  }).addTo(map);
+
+  L.marker(MAJEGAN, {
+    icon: L.divIcon({ className: '', html: '<div class="om-pin" style="width:16px;height:16px"></div>', iconSize: [16,16], iconAnchor: [8,16] })
+  }).addTo(map).bindPopup('<strong>Balai Dusun Majegan</strong><br>Majegan RT 02/RW 01<br>Pandowoharjo, Sleman');
+
+  L.marker(MAJEGAN, {
+    interactive: false,
+    icon: L.divIcon({ className: '', html: '<div class="om-label">Balai Dusun Majegan</div>', iconSize: [0,0], iconAnchor: [-12,20] })
+  }).addTo(map);
+</script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lokasi Padukuhan Majegan</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous"></script>
+<style>
+  html,body{margin:0;height:100%;background:#EFE9D8;font-family:'Plus Jakarta Sans',system-ui,sans-serif}
+  #map{position:absolute;inset:0}
+  .leaflet-container{background:#EFE9D8}
+  .om-wash{position:absolute;inset:0;z-index:250;pointer-events:none;background:#D9C79B;opacity:.26}
+  .om-wash2{position:absolute;inset:0;z-index:251;pointer-events:none;background:#F7F3E8;opacity:.13}
+  .leaflet-control-attribution{font-size:8.5px;background:rgba(255,254,249,.88);color:#647567}
+  .leaflet-control-attribution a{color:#2A5B3C}
+  .om-cap{
+    position:absolute;left:9px;top:9px;z-index:500;
+    background:rgba(255,254,249,.94);border:1px solid #E3DCC7;border-radius:99px;
+    padding:4px 11px;font:700 10.5px 'Plus Jakarta Sans',sans-serif;color:#0D3825;
+    box-shadow:0 1px 6px rgba(33,50,40,.12)
+  }
+  .om-pin{
+    background:#2A5B3C;border:2px solid #FFFEF9;border-radius:50% 50% 50% 2px;
+    transform:rotate(45deg);box-shadow:0 2px 6px rgba(33,50,40,.35)
+  }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+  var MAJEGAN = [-7.69139, 110.37167];
+
+  var map = L.map('map', {
+    center: MAJEGAN, zoom: 14,
+    zoomControl: false, dragging: false, scrollWheelZoom: false,
+    doubleClickZoom: false, touchZoom: false, keyboard: false, boxZoom: false
+  });
+
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap'
+  }).addTo(map);
+
+  var w1 = document.createElement('div'); w1.className = 'om-wash';
+  var w2 = document.createElement('div'); w2.className = 'om-wash2';
+  document.getElementById('map').appendChild(w1);
+  document.getElementById('map').appendChild(w2);
+
+  L.circle(MAJEGAN, {
+    radius: 430, interactive: false,
+    color: '#2A5B3C', weight: 2, dashArray: '5 4',
+    fillColor: '#2A5B3C', fillOpacity: 0.14
+  }).addTo(map);
+
+  L.marker(MAJEGAN, {
+    interactive: false,
+    icon: L.divIcon({ className: '', html: '<div class="om-pin" style="width:14px;height:14px"></div>', iconSize: [14,14], iconAnchor: [7,14] })
+  }).addTo(map);
+</script>
+</body>
+</html>

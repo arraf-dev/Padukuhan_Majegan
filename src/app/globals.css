@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+/* Palet & tipografi diturunkan dari Spec pada mockup (logo padukuhan). */
+@theme {
+  --color-hutan: #0d3825;
+  --color-hutan-pekat: #0a2e1e;
+  --color-daun: #2a5b3c;
+  --color-daun-muda: #e6ede4;
+  --color-emas: #d6b45c;
+  --color-emas-tua: #8a6d2b;
+  --color-emas-muda: #f5ebd0;
+  --color-emas-garis: #e8d9ae;
+  --color-emas-teks: #5c4f27;
+  --color-krem: #f7f3e8;
+  --color-kanvas: #ebe6d8;
+  --color-kertas: #fffef9;
+  --color-panel: #f2eee2;
+  --color-tinta: #213228;
+  --color-teks: #4b5d50;
+  --color-redup: #647567;
+  --color-samar: #8a9a8c;
+  --color-pucat: #a9b4a9;
+  --color-garis: #e3dcc7;
+  --color-garis-tebal: #cbc3a8;
+  --color-foto: #efe9d8;
+  --color-bata: #b0532e;
+
+  --font-serif: var(--font-lora), Georgia, serif;
+  --font-sans: var(--font-jakarta), "Segoe UI", sans-serif;
+}
+
+@layer base {
+  body {
+    background: var(--color-krem);
+    color: var(--color-tinta);
+    font-family: var(--font-sans);
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-emas);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* Strip garis atap joglo — pembatas emas di bawah header & footer. */
+  .joglo {
+    height: 9px;
+    background-color: var(--color-hutan);
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='26' height='9' viewBox='0 0 26 9'><path d='M0 9 L13 1.5 L26 9' fill='none' stroke='%23D6B45C' stroke-width='1.4' opacity='.5'/></svg>");
+    background-repeat: repeat-x;
+  }
+
+  /* Placeholder foto terarah — dipakai sampai dokumentasi asli masuk. */
+  .foto {
+    background-color: var(--color-foto);
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgb(13 56 37 / 0.055) 0 8px,
+      transparent 8px 16px
+    );
+  }
+
+  .foto-cap {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border-radius: 99px;
+    border: 1px solid var(--color-garis);
+    background: rgb(255 254 249 / 0.94);
+    padding: 5px 13px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-samar);
+  }
+}
+
+/* Pengumuman berjalan di mobile — 5 baris setinggi 24px, berhenti sejenak tiap baris. */
+.ticker {
+  animation: geserPengumuman 14s infinite;
+}
+@keyframes geserPengumuman {
+  0%,
+  18% {
+    transform: translateY(0);
+  }
+  25%,
+  43% {
+    transform: translateY(-24px);
+  }
+  50%,
+  68% {
+    transform: translateY(-48px);
+  }
+  75%,
+  93% {
+    transform: translateY(-72px);
+  }
+  100% {
+    transform: translateY(-96px);
+  }
+}
+
+/* Reveal lembut saat scroll — kelas `siap` dipasang IntersectionObserver. */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+[data-reveal].siap {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
