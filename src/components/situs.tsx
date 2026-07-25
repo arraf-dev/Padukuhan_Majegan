@@ -127,6 +127,10 @@ export function Footer() {
             <Link href="/pengaduan/lacak" className="mt-1.5 block hover:text-emas">
               Lacak Pengaduan
             </Link>
+            {/* Untuk perangkat dusun, bukan warga — sengaja dibuat tidak menonjol. */}
+            <Link href="/admin/masuk" className="mt-1.5 block text-krem/45 hover:text-emas">
+              Masuk Panel
+            </Link>
           </div>
         </div>
         <div className="mt-6 flex flex-col gap-1 border-t border-krem/15 pt-4 text-[11.5px] text-krem/55 md:flex-row md:justify-between">
