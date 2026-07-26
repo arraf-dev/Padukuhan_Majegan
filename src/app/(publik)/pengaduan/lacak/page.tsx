@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { pengaduanTerbaru, type StatusPengaduan } from "@/content/majegan";
+import { type StatusPengaduan } from "@/content/majegan";
 import { Ikon } from "@/components/ikon";
+import { db } from "@/lib/db";
 import { tanggalPanjang } from "@/lib/tanggal";
 
 export const metadata: Metadata = {
@@ -24,9 +25,22 @@ export default async function Lacak({
 }) {
   const dicari = (await searchParams).kode?.trim().toUpperCase() ?? "";
 
-  // ponytail: dicocokkan ke data contoh; ganti ke query tabel `pengaduan` begitu
-  // Prisma terpasang (LPR-3). Bentuk pencariannya sudah sama: satu kode, satu hasil.
-  const hasil = dicari ? pengaduanTerbaru.find((p) => p.kode === dicari) : undefined;
+  // Halaman ini publik: siapa pun yang menebak kode tiket bisa membukanya.
+  // `select` sengaja sempit — tanpa itu nama & kontak pelapor ikut terkirim ke
+  // browser (LPR-3, kebijakan privasi Bab 12). Jangan tambah field ke sini.
+  const hasil = dicari
+    ? await db.pengaduan.findUnique({
+        where: { kodeTiket: dicari },
+        select: {
+          kodeTiket: true,
+          kategori: true,
+          isi: true,
+          status: true,
+          tanggapan: true,
+          dibuatPada: true,
+        },
+      })
+    : null;
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-8 md:py-12">
@@ -72,8 +86,10 @@ export default async function Lacak({
       {hasil && (
         <section className="mt-5 rounded-2xl border border-garis bg-kertas px-5 py-5 md:px-7 md:py-6">
           <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-            <span className="font-mono text-base font-bold text-hutan">{hasil.kode}</span>
-            <span className="text-xs text-samar">dikirim {tanggalPanjang(hasil.tanggal)}</span>
+            <span className="font-mono text-base font-bold text-hutan">{hasil.kodeTiket}</span>
+            <span className="text-xs text-samar">
+              {hasil.kategori} · dikirim {tanggalPanjang(hasil.dibuatPada.toISOString())}
+            </span>
           </div>
           <p className="mt-2.5 text-[14px] leading-relaxed text-teks">{hasil.isi}</p>
 

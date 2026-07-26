@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { buatKodeTiket, periksaPengaduan } from "./pengaduan.ts";
+import { JEDA_KIRIM_MS, bolehKirim, buatKodeTiket, periksaPengaduan } from "./pengaduan.ts";
 
 const form = (isi: Record<string, string>) => {
   const fd = new FormData();
@@ -27,6 +27,14 @@ test("identitas wajib kecuali anonim", () => {
   assert.equal(periksaPengaduan(form({ ...lengkap, nama: "" })), "identitas");
   assert.equal(periksaPengaduan(form({ ...lengkap, kontak: "" })), "identitas");
   assert.equal(periksaPengaduan(form({ ...lengkap, nama: "", kontak: "", anonim: "on" })), null);
+});
+
+test("satu IP kena jeda, IP lain tidak terpengaruh", () => {
+  const t = Date.now();
+  assert.equal(bolehKirim("1.1.1.1", t), true);
+  assert.equal(bolehKirim("1.1.1.1", t + 1_000), false, "kiriman kedua harus ditahan");
+  assert.equal(bolehKirim("2.2.2.2", t + 1_000), true, "IP lain jangan ikut kena");
+  assert.equal(bolehKirim("1.1.1.1", t + JEDA_KIRIM_MS), true, "lewat jeda harus boleh lagi");
 });
 
 test("kode tiket memakai tahun-bulan dan tidak berulang", () => {

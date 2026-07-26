@@ -1,31 +1,21 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { alurPengaduan, kategoriPengaduan } from "@/content/majegan";
 import { Identitas } from "@/components/identitas";
 import { Ikon } from "@/components/ikon";
-import { buatKodeTiket, periksaPengaduan } from "@/lib/pengaduan";
+import { NAMA_JEBAKAN } from "@/lib/pengaduan";
+import { kirimPengaduan } from "./aksi";
 
 export const metadata: Metadata = {
   title: "Kirim Pengaduan",
   description: "Sampaikan keluhan atau usulan Anda. Identitas pelapor tidak ditampilkan ke publik.",
 };
 
-async function kirim(formData: FormData) {
-  "use server";
-
-  const galat = periksaPengaduan(formData);
-  if (galat) redirect(`/pengaduan?galat=${galat}`);
-
-  // ponytail: laporan belum disimpan — tabel `pengaduan` (Bab 8 PRD) menyusul
-  // bersama Prisma. Kode tiket sudah dibuat supaya alur & format tiketnya pasti.
-  redirect(`/pengaduan/terkirim?kode=${buatKodeTiket()}`);
-}
-
 const pesanGalat: Record<string, string> = {
   isi: "Isi laporan wajib diisi.",
   kategori: "Pilih salah satu kategori terlebih dahulu.",
   identitas: "Nama dan kontak wajib diisi, kecuali laporan dikirim anonim.",
+  jeda: "Laporan sebelumnya baru saja terkirim. Tunggu sebentar sebelum mengirim lagi — cek dulu kode tiket Anda lewat halaman Lacak.",
 };
 
 export default async function Pengaduan({
@@ -44,9 +34,18 @@ export default async function Pengaduan({
   return (
     <div className="grid items-start gap-8 px-4 py-6 md:grid-cols-[1fr_340px] md:px-12 md:pt-8.5 md:pb-11.5">
       <form
-        action={kirim}
+        action={kirimPengaduan}
         className="rounded-2xl border border-garis bg-kertas px-5 py-6 md:px-8.5 md:py-7.5"
       >
+        {/* Jebakan bot — tak terlihat & tak bisa di-tab, jadi hanya robot yang mengisinya. */}
+        <input
+          type="text"
+          name={NAMA_JEBAKAN}
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          className="sr-only"
+        />
         <h1 className="mb-1.5 font-serif text-2xl font-semibold text-hutan md:text-[27px]">
           Kirim Pengaduan / Aspirasi
         </h1>
