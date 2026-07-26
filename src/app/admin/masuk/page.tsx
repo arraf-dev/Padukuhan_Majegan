@@ -1,11 +1,20 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { redirect } from "next/navigation";
 import { peranPengguna } from "@/content/majegan";
 import { CentangBulat, Ikon, Logo } from "@/components/ikon";
+import { masuk } from "@/app/admin/aksi";
+import { sesiSaatIni } from "@/lib/sesi";
 
 export const metadata: Metadata = { title: "Masuk" };
 
-export default function Masuk() {
+export default async function Masuk({
+  searchParams,
+}: {
+  searchParams: Promise<{ galat?: string }>;
+}) {
+  if (await sesiSaatIni()) redirect("/admin");
+  const { galat } = await searchParams;
+
   const kotak =
     "w-full rounded-[9px] border-[1.5px] border-garis-tebal bg-kertas px-3.5 py-3 text-sm text-tinta placeholder:text-samar focus:border-daun";
   const label = "mb-1.5 block text-[12.5px] font-bold text-tinta";
@@ -20,27 +29,27 @@ export default function Masuk() {
           </h1>
           <p className="mb-5.5 text-[12.5px] text-samar">Khusus SuperAdmin &amp; Admin</p>
 
-          {/* ponytail: autentikasi (AUTH-1/AUTH-2) belum terpasang — form ini
-              belum memeriksa apa pun. Panel /admin masih terbuka; jangan isi
-              data asli sebelum login jalan. */}
-          <p
-            role="note"
-            className="mb-5 w-full rounded-[10px] border border-bata/35 bg-bata/10 px-4 py-3 text-[12px] leading-relaxed text-bata"
-          >
-            <strong>Login belum aktif.</strong> Panel admin masih terbuka tanpa kata sandi
-            (AUTH-1/AUTH-2 menyusul) — jangan memuat data warga yang sebenarnya dulu.
-          </p>
+          {galat && (
+            <p
+              role="alert"
+              className="mb-5 w-full rounded-[10px] border border-bata/35 bg-bata/10 px-4 py-3 text-[12.5px] leading-relaxed text-bata"
+            >
+              Email atau kata sandi salah. Coba lagi, atau hubungi Pak Dukuh bila lupa sandi.
+            </p>
+          )}
 
-          <form className="w-full">
-            <label htmlFor="pengguna" className={label}>
-              Nama pengguna
+          <form action={masuk} className="w-full">
+            <label htmlFor="email" className={label}>
+              Email
             </label>
             <input
-              id="pengguna"
-              name="pengguna"
+              id="email"
+              name="email"
+              type="email"
+              required
               autoComplete="username"
               className={`${kotak} mb-3.5`}
-              placeholder="mis. rina.putri"
+              placeholder="nama@pandowoharjo.desa.id"
             />
             <label htmlFor="sandi" className={label}>
               Kata sandi
@@ -49,16 +58,17 @@ export default function Masuk() {
               id="sandi"
               name="sandi"
               type="password"
+              required
               autoComplete="current-password"
               className={kotak}
               placeholder="••••••••"
             />
-            <Link
-              href="/admin"
-              className="mt-5 flex min-h-11 items-center justify-center rounded-[10px] bg-hutan px-4 py-3.5 text-[14.5px] font-extrabold text-krem hover:bg-daun"
+            <button
+              type="submit"
+              className="mt-5 flex min-h-11 w-full items-center justify-center rounded-[10px] bg-hutan px-4 py-3.5 text-[14.5px] font-extrabold text-krem hover:bg-daun"
             >
               Masuk
-            </Link>
+            </button>
           </form>
 
           <p className="mt-4.5 rounded-[10px] border border-emas-garis bg-emas-muda px-4 py-3 text-xs leading-relaxed text-emas-teks">

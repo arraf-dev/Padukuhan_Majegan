@@ -1,0 +1,64 @@
+/**
+ * Hash kata sandi + token sesi bertanda tangan.
+ *
+ * ponytail: `node:crypto` saja — tanpa bcrypt, jose, atau next-auth. Kebutuhannya
+ * cuma dua peran dengan login email+sandi, dan berkas ini lebih pendek daripada
+ * konfigurasi next-auth yang setara. Kalau nanti butuh login Google/SSO, barulah
+ * next-auth sepadan.
+ *
+ * Impor relatif + ekstensi .ts supaya `node --test` bisa menjalankannya langsung.
+ */
+import { createHmac, randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
+import type { Peran } from "../content/majegan.ts";
+
+const PANJANG_KUNCI = 64;
+
+/** Simpan sebagai `garam:hash` — garamnya ikut, jadi tidak perlu kolom kedua. */
+export function hashKataSandi(sandi: string): string {
+  const garam = randomBytes(16).toString("hex");
+  return `${garam}:${scryptSync(sandi, garam, PANJANG_KUNCI).toString("hex")}`;
+}
+
+export function periksaKataSandi(sandi: string, tersimpan: string): boolean {
+  const [garam, hash] = tersimpan.split(":");
+  if (!garam || !hash) return false;
+
+  const disimpan = Buffer.from(hash, "hex");
+  // scryptSync melempar bila keylen 0 — hash cacat ditolak sebelum sampai situ.
+  if (disimpan.length !== PANJANG_KUNCI) return false;
+
+  return timingSafeEqual(disimpan, scryptSync(sandi, garam, PANJANG_KUNCI));
+}
+
+/* ---------- Token sesi ---------- */
+
+export type IsiSesi = { id: string; nama: string; peran: Peran; exp: number };
+
+const b64 = (teks: string) => Buffer.from(teks).toString("base64url");
+
+const tandaTangan = (data: string, rahasia: string) =>
+  createHmac("sha256", rahasia).update(data).digest("base64url");
+
+/** Token `payload.tandatangan` — isinya tidak rahasia, tapi tidak bisa dipalsukan. */
+export function buatToken(isi: IsiSesi, rahasia: string): string {
+  const data = b64(JSON.stringify(isi));
+  return `${data}.${tandaTangan(data, rahasia)}`;
+}
+
+/** Mengembalikan null bila token cacat, tanda tangannya salah, atau kedaluwarsa. */
+export function bacaToken(token: string, rahasia: string, kini = Date.now()): IsiSesi | null {
+  const [data, sig] = token.split(".");
+  if (!data || !sig) return null;
+
+  const benar = Buffer.from(tandaTangan(data, rahasia));
+  const diberi = Buffer.from(sig);
+  // Panjang harus sama dulu; timingSafeEqual melempar kalau beda.
+  if (benar.length !== diberi.length || !timingSafeEqual(benar, diberi)) return null;
+
+  try {
+    const isi = JSON.parse(Buffer.from(data, "base64url").toString()) as IsiSesi;
+    return isi.exp > kini ? isi : null;
+  } catch {
+    return null;
+  }
+}

@@ -9,9 +9,8 @@ import { Ikon, Logo } from "@/components/ikon";
  * Sidebar panel admin. Peran `admin` hanya melihat Dashboard, Berita, dan
  * Pengaduan — menu lain tampil terkunci, sesuai matriks peran pada mockup.
  */
-export function Sidebar({ peran }: { peran: Peran }) {
+export function Sidebar({ peran, nama }: { peran: Peran; nama: string }) {
   const path = usePathname();
-  const pengguna = akun[peran];
   const terbatas = peran === "admin";
   const dasar = "flex items-center gap-3 rounded-[9px] px-3 py-2.5 text-[13.5px]";
 
@@ -76,7 +75,7 @@ export function Sidebar({ peran }: { peran: Peran }) {
           return (
             <Link
               key={m.href}
-              href={peran === "admin" ? `${m.href}?peran=admin` : m.href}
+              href={m.href}
               aria-current={aktif ? "page" : undefined}
               className={`${dasar} ${
                 aktif
@@ -99,8 +98,8 @@ export function Sidebar({ peran }: { peran: Peran }) {
       <div className="flex items-center gap-2.5 border-t border-krem/15 px-2.5 pt-3">
         <div className="foto size-8 flex-none rounded-full border-[1.5px] border-emas" />
         <div className="flex-1">
-          <div className="text-[12.5px] font-bold">{pengguna.nama}</div>
-          <div className="text-[10px] text-krem/60">{pengguna.jabatan}</div>
+          <div className="text-[12.5px] font-bold">{nama}</div>
+          <div className="text-[10px] text-krem/60">{akun[peran].jabatan}</div>
         </div>
       </div>
     </aside>
@@ -128,7 +127,7 @@ export function MenuAtas({ peran }: { peran: Peran }) {
           ) : (
             <Link
               key={m.href}
-              href={terbatas ? `${m.href}?peran=admin` : m.href}
+              href={m.href}
               className={`rounded-full px-3 py-1.5 text-xs whitespace-nowrap ${
                 path === m.href ? "bg-emas font-bold text-hutan" : "font-medium text-krem/80"
               }`}

@@ -1,0 +1,175 @@
+// Skema Bab 8 PRD. Nama tabel & kolom memakai snake_case Indonesia lewat @map
+// supaya perangkat desa yang kelak membuka Neon console mengenali isinya.
+//
+// ponytail: tabel `umkm` & `galeri` sengaja belum dibuat — keduanya Fase
+// Lanjutan (Bab 11). Tambahkan kalau modulnya benar-benar dikerjakan.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// URL koneksi ada di prisma.config.ts (Prisma 7 tidak lagi menerimanya di sini).
+datasource db {
+  provider = "postgresql"
+}
+
+enum Peran {
+  superadmin
+  admin
+}
+
+enum StatusBerita {
+  draft
+  terbit
+}
+
+enum StatusPengaduan {
+  TERKIRIM
+  DIPROSES
+  SELESAI
+}
+
+enum JenisAnggaran {
+  pendapatan
+  belanja
+  pembiayaan
+}
+
+enum KategoriStatistik {
+  ringkasan
+  jenis_kelamin
+  usia
+  pekerjaan
+  pendidikan
+}
+
+model Pengguna {
+  id         String   @id @default(cuid())
+  nama       String
+  email      String   @unique
+  sandiHash  String   @map("password_hash")
+  peran      Peran    @default(admin)
+  jabatan    String?
+  aktif      Boolean  @default(true) @map("is_active")
+  dibuatPada DateTime @default(now()) @map("created_at")
+
+  berita Berita[]
+
+  @@map("pengguna")
+}
+
+/// Konten statis profil desa: sejarah, visi-misi, dsb.
+model HalamanProfil {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  judul        String
+  konten       String
+  /// Ditandai draft selama rumusannya belum disepakati musyawarah dusun.
+  draft        Boolean  @default(false)
+  diperbaruiPada DateTime @updatedAt @map("updated_at")
+
+  @@map("halaman_profil")
+}
+
+model PerangkatDesa {
+  id      String  @id @default(cuid())
+  nama    String
+  jabatan String
+  fotoUrl String? @map("foto_url")
+  urutan  Int     @default(0)
+
+  @@map("perangkat_desa")
+}
+
+model KategoriBerita {
+  id     String   @id @default(cuid())
+  nama   String
+  slug   String   @unique
+  berita Berita[]
+
+  @@map("kategori_berita")
+}
+
+model Berita {
+  id           String       @id @default(cuid())
+  judul        String
+  slug         String       @unique
+  ringkasan    String
+  /// Paragraf badan berita, dipisah baris kosong.
+  konten       String
+  gambarSampul String?      @map("gambar_sampul")
+  lokasi       String?
+  status       StatusBerita @default(draft)
+  suka         Int          @default(0)
+  tanggapan    Int          @default(0)
+  terbitPada   DateTime?    @map("published_at")
+  dibuatPada   DateTime     @default(now()) @map("created_at")
+
+  kategoriId String         @map("kategori_id")
+  kategori   KategoriBerita @relation(fields: [kategoriId], references: [id])
+  penulisId  String?        @map("penulis_id")
+  penulis    Pengguna?      @relation(fields: [penulisId], references: [id], onDelete: SetNull)
+
+  @@index([status, terbitPada])
+  @@map("berita")
+}
+
+model Layanan {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  namaLayanan   String   @map("nama_layanan")
+  deskripsi     String
+  persyaratan   String[]
+  /// Larik langkah {judul, detail} — bentuknya bebas, jadi Json.
+  alur          Json
+  estimasiWaktu String   @map("estimasi_waktu")
+  biaya         String   @default("GRATIS")
+  fileTemplat   String?  @map("file_templat")
+  urutan        Int      @default(0)
+
+  @@map("layanan")
+}
+
+model Pengaduan {
+  id          String          @id @default(cuid())
+  kodeTiket   String          @unique @map("kode_tiket")
+  namaPelapor String?         @map("nama_pelapor")
+  kontak      String?
+  isAnonim    Boolean         @default(false) @map("is_anonim")
+  kategori    String
+  lokasi      String?
+  isi         String
+  lampiranUrl String?         @map("lampiran_url")
+  status      StatusPengaduan @default(TERKIRIM)
+  tanggapan   String?
+  dibuatPada  DateTime        @default(now()) @map("created_at")
+
+  @@map("pengaduan")
+}
+
+model Anggaran {
+  id      String        @id @default(cuid())
+  tahun   Int
+  jenis   JenisAnggaran
+  uraian  String
+  /// Rupiah. BigInt karena APBDes bisa menembus batas Int (±2,1 miliar).
+  jumlah  BigInt
+  catatan String?
+  /// Angka contoh selama izin publikasi dari kalurahan belum turun.
+  resmi   Boolean       @default(false)
+
+  @@index([tahun, jenis])
+  @@map("anggaran")
+}
+
+model StatistikPenduduk {
+  id       String            @id @default(cuid())
+  tahun    Int
+  kategori KategoriStatistik
+  label    String
+  nilai    Int
+  urutan   Int               @default(0)
+
+  @@unique([tahun, kategori, label])
+  @@map("statistik_penduduk")
+}
