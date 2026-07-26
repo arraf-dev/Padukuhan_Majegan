@@ -118,13 +118,13 @@ Urut sesuai ketergantungan — kerjakan dari atas.
 | #  | Task | Lapisan | Berkas utama | Status | Butuh |
 |----|------|---------|--------------|--------|-------|
 | 1  | Shell situs: header, footer, layout publik & admin | FE | `components/situs.tsx`, `app/layout.tsx` | ✅ | — |
-| 2  | Beranda (1a–1c) | FE | `app/(publik)/page.tsx` | 🟡 | 10 |
+| 2  | Beranda (1a–1c) | FE | `app/(publik)/page.tsx` | 🟡 | 10 · blok berita sudah dari DB |
 | 3  | Profil desa (PRF-2/3/4) | FE | `app/(publik)/profil/page.tsx` | 🟡 | 10 |
-| 4  | Berita: daftar + detail (BRT-1..4) | FE | `app/(publik)/berita/**` | 🟡 | 10 |
+| 4  | Berita: daftar + detail (BRT-1..4) | FE | `app/(publik)/berita/**` | ✅ | sumber data dari DB |
 | 5  | Layanan (LYN-1/2/3) | FE | `app/(publik)/layanan/[[...slug]]/page.tsx` | 🟡 | 10 |
 | 6  | Anggaran (APB-1/2/3) & Statistik (STA-1/2) | FE | `app/(publik)/anggaran`, `/statistik` | 🟡 | 10 |
 | 7  | Pengaduan: form, terkirim, lacak (LPR-1..4) | FE | `app/(publik)/pengaduan/**` | 🟡 | 13, 14 |
-| 8  | Panel admin: login, dashboard, form berita | FE | `app/admin/**` | 🟡 | 16, 22 |
+| 8  | Panel admin: login, dashboard, form berita | FE | `app/admin/**` | 🟡 | 5 halaman admin sisa: profil, layanan, anggaran, statistik, akun |
 | 9  | `error.tsx`, `not-found.tsx`, `robots.ts`, `sitemap.ts`, metadata | FE | `app/*` | ✅ | — |
 | 10 | Prisma + Neon Postgres: skema Bab 8 + migrasi + seed dari `majegan.ts` | BE | `prisma/schema.prisma`, `prisma/seed.ts`, `lib/db.ts` | 🟡 | Neon |
 | 11 | Auth admin: hash password, sesi cookie, `masuk`/`keluar` (AUTH-1) | BE | `lib/auth.ts`, `lib/sesi.ts`, `app/admin/aksi.ts` | ✅ | — |
@@ -132,15 +132,15 @@ Urut sesuai ketergantungan — kerjakan dari atas.
 | 13 | Server action simpan pengaduan → DB, pakai `periksaPengaduan` + `buatKodeTiket` | BE | `app/(publik)/pengaduan/aksi.ts` | 🟡 | Neon |
 | 14 | Query lacak pengaduan by kode tiket (LPR-3) | BE | `app/(publik)/pengaduan/lacak` | 🟡 | Neon |
 | 15 | Rate limit + honeypot form pengaduan (anti-spam) | BE | `lib/pengaduan.ts` | ✅ | — |
-| 16 | Admin CRUD berita + status Draft/Terbit (ADM-1) | BE | `app/admin/berita/**` | ⬜ | 10, 12 |
+| 16 | Admin CRUD berita + status Draft/Terbit (ADM-1) | BE | `app/admin/berita/**` | 🟡 | Neon |
 | 17 | Upload gambar via Vercel Blob (ADM-5) | BE | `lib/unggah.ts` | ⬜ | 12 |
 | 18 | Admin kelola profil & struktur organisasi (ADM-2) | BE | `app/admin/profil` | ⬜ | 16, 17 |
 | 19 | Admin kelola layanan (ADM-3) | BE | `app/admin/layanan` | ⬜ | 16 |
-| 20 | Admin tindak lanjut pengaduan: ubah status + tanggapan (ADM-4) | BE | `app/admin/pengaduan` | ⬜ | 13, 16 |
+| 20 | Admin tindak lanjut pengaduan: ubah status + tanggapan (ADM-4) | BE | `app/admin/pengaduan` | 🟡 | Neon |
 | 21 | Admin kelola anggaran (ADM-6) & statistik (ADM-7) | BE | `app/admin/anggaran`, `/statistik` | ⬜ | 16 |
-| 22 | Dashboard admin: hitungan nyata dari DB (ADM-8) | BE | `app/admin/page.tsx` | ⬜ | 16, 20 |
+| 22 | Dashboard admin: hitungan nyata dari DB (ADM-8) | BE | `app/admin/page.tsx` | 🟡 | Neon |
 | 23 | Super admin kelola akun (AUTH-3) + ganti password (AUTH-4) | BE | `app/admin/pengguna` | ⬜ | 11 |
-| 24 | Ganti sumber data halaman publik: `majegan.ts` → query DB, pasang `revalidate` | FE+BE | `app/(publik)/**` | ⬜ | 16–21 |
+| 24 | Ganti sumber data halaman publik: `majegan.ts` → query DB, pasang `revalidate` | FE+BE | `app/(publik)/**` | 🟡 | berita & sitemap sudah; profil/layanan/anggaran/statistik menyusul (18–21) |
 | 25 | Deploy Vercel + env (`DATABASE_URL`, secret sesi, token Blob) | Infra | — | ⬜ | 10, 11 |
 
 Jalur kritis: **10 → 11 → 12 → 16** membuka hampir semua sisa task admin. Task 13–15 bisa jalan paralel setelah 10.
@@ -234,6 +234,88 @@ Ini modul *Wajib* pertama yang jadi utuh end-to-end, dan tidak bergantung ke CRU
 ### D. Masuk Minggu 2 — Task 16 lalu 24
 
 Jalur kritisnya: **16 (CRUD berita + Draft/Terbit)** membuka 18–22. Sesudah 16 jalan, langsung kerjakan **24** untuk halaman berita saja (`majegan.ts` → query DB + `revalidate`) supaya satu modul benar-benar tembus dari admin ke publik, sebelum melebar ke layanan/anggaran. Task 17 (upload gambar) menyusul setelah itu — sampai ada Vercel Blob, pakai URL gambar yang diisi manual.
+
+---
+
+## Plan Frontend — 7 halaman admin yang belum ada + lepas dari data dummy
+
+Prasyarat: **langkah A (Neon) sudah jalan**. Semua di bawah ini menulis/membaca DB; dibangun sebelum itu = UI kosong yang tidak bisa diuji.
+
+### Aturan main — berlaku di semua langkah, tulis sekali di sini biar tidak diulang
+
+- **Sesi:** panggil `wajibMasuk()` (atau `wajibSuperadmin()`) di awal tiap page. Keduanya sudah ada di `lib/sesi.ts` — jangan bikin pengecekan peran versi baru
+- **Form:** `<form action={serverAction}>` biasa + `revalidatePath`. Tanpa react-hook-form, tanpa `useState`, tanpa API route — server action sudah cukup dan halamannya tetap jalan tanpa JS
+- **Server action:** satu `aksi.ts` per modul (`app/admin/<modul>/aksi.ts`), pola persis `app/admin/aksi.ts` & `app/(publik)/pengaduan/aksi.ts`
+- **Validasi:** fungsi murni di `lib/`, tanpa impor Prisma, seperti `periksaPengaduan` — supaya bisa dites lewat `npm test`
+- **Hapus:** tanpa `confirm()` JS. Tombol Hapus → `?konfirmasi=<id>` → panel konfirmasi muncul di halaman yang sama → tombol kedua benar-benar menghapus
+- **Daftar:** server component, query langsung di page-nya. Tabel di `md:` ke atas, kartu di mobile — sama seperti halaman publik
+- **Slug & kode unik:** tangani `P2002` dengan mengulang, seperti `kodeTiket` di `pengaduan/aksi.ts`
+
+### Langkah 0 — ✅ shell admin jadi satu komponen
+
+- [x] `app/admin/kerangka.tsx` — `<Kerangka>` (sidebar + menu atas + kolom isi) dan `<BilahKomposer>` (bilah atas halaman penuh)
+- [x] `admin/page.tsx` pakai `<Kerangka>`; halaman baru cukup 2 baris untuk dapat bingkai yang sama
+
+> Menyimpang dari rencana awal: **bukan** route group + `layout.tsx`. Komposer berita sengaja tampil penuh tanpa sidebar (sesuai mockup), dan layout bersama akan memaksakan sidebar ke sana. Komponen dipanggil per halaman lebih jujur daripada layout yang harus diakali.
+
+### Langkah 1 — ✅ `/admin/berita`: daftar, sunting, Draft↔Terbit, hapus (ADM-1, task 16)
+
+- [x] `app/admin/berita/page.tsx` — daftar semua berita + lencana DRAF/TERBIT, tombol Lihat, Sunting, Hapus
+- [x] `app/admin/berita/[id]/page.tsx` — sunting memakai `<Komposer>` yang sama, lewat prop `awal`
+- [x] `komposer.tsx` jadi `<form action={simpanBerita}>`; "Tayangkan" & "Simpan Draf" = dua tombol submit `name="status"`
+- [x] `berita/aksi.ts` — `simpanBerita` (create/update), `hapusBerita`, `revalidatePath` halaman publik
+- [x] Slug dari judul (`lib/teks.ts`), unik dengan sufiks `-2`, `-3`; **slug lama dipertahankan** saat judul disunting supaya tautan yang sudah tersebar di WhatsApp tidak mati
+- [x] `menuAdmin` — "Berita" mengarah ke `/admin/berita`
+- [ ] **cek (butuh DB):** simpan draf → muncul di daftar berlencana DRAF, tidak muncul di `/berita`. Terbitkan → muncul. Sunting judul → slug tidak berubah. Hapus → hilang dari keduanya
+
+Dua hal yang berubah dari mockup, sengaja:
+
+- **Pemilih berkas foto dihapus**, diganti isian tautan gambar. File-nya belum bisa dikirim ke mana pun sampai ADM-5, jadi dropzone yang membuang berkas diam-diam lebih berbahaya daripada tidak ada. Foto jadi opsional supaya berita tetap bisa terbit
+- **Lencana angka "3" di menu Pengaduan dihapus** — angkanya hardcoded; hitungan nyata sudah ada di dashboard
+
+### Langkah 2 — ✅ berita publik lepas dari `majegan.ts` (task 24, sebagian)
+
+- [x] `lib/berita.ts` — satu sumber query (`beritaTerbit`, `beritaSlug`), hasilnya dipetakan ke tipe `Berita` yang sudah dipakai `KartuAlbum`/`KartuRingkas`/halaman detail, jadi **nol komponen tampilan disentuh**
+- [x] `(publik)/berita/page.tsx`, `berita/[slug]/page.tsx`, blok berita di beranda → dari DB, hanya `status: "terbit"`
+- [x] Draf tidak bisa dibuka warga meski slug-nya ketebak
+- [x] `sitemap.ts` juga dari DB — sebelumnya menyebut slug dummy, jadi berita baru tidak terdaftar dan yang dihapus tetap tercatat
+- [ ] **cek (butuh DB):** terbitkan berita dari panel → refresh `/berita` → langsung ada
+
+> `generateStaticParams` + `revalidate` **ditunda**, halaman publik dirender on-demand dulu (`dynamic = "force-dynamic"`). Alasannya: prerender saat build menuntut koneksi DB, dan itu bikin `next build` gagal selama Neon belum ada. Pasang ISR di Minggu 5 — sudah jadi task di daftar Minggu 5.
+
+### Langkah 3 — ✅ `/admin/pengaduan` (ADM-4, task 20) + dashboard nyata (ADM-8, task 22)
+
+- [x] `app/admin/pengaduan/page.tsx` — daftar + saring per status, tanda peringatan bila laporan diproses tapi belum ada tanggapan tertulis
+- [x] `app/admin/pengaduan/[id]/page.tsx` — detail + form ubah status & tulis tanggapan (wireframe 2j)
+- [x] Nama & kontak pelapor tampil **hanya** di panel ini; laporan anonim menampilkan penjelasan bahwa kontaknya memang tidak pernah disimpan
+- [x] **Status SELESAI ditolak tanpa tanggapan** — tanggapan itu satu-satunya yang dibaca warga di halaman Lacak
+- [x] Dashboard: `ringkasanAdmin` & `pengaduanTerbaru` statis diganti `count()` per status + 5 pengaduan terakhir dari DB
+- [x] `LencanaStatus` di `components/potongan.tsx` — satu komponen, menggantikan 3 salinan peta warna status
+- [ ] **cek (butuh DB):** ubah status di panel → warga melihat perubahannya di `/pengaduan/lacak` dengan kode tiketnya
+
+### Langkah 4–7 — sisa modul, pola sama persis
+
+Tiap langkah: halaman daftar/form admin → `aksi.ts` → ganti sumber data halaman publiknya → cek admin-ke-publik.
+
+- [ ] **4.** `/admin/profil` (ADM-2, task 18) — profil desa & struktur organisasi → `(publik)/profil`
+- [ ] **5.** `/admin/layanan` (ADM-3, task 19) → `(publik)/layanan`
+- [ ] **6.** `/admin/anggaran` + `/admin/statistik` (ADM-6/7, task 21) → `(publik)/anggaran`, `/statistik`. **Tambahkan Anggaran ke `menuAdmin`** — modulnya wajib tapi menunya belum ada. `jumlah` bertipe `BigInt`: konversi ke string sebelum dikirim ke komponen klien
+- [ ] **7.** `/admin/akun` (AUTH-3/4, task 23) — `wajibSuperadmin()`, ganti sandi pakai `hashKataSandi` yang sudah ada
+
+### Langkah 8 — sisa kecil (Minggu 5, saat polish)
+
+- [ ] Unggah gambar ke Vercel Blob (ADM-5, task 17) — sampai ini jadi, komposer & form pengaduan pakai isian URL manual
+- [ ] Hitungan suka & tanggapan di detail berita (sekarang statis) — atau buang saja kalau tidak ada yang memakainya
+- [ ] URL sosial media & WhatsApp di footer, begitu datanya turun dari kalurahan
+
+### Peta ke jadwal mingguan
+
+| Minggu | Langkah |
+|---|---|
+| 2 (30 Jul–5 Ags) | 0, 1, 2, 4 |
+| 3 (6–12 Ags) | 5, 3 |
+| 4 (13–19 Ags) | 6, 7 |
+| 5 (20–26 Ags) | 8 + polish |
 
 ---
 

@@ -1,29 +1,28 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { berita } from "@/content/majegan";
 import { Atap, Ikon } from "@/components/ikon";
 import { Foto, JudulSection, KartuRingkas, LencanaKategori } from "@/components/potongan";
+import { beritaSlug, beritaTerbit } from "@/lib/berita";
 import { tanggalPanjang } from "@/lib/tanggal";
 
 type Params = { params: Promise<{ slug: string }> };
 
-export async function generateStaticParams() {
-  return berita.map((b) => ({ slug: b.slug }));
-}
-
-const cari = (slug: string) => berita.find((b) => b.slug === slug);
+// ponytail: `generateStaticParams` dibuang, bukan diganti query — daftar slug-nya
+// berubah tiap admin menayangkan berita. Kembali ke prerender di Minggu 5 saat
+// ISR dipasang dan DB sudah pasti hidup ketika build jalan.
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const b = cari((await params).slug);
+  const b = await beritaSlug((await params).slug);
   return b ? { title: b.judul, description: b.ringkasan } : {};
 }
 
 export default async function DetailBerita({ params }: Params) {
-  const b = cari((await params).slug);
+  const b = await beritaSlug((await params).slug);
   if (!b) notFound();
 
-  const lainnya = berita.filter((x) => x.slug !== b.slug).slice(0, 3);
+  const lainnya = (await beritaTerbit(4)).filter((x) => x.slug !== b.slug).slice(0, 3);
 
   return (
     <div className="px-4 pt-5 pb-10 md:px-12 md:pt-7 md:pb-12">

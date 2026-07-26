@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Berita, KategoriBerita } from "@/content/majegan";
+import type { Berita, KategoriBerita, StatusPengaduan } from "@/content/majegan";
 import { Atap, Ikon } from "@/components/ikon";
 import { tanggalKapital, tanggalPanjang } from "@/lib/tanggal";
 
@@ -43,6 +43,29 @@ export function Foto({
     <div className={`foto flex items-center justify-center ${className}`}>
       {keterangan && <span className="foto-cap">{keterangan}</span>}
     </div>
+  );
+}
+
+const warnaStatus: Record<StatusPengaduan, string> = {
+  TERKIRIM: "border-[1.5px] border-garis-tebal text-teks",
+  DIPROSES: "bg-emas text-hutan",
+  SELESAI: "bg-daun text-krem",
+};
+
+/** Lencana status pengaduan — dipakai dashboard, daftar admin, & detailnya. */
+export function LencanaStatus({
+  status,
+  className = "",
+}: {
+  status: StatusPengaduan;
+  className?: string;
+}) {
+  return (
+    <span
+      className={`flex-none rounded-full px-2.5 py-1 text-[11px] font-extrabold ${warnaStatus[status]} ${className}`}
+    >
+      {status}
+    </span>
   );
 }
 

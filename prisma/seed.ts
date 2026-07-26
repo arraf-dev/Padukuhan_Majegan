@@ -10,6 +10,7 @@
  */
 import { loadEnvFile } from "node:process";
 import { hashKataSandi } from "../src/lib/auth.ts";
+import { slugkan } from "../src/lib/teks.ts";
 import {
   anggaran,
   berita,
@@ -29,12 +30,6 @@ try {
 }
 
 const { db } = await import("../src/lib/db.ts");
-
-const slugkan = (teks: string) =>
-  teks
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
 
 async function main() {
   /* ---------- Akun ---------- */

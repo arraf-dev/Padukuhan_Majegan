@@ -40,11 +40,6 @@ export function Sidebar({ peran, nama }: { peran: Peran; nama: string }) {
               >
                 <Ikon nama={m.ikon} ukuran={17} />
                 <span className="flex-1">{m.label}</span>
-                {m.lencana && (
-                  <span className="rounded-full bg-emas/40 px-2 py-0.5 text-[11px] font-extrabold text-hutan">
-                    {m.lencana}
-                  </span>
-                )}
               </span>
             );
           }
@@ -85,11 +80,6 @@ export function Sidebar({ peran, nama }: { peran: Peran; nama: string }) {
             >
               <Ikon nama={m.ikon} ukuran={17} />
               <span className="flex-1">{m.label}</span>
-              {m.lencana && (
-                <span className="rounded-full bg-emas px-2 py-0.5 text-[11px] font-extrabold text-hutan">
-                  {m.lencana}
-                </span>
-              )}
             </Link>
           );
         })}

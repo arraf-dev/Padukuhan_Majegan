@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { berita, kategoriBerita, pengumuman } from "@/content/majegan";
+import { kategoriBerita, pengumuman } from "@/content/majegan";
 import { Atap } from "@/components/ikon";
 import { KartuAlbum } from "@/components/potongan";
+import { beritaTerbit } from "@/lib/berita";
 import { tanggalPendekTahun } from "@/lib/tanggal";
 
 export const metadata: Metadata = { title: "Kabar Majegan" };
+
+// ponytail: dirender on-demand dulu supaya `next build` tidak menuntut koneksi
+// DB. Pindah ke ISR (`revalidate`) di Minggu 5 — lihat TASKS.md bagian Minggu 5.
+export const dynamic = "force-dynamic";
 
 const PER_HALAMAN = 6;
 
@@ -15,6 +20,7 @@ export default async function Berita({
   searchParams: Promise<{ kategori?: string; hal?: string }>;
 }) {
   const { kategori, hal } = await searchParams;
+  const berita = await beritaTerbit();
 
   const terpilih = kategoriBerita.find((k) => k === kategori);
   const tersaring = terpilih ? berita.filter((b) => b.kategori === terpilih) : berita;

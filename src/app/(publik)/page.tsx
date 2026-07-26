@@ -1,20 +1,16 @@
 import Link from "next/link";
-import {
-  aksesCepat,
-  berita,
-  desa,
-  kelompokUsia,
-  pengumuman,
-  statistik,
-} from "@/content/majegan";
+import { aksesCepat, desa, kelompokUsia, pengumuman, statistik } from "@/content/majegan";
 import { Hitung } from "@/components/gerak";
 import { Ikon } from "@/components/ikon";
 import { Foto, JudulSection, KartuRingkas } from "@/components/potongan";
+import { beritaTerbit } from "@/lib/berita";
 import { tanggalPendek } from "@/lib/tanggal";
 
-const terbaru = berita.slice(0, 3);
+// ponytail: sama seperti halaman Berita — on-demand dulu, ISR di Minggu 5.
+export const dynamic = "force-dynamic";
 
-export default function Beranda() {
+export default async function Beranda() {
+  const terbaru = await beritaTerbit(3);
   return (
     <>
       {/* ---------- Sambutan & akses cepat (mobile) ---------- */}

@@ -419,8 +419,8 @@ export const aksiCepatAdmin = [
  */
 export const menuAdmin = [
   { href: "/admin", label: "Dashboard", ikon: "kisi" as const },
-  { href: "/admin/berita/baru", label: "Berita", ikon: "berita" as const },
-  { href: "/admin/pengaduan", label: "Pengaduan", ikon: "obrolan" as const, lencana: 3, belum: true },
+  { href: "/admin/berita", label: "Berita", ikon: "berita" as const },
+  { href: "/admin/pengaduan", label: "Pengaduan", ikon: "obrolan" as const },
   { href: "/admin/profil", label: "Profil & Struktur", ikon: "warga" as const, superadmin: true, belum: true },
   { href: "/admin/layanan", label: "Layanan", ikon: "surat" as const, superadmin: true, belum: true },
   { href: "/admin/statistik", label: "Statistik", ikon: "batang" as const, superadmin: true, belum: true },

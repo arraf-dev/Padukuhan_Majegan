@@ -1,8 +1,15 @@
 import type { MetadataRoute } from "next";
-import { berita, layanan, navigasi, situsUrl } from "@/content/majegan";
+import { layanan, navigasi, situsUrl } from "@/content/majegan";
+import { beritaTerbit } from "@/lib/berita";
+
+// Daftar slug berita berubah tiap admin menayangkan atau menghapus, jadi sitemap
+// statis akan menyebut halaman yang sudah mati.
+export const dynamic = "force-dynamic";
 
 /** Halaman publik + semua slug berita & layanan. Panel /admin sengaja tidak masuk. */
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const berita = await beritaTerbit();
+
   const rute = [
     ...navigasi.map((n) => n.href),
     "/pengaduan/lacak",
