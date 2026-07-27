@@ -11,7 +11,7 @@
 
 **Teknis**
 - [x] Setup Next.js (App Router) + TypeScript + Tailwind, inisialisasi repo Git
-- [ ] Setup Prisma + Neon Postgres, migrasi skema inti Bab 8 (`pengguna`, `halaman_profil`, `perangkat_desa`, `berita`, `kategori_berita`, `layanan`, `pengaduan`) — *skema, migrasi & seed sudah ditulis; project Neon belum dibuat sehingga belum pernah dijalankan*
+- [x] Setup Prisma + Neon Postgres, migrasi skema inti Bab 8 (`pengguna`, `halaman_profil`, `perangkat_desa`, `berita`, `kategori_berita`, `layanan`, `pengaduan`) — *migrasi `20260726000000_awal` diterapkan & seed jalan 27 Jul 2026; 9 tabel terisi*
 - [x] Autentikasi admin dasar (AUTH-1, AUTH-2) — login + proteksi route `/admin`
 - [x] Struktur folder: route group publik vs admin, layout dasar mobile-first (wireframe 1a–1e)
 - [ ] Deploy awal ke Vercel (Hobby)
@@ -153,17 +153,17 @@ Target: task 10, 11, 12, 25 kelar. Tiap langkah punya **cek:** — kalau ceknya 
 
 ### Hari 1 (26 Jul) — Task 10: database
 
-- [ ] Buat project di [neon.tech](https://neon.tech), region Singapore. Salin *pooled* connection string
+- [x] Buat project di [neon.tech](https://neon.tech), region Singapore. Salin *pooled* connection string
 - [x] `.env.example` berisi nama variabel saja (tanpa nilai), `.gitignore` sudah `!.env.example`
-- [ ] `.env.local` → isi `DATABASE_URL`, `RAHASIA_SESI`, `SUPERADMIN_EMAIL`, `SUPERADMIN_SANDI` (berkasnya belum ada)
+- [x] `.env.local` → isi `DATABASE_URL`, `RAHASIA_SESI`, `SUPERADMIN_EMAIL`, `SUPERADMIN_SANDI`
 - [x] `npm i @prisma/client && npm i -D prisma && npx prisma init --datasource-provider postgresql` — Prisma 7 + `@prisma/adapter-pg`, konfigurasi di `prisma.config.ts`
 - [x] Tulis `prisma/schema.prisma`: 9 tabel Bab 8 PRD — `pengguna`, `halaman_profil`, `perangkat_desa`, `kategori_berita`, `berita`, `layanan`, `pengaduan`, `anggaran`, `statistik_penduduk`. **Lewati `umkm` & `galeri`** (Fase Lanjutan Bab 11)
 - [x] Enum: `Peran`, `StatusBerita`, `StatusPengaduan`, `JenisAnggaran`, `KategoriStatistik` — samakan nilainya dengan tipe yang sudah ada di `src/content/majegan.ts:316,375` supaya frontend tidak perlu diubah
 - [x] `@unique` pada `berita.slug`, `pengaduan.kode_tiket`, `pengguna.email`, `halaman_profil.slug`
-- [ ] `npx prisma migrate dev --name awal` — SQL migrasi `20260726000000_awal` sudah ditulis tangan, **belum pernah diterapkan ke database**
+- [x] `npx prisma migrate deploy` — SQL migrasi `20260726000000_awal` ditulis tangan, diterapkan bersih tanpa perlu `migrate dev`
 - [x] `src/lib/db.ts` — singleton `PrismaClient` (tanpa ini, hot-reload dev bikin koneksi bocor sampai Neon nolak)
 - [x] `prisma/seed.ts` — impor `berita`, `layanan`, `profil`, `anggaran`, `statistik`, `peranPengguna` dari `majegan.ts`, `upsert` semuanya. Idempoten, aman dijalankan berulang
-- [ ] **cek:** `npx prisma studio` → tiap tabel ada isinya, jumlah berita cocok dengan `majegan.ts`
+- [x] **cek:** 9 tabel terisi, tidak ada yang kosong. `berita` 4 = `majegan.ts` 4, `layanan` 5 = 5. Superadmin `Sarjiman, S.Pd.` ada
 
 ### Hari 2 (27 Jul) — Task 11 & 12: auth + proteksi
 
@@ -182,9 +182,7 @@ Target: task 10, 11, 12, 25 kelar. Tiap langkah punya **cek:** — kalau ceknya 
 ### Hari 3 (28 Jul) — Task 25: deploy
 
 - [x] `package.json`: `"build": "prisma generate && prisma migrate deploy && next build"`
-- [ ] `vercel link` lalu set env di dashboard: `DATABASE_URL`, `RAHASIA_SESI`, `NEXT_PUBLIC_URL`
-- [ ] Push ke `main` → deploy jalan
-- [ ] **cek:** situs produksi kebuka, `/admin` masih terkunci, login jalan di produksi, `/sitemap.xml` & `/robots.txt` merujuk domain yang benar
+- [ ] Selebihnya: lihat **bagian B** di *Langkah Berikutnya* — checklist lengkapnya ada di sana supaya tidak ada dua salinan yang bisa berbeda
 
 ### Hari 4 (29 Jul) — Task 13–15: pengaduan masuk DB
 
@@ -204,23 +202,81 @@ Kode Hari 1 & 2 sudah ditulis semua. Yang menghambat sekarang **satu hal**: belu
 
 ### A. Nyalakan Neon & buktikan Hari 1–2 benar (≤ 1 jam, hari ini)
 
-1. [ ] [neon.tech](https://neon.tech) → project baru, region **Singapore**, salin connection string **Pooled** (host-nya ada `-pooler`)
-2. [x] `.env.local` sudah dibuat — `RAHASIA_SESI` & `SUPERADMIN_SANDI` sudah dibangkitkan acak. **Tinggal ganti `DATABASE_URL`** (sekarang masih placeholder) dengan string dari langkah 1
-3. [ ] `npx prisma migrate deploy` — SQL-nya sudah ditulis tangan, jadi `deploy` bukan `dev`. Kalau ditolak, hapus folder `prisma/migrations/20260726000000_awal` lalu `npx prisma migrate dev --name awal` supaya Prisma yang membuat sendiri
-4. [ ] `npx prisma db seed`
-5. [ ] **cek 1:** `npx prisma studio` → 9 tabel terisi, jumlah baris `berita` sama dengan `majegan.ts`, ada 1 baris `pengguna` berperan `superadmin`
-6. [ ] **cek 2 (ini yang memvalidasi Task 11 & 12):** `npm run dev` → buka `/admin` di jendela penyamaran → kelempar ke `/admin/masuk`. Login pakai `SUPERADMIN_EMAIL` + sandi → tembus ke dashboard, nama asli dari DB tampil. Ubah 1 huruf cookie `sesi_majegan` di DevTools → refresh → kelempar lagi. Tombol keluar → kembali ke login
+**✅ SELESAI 27 Jul 2026** — kecuali uji manual di browser (poin 6b).
 
-> Kalau cek 2 gagal, **berhenti di sini** dan perbaiki. Semua task admin sesudahnya bertumpu pada sesi ini.
+1. [x] [neon.tech](https://neon.tech) → project baru, region **Singapore**, salin connection string **Pooled** (host-nya ada `-pooler`)
+2. [x] `.env.local` — `RAHASIA_SESI` & `SUPERADMIN_SANDI` dibangkitkan acak, `DATABASE_URL` sudah string Neon asli
+3. [x] `npx prisma migrate deploy` — diterapkan bersih, tidak perlu jatuh ke `migrate dev`
+4. [x] `npx prisma db seed` — 4 berita, 5 layanan, 3 pengaduan, 1 pengguna
+5. [x] **cek 1:** 9 tabel terisi, tidak ada yang kosong. `berita` & `layanan` jumlahnya sama dengan `majegan.ts`. Ada 1 `pengguna` berperan `superadmin`
+6. [x] **cek 2a (otomatis):** `/`, `/berita`, `/pengaduan/lacak` balas `200` (sebelumnya `500` — inilah yang membuktikan halaman publik benar-benar membaca DB). `/admin` tanpa sesi balas `307` ke `/admin/masuk`. Hash sandi superadmin diverifikasi: sandi benar diterima, sandi salah ditolak. `npm test` 15 lolos
+7. [ ] **cek 2b (manual, perlu browser):** login di `/admin/masuk` → tembus ke dashboard, nama `Sarjiman, S.Pd.` tampil. Ubah 1 huruf cookie `sesi_majegan` di DevTools → refresh → kelempar lagi. Tombol keluar → kembali ke login
 
-### B. Deploy ke Vercel — Task 25 (27 Jul, ½ hari)
+> ⚠️ **Restart `npm run dev` setiap kali `.env.local` berubah.** `lib/db.ts:23` menyimpan `PrismaClient` di `globalThis`, jadi connection string lama tetap nempel di server yang sudah jalan meski berkas env-nya sudah diperbarui.
 
-Pakai checklist **Hari 3** di atas. Dua hal yang sering bikin gagal:
+### B. Deploy ke Vercel — Task 25 (½ hari)
 
-- Gunakan `DATABASE_URL` pooled yang sama di Vercel; `prisma migrate deploy` sudah ada di skrip `build`, jadi migrasi jalan otomatis saat deploy
-- Set `NEXT_PUBLIC_URL` ke domain produksi sebelum push, kalau tidak `sitemap.xml` & `robots.txt` menunjuk `localhost`
+#### B0. Push dulu — sebelum apa pun (10 menit, kerjakan hari ini)
 
-Seed **tidak** ikut `build` (sengaja). Setelah deploy pertama sukses, jalankan sekali dari lokal dengan `DATABASE_URL` produksi.
+> 🔴 **Branch `fondasi-database-auth` belum pernah di-push.** Remote hanya punya `main` (isinya prototipe UI). Seluruh kerja database, auth, dan panel admin — 4 commit — **cuma ada di satu laptop**. Laptop hilang atau disk rusak = proker hilang. Ini risiko terbesar saat ini, dan perbaikannya satu perintah.
+
+- [ ] `git push -u origin fondasi-database-auth`
+- [ ] **cek:** buka repo di GitHub → branch-nya ada, 4 commit terlihat
+
+Setelah ini aman, baru pikirkan Vercel.
+
+#### B1. Gabungkan ke `main`
+
+Vercel men-deploy *production* dari branch default (`main`); branch lain jadi *preview*.
+
+- [ ] Buka PR `fondasi-database-auth` → `main` di GitHub, lalu merge
+
+> Solo dev tidak punya reviewer, jadi PR di sini bukan soal review — ia meninggalkan catatan tertulis apa yang berubah dan kapan. Berguna untuk laporan akhir KKN. Kalau tidak perlu, `git switch main && git merge fondasi-database-auth && git push` sama sahnya.
+
+#### B2. Hubungkan project (butuh Anda, ada login browser)
+
+- [ ] `! npx vercel login` — otentikasi lewat browser, tidak bisa diwakilkan
+- [ ] `! npx vercel link` — pilih scope pribadi, buat project baru, nama `padukuhan-majegan`
+
+Setelah ini folder `.vercel/` muncul. **Sudah tercakup `.gitignore`** — jangan di-commit.
+
+#### B3. Environment variables — 3 variabel, isi lewat dashboard
+
+Vercel → Project → Settings → Environment Variables. Centang **Production + Preview + Development** untuk ketiganya.
+
+| Variabel | Nilai | Catatan |
+|---|---|---|
+| `DATABASE_URL` | string Neon **Pooled** yang sama dengan `.env.local` | Wajib ada saat *build*, bukan cuma runtime — `prisma migrate deploy` jalan di dalam `build` |
+| `RAHASIA_SESI` | **acak baru, jangan pakai punya lokal** | `node -e "console.log(require('crypto').randomBytes(32).toString('base64url'))"` |
+| `NEXT_PUBLIC_URL` | `https://<nama-project>.vercel.app` | Baca peringatan di bawah |
+
+Tiga hal yang benar-benar menggigit di sini:
+
+- **`RAHASIA_SESI` produksi harus beda dari lokal.** Rahasia yang sama = cookie sesi dev Anda sah di produksi. Beda rahasia juga berarti sesi lokal otomatis ditolak produksi — itu memang yang diinginkan.
+- **`NEXT_PUBLIC_*` dibekukan saat build, bukan dibaca saat runtime.** `situsUrl` (`majegan.ts:29`) adalah `const` tingkat modul, jadi nilainya ikut ter-*inline* ke bundel. Mengubahnya di dashboard **tidak berefek sampai ada redeploy**. Ada masalah ayam-telur: URL produksi baru diketahui setelah deploy pertama. Urutannya: deploy sekali → catat URL yang diberikan → isi `NEXT_PUBLIC_URL` → **Redeploy** dari dashboard.
+- **Kalau `NEXT_PUBLIC_URL` kosong, fallback-nya `https://majegan.pandowoharjo.desa.id`** (`majegan.ts:15,29`) — domain yang belum aktif, bukan `localhost`. Akibatnya `sitemap.xml` & `robots.txt` menunjuk alamat mati dan Google mengindeks yang salah. Diam-diam, tanpa error.
+
+#### B4. Deploy & cek
+
+Merge ke `main` di B1 sudah otomatis memicu deploy. Kalau env baru diisi sesudahnya, picu ulang lewat **Redeploy**.
+
+- [ ] Deploy pertama hijau. Kalau merah, buka Build Logs — tersangka pertama `prisma migrate deploy` (biasanya `DATABASE_URL` belum tercentang untuk environment yang dipakai build)
+- [ ] Isi `NEXT_PUBLIC_URL` dengan URL asli → **Redeploy**
+- [ ] **cek 1:** situs produksi terbuka, beranda menampilkan berita dari DB (bukan halaman error)
+- [ ] **cek 2:** `/admin` di jendela penyamaran → kelempar ke `/admin/masuk`
+- [ ] **cek 3:** login dengan `SUPERADMIN_EMAIL` → tembus. Ini sekaligus membuktikan cookie `secure: true` (`lib/sesi.ts:23`) jalan — di lokal flag itu mati karena bukan HTTPS, jadi **produksi adalah pertama kalinya jalur itu benar-benar diuji**
+- [ ] **cek 4:** `/sitemap.xml` & `/robots.txt` menyebut domain produksi, bukan `.desa.id` maupun `localhost`
+- [ ] **cek 5:** kirim 1 pengaduan dari produksi → kode tiket keluar → ketemu di `/pengaduan/lacak`
+
+#### B5. Yang sengaja TIDAK dilakukan
+
+- **Seed tidak ikut `build`.** Database produksi = database yang sama dengan lokal (satu project Neon), jadi isinya sudah ada. Menjalankan seed lagi tidak merusak (semuanya `upsert`) tapi tidak perlu. **Kalau nanti Neon dipisah jadi dua project** (dev & prod terpisah), seed produksi dijalankan sekali manual dari lokal dengan `DATABASE_URL` produksi.
+- **Domain `desa.id` belum dipasang** — masih TBD di PRD. Subdomain `.vercel.app` sah untuk dipakai dan dilatihkan ke perangkat desa.
+- **`engines.node` belum diset di `package.json`.** Vercel memakai Node default-nya; lokal jalan di Node 24. Kalau build gagal dengan galat sintaks yang aneh, itu tersangka pertama — set `"engines": { "node": ">=22" }`.
+
+#### B6. Kepemilikan (jangan ditunda ke Minggu 6)
+
+Akun Vercel & Neon sekarang atas nama pribadi Anda. PRD `:240` sudah menandai ini sebagai risiko keberlanjutan. Begitu email resmi desa tersedia, pindahkan kepemilikan — jangan tunggu minggu terakhir, transfer butuh email tujuan aktif dan itu sering yang paling lama ditunggu.
 
 ### C. Pengaduan masuk DB — Task 13, 14, 15 (28–29 Jul, 1 hari)
 
@@ -295,12 +351,87 @@ Dua hal yang berubah dari mockup, sengaja:
 
 ### Langkah 4–7 — sisa modul, pola sama persis
 
-Tiap langkah: halaman daftar/form admin → `aksi.ts` → ganti sumber data halaman publiknya → cek admin-ke-publik.
+Tiap langkah punya bentuk yang identik, jadi ditulis sekali di sini:
 
-- [ ] **4.** `/admin/profil` (ADM-2, task 18) — profil desa & struktur organisasi → `(publik)/profil`
-- [ ] **5.** `/admin/layanan` (ADM-3, task 19) → `(publik)/layanan`
-- [ ] **6.** `/admin/anggaran` + `/admin/statistik` (ADM-6/7, task 21) → `(publik)/anggaran`, `/statistik`. **Tambahkan Anggaran ke `menuAdmin`** — modulnya wajib tapi menunya belum ada. `jumlah` bertipe `BigInt`: konversi ke string sebelum dikirim ke komponen klien
-- [ ] **7.** `/admin/akun` (AUTH-3/4, task 23) — `wajibSuperadmin()`, ganti sandi pakai `hashKataSandi` yang sudah ada
+> **daftar/form admin** (`app/admin/<modul>/page.tsx`) → **`aksi.ts`** (server action + `revalidatePath`) → **`lib/<modul>.ts`** (query publik, hasilnya dipetakan ke tipe yang sudah dipakai komponen) → **ganti impor di halaman publik** → **buka `belum: true` di `menuAdmin`** → **cek admin-ke-publik**.
+
+`lib/berita.ts` + `admin/berita/aksi.ts` adalah contoh lengkapnya — tiru struktur berkasnya, jangan bikin pola baru. Aturan main di atas (sesi, form, validasi, hapus, `P2002`) berlaku penuh dan tidak diulang di bawah.
+
+---
+
+#### Langkah 4 — `/admin/profil` (ADM-2, task 18) · Minggu 2
+
+Dua tabel dalam satu halaman: `halaman_profil` (naskah) dan `perangkat_desa` (struktur).
+
+- [ ] `app/admin/profil/page.tsx` — `wajibSuperadmin()`. Dua bagian dalam satu `<Kerangka>`:
+      - **Naskah**: `db.halamanProfil.findMany()` → satu `<form>` per baris (`sejarah`, `visi-misi`). Isian: judul, `<textarea>` konten, checkbox **Draft**
+      - **Struktur**: `db.perangkatDesa.findMany({ orderBy: { urutan: "asc" } })` → tabel (md:) / kartu (mobile), tiap baris punya form sunting inline + tombol Hapus. Satu form kosong di bawah untuk menambah
+- [ ] `app/admin/profil/aksi.ts` — `simpanHalaman`, `simpanPerangkat` (`id` kosong → `create`, ada → `update`), `hapusPerangkat`. Semua `revalidatePath("/profil")` + `revalidatePath("/")`
+- [ ] `lib/profil.ts` — rakit objek berbentuk sama dengan `profil` di `majegan.ts` (`sejarah: string[]`, `visi`, `misi[]`, `visiMisiDraft`, `dukuh`, `perangkat[]`) supaya `(publik)/profil/page.tsx` cuma ganti satu baris impor
+- [ ] `(publik)/profil/page.tsx` → pakai `lib/profil.ts`
+
+Keputusan yang diambil di muka:
+
+- **Konten = `<textarea>` polos, paragraf dipisah baris kosong** — persis perlakuan `konten` berita (`split(/\n{2,}/)` di `lib/berita.ts`). Tanpa editor rich text; kalau nanti benar-benar perlu tebal/miring, baru pertimbangkan
+- **`visi` & `misi` disimpan sebagai satu naskah `visi-misi`**, baris kosong pertama memisah visi dari butir misi — begitu cara `seed.ts:88` menulisnya. Jangan pecah jadi dua tabel
+- **Urutan perangkat pakai isian angka**, bukan drag & drop. `urutan: 0` = Dukuh (tampil di kartu kepala halaman)
+- **Foto perangkat menunggu task 17**; sampai itu jadi, kolomnya isian URL dan `<Foto>` menampilkan placeholder saat kosong
+
+- [ ] **cek:** ubah 1 kalimat sejarah di panel → refresh `/profil` → berubah. Centang Draft di visi-misi → label DRAFT muncul di halaman publik. Tambah 1 Ketua RT → muncul di struktur organisasi, urut sesuai angkanya. Hapus → hilang
+
+---
+
+#### Langkah 5 — `/admin/layanan` (ADM-3, task 19) · Minggu 3
+
+- [ ] `app/admin/layanan/page.tsx` — daftar layanan (nama, durasi, biaya, urutan) + tombol Sunting/Hapus, tombol "Layanan Baru"
+- [ ] `app/admin/layanan/[id]/page.tsx` + `baru/page.tsx` — satu komponen form dipakai keduanya lewat prop `awal`, persis cara `<Komposer>` dipakai `berita/baru` dan `berita/[id]`
+- [ ] `app/admin/layanan/aksi.ts` — `simpanLayanan`, `hapusLayanan`. Slug dari nama pakai `slugkan()`; **slug lama dipertahankan saat disunting** (alasan sama dengan berita: tautan sudah tersebar)
+- [ ] `lib/layanan.ts` — pemetaan ke tipe `Layanan` yang sudah ada di `majegan.ts:207`
+- [ ] `(publik)/layanan/[[...slug]]/page.tsx` → pakai `lib/layanan.ts`
+
+Dua celah skema yang harus diputuskan **sebelum** menulis formnya (`seed.ts:107` diam-diam membuang keduanya):
+
+- **`namaSingkat` tidak punya kolom.** Dipakai di daftar samping halaman layanan. → turunkan dari `namaLayanan` di pemetaan, jangan tambah kolom. Kalau nanti ada nama yang benar-benar kepanjangan, baru tambah `nama_singkat`
+- **`berkas.ukuran` tidak punya kolom**, hanya `fileTemplat` (namanya). → buang tampilan ukurannya. Angka ukuran yang tidak pernah bisa diperbarui admin lebih menyesatkan daripada tidak ada
+- **`persyaratan` (`String[]`) & `alur` (`Json`)**: satu `<textarea>` masing-masing, satu baris = satu item. `alur` dipecah `judul | detail` dengan pemisah `|`. Parsernya fungsi murni di `lib/layanan-teks.ts` + satu tes — ini satu-satunya bagian modul ini yang bisa salah diam-diam
+
+- [ ] **cek:** bikin layanan baru → muncul di `/layanan` dan punya halaman sendiri. Sunting syarat (tambah 1 baris) → bertambah di publik. Sunting nama → slug tidak berubah. Hapus → 404 di publik
+
+---
+
+#### Langkah 6 — `/admin/anggaran` + `/admin/statistik` (ADM-6/7, task 21) · Minggu 4
+
+- [ ] **Tambahkan `/admin/anggaran` ke `menuAdmin`** (`majegan.ts:420`) — modulnya *Wajib* tapi menunya memang tidak pernah ada
+- [ ] `app/admin/anggaran/page.tsx` — pemilih tahun (`?tahun=2026`), tabel baris anggaran per jenis, form tambah baris (jenis, uraian, jumlah, catatan), checkbox **Resmi** per tahun
+- [ ] `app/admin/anggaran/aksi.ts` — `simpanBaris`, `hapusBaris`, `tandaiResmi(tahun)`
+- [ ] `app/admin/statistik/page.tsx` + `aksi.ts` — tabel `tahun × kategori × label → nilai`. `@@unique([tahun, kategori, label])` sudah ada, jadi pakai `upsert`, bukan create+cek
+- [ ] `lib/anggaran.ts`, `lib/statistik.ts` → bentuknya sama dengan `anggaran` & `statistik`/`kelompokUsia` di `majegan.ts`
+- [ ] `(publik)/anggaran/page.tsx`, `(publik)/statistik/page.tsx`, dan teaser statistik di beranda → pakai lib baru
+
+Jebakan konkret:
+
+- **`jumlah` bertipe `BigInt`** — tidak bisa diserialisasi ke komponen klien dan `JSON.stringify` melemparkan `TypeError`. Konversi ke `Number` di dalam `lib/anggaran.ts` (rupiah APBDes padukuhan jauh di bawah `Number.MAX_SAFE_INTEGER`), jangan diteruskan mentah
+- **`anggaran.diperbarui` tidak punya kolom.** → tampilkan dari `updated_at`… yang juga tidak ada di tabel `anggaran`. Paling murah: tambah `diperbaruiPada DateTime @updatedAt` ke model `Anggaran` saat migrasi berikutnya, atau buang barisnya dari tampilan. Putuskan saat mengerjakan, jangan biarkan tanggal contoh membeku di halaman publik
+- **Kategori statistik `jenis_kelamin`, `pekerjaan`, `pendidikan` ada di enum tapi tidak ditampilkan di UI mana pun.** Form admin hanya melayani `ringkasan` & `usia` — yang benar-benar dipakai. Menambah isian untuk data yang tidak pernah tampil = form yang membuang isian admin diam-diam
+- **`kelompokUsia.persen`** disimpan sebagai `nilai` (0–100), bukan jumlah jiwa. Beri label jelas di form supaya admin tidak mengisi jumlah orang
+
+- [ ] **cek:** ubah 1 nominal belanja → total & panjang bar di `/anggaran` ikut berubah. Centang Resmi → banner "angka contoh" hilang. Ubah jumlah jiwa → angka di beranda & `/statistik` berubah
+
+---
+
+#### Langkah 7 — `/admin/akun` (AUTH-3/4, task 23) · Minggu 4
+
+- [ ] `app/admin/akun/page.tsx` — `wajibSuperadmin()`. Daftar pengguna (nama, email, peran, aktif) + form tambah admin
+- [ ] `app/admin/akun/aksi.ts` — `simpanPengguna` (peran, aktif/nonaktif), `hapusPengguna`, `gantiSandi`. Hash pakai `hashKataSandi()` yang sudah ada di `lib/auth.ts` — jangan tulis ulang
+- [ ] `app/admin/sandi/page.tsx` (AUTH-4) — ganti sandi sendiri, terbuka untuk peran `admin` juga. Wajib isi sandi lama, verifikasi dengan `periksaKataSandi()`
+
+Pengaman yang **tidak boleh disederhanakan**:
+
+- **Superadmin terakhir tidak boleh dihapus atau diturunkan perannya.** `count({ where: { peran: "superadmin", aktif: true } }) <= 1` → tolak. Tanpa ini panel bisa terkunci permanen dan hanya bisa dipulihkan lewat Neon console
+- **Jangan hapus akun yang pernah menulis berita** — relasi `penulis` sudah `onDelete: SetNull`, jadi beritanya selamat, tapi lebih jujur pakai `aktif: false` supaya nama penulis tetap terbaca. Hapus permanen hanya untuk akun yang belum pernah menulis
+- **Sandi baru minimal 12 karakter**, dicek fungsi murni di `lib/auth.ts` + tes. Ini satu-satunya pintu masuk panel
+
+- [ ] **cek:** bikin admin baru → bisa login → tidak melihat menu bertanda `superadmin: true` → langsung buka `/admin/akun` lewat URL tetap dilempar ke `/admin`. Ganti sandi sendiri → sandi lama ditolak. Coba hapus superadmin terakhir → ditolak
 
 ### Langkah 8 — sisa kecil (Minggu 5, saat polish)
 
