@@ -48,7 +48,9 @@ export default async function Berita({
               key={k ?? "semua"}
               href={tautan(k)}
               aria-current={ini ? "true" : undefined}
-              className={`rounded-full px-4 py-2 text-[13px] ${
+              // min-h-11 hanya di mobile: target sentuh 44px untuk jempol,
+              // desktop tetap ramping karena diklik pakai tetikus.
+              className={`inline-flex min-h-11 items-center rounded-full px-4 py-2 text-[13px] md:min-h-0 ${
                 ini
                   ? "bg-hutan font-bold text-krem"
                   : "border border-garis-tebal font-semibold text-teks hover:border-daun hover:text-hutan"
@@ -106,7 +108,7 @@ export default async function Berita({
                     key={n}
                     href={href}
                     aria-current={ini ? "page" : undefined}
-                    className={`flex size-9 items-center justify-center rounded-[9px] text-[13px] ${
+                    className={`flex size-11 items-center justify-center rounded-[9px] text-[13px] md:size-9 ${
                       ini
                         ? "bg-hutan font-bold text-krem"
                         : "border border-garis-tebal text-teks hover:border-daun hover:text-hutan"

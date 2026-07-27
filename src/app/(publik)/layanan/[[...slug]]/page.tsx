@@ -48,7 +48,7 @@ export default async function Layanan({ params, searchParams }: Params) {
   return (
     <div className="grid items-start gap-8 px-4 py-8 md:grid-cols-[300px_1fr] md:px-12 md:pt-8.5 md:pb-11.5">
       {/* ---------- Daftar layanan ---------- */}
-      <div>
+      <div className="min-w-0">
         {/* form GET biasa: hasil pencarian ikut ke URL, bisa dibagikan & di-back */}
         <form className="mb-3 flex items-center gap-2.5 rounded-[10px] border border-garis bg-kertas px-3.5 py-1 focus-within:border-daun">
           <Ikon nama="cari" ukuran={14} className="flex-none text-samar" />
@@ -111,7 +111,9 @@ export default async function Layanan({ params, searchParams }: Params) {
       <article
         key={aktif.slug}
         data-reveal
-        className="rounded-2xl border border-garis bg-kertas px-5 py-6 md:px-8.5 md:py-7.5"
+        // min-w-0: item grid bawaannya `min-width:auto`, sehingga kolom melebar
+        // mengikuti isi terpanjang dan menyeret seluruh halaman meluber di HP.
+        className="min-w-0 rounded-2xl border border-garis bg-kertas px-5 py-6 md:px-8.5 md:py-7.5"
       >
         <div className="flex flex-wrap items-center gap-3">
           <h1 className="font-serif text-2xl font-semibold text-hutan md:text-[27px]">
@@ -129,7 +131,7 @@ export default async function Layanan({ params, searchParams }: Params) {
         </p>
 
         <div className="grid items-start gap-6 md:grid-cols-2">
-          <section>
+          <section className="min-w-0">
             <h2 className="mb-3 font-serif text-[17px] font-semibold text-hutan">Persyaratan</h2>
             <ul className="flex flex-col gap-2.5">
               {aktif.syarat.map((s) => (
@@ -162,7 +164,7 @@ export default async function Layanan({ params, searchParams }: Params) {
             )}
           </section>
 
-          <section>
+          <section className="min-w-0">
             <h2 className="mb-3 font-serif text-[17px] font-semibold text-hutan">Alur Pengurusan</h2>
             <ol className="flex flex-col">
               {aktif.alur.map((a, i) => {

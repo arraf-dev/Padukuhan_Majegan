@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Lora, Plus_Jakarta_Sans } from "next/font/google";
 import { desa, situsUrl } from "@/content/majegan";
 import { Reveal } from "@/components/gerak";
@@ -28,6 +28,18 @@ export const metadata: Metadata = {
     locale: "id_ID",
     siteName: desa.nama,
   },
+};
+
+/**
+ * `viewport-fit: cover` diperlukan agar `env(safe-area-inset-bottom)` terisi —
+ * tanpa itu navigasi bawah tertimpa home indicator iPhone.
+ * `themeColor` menyamakan bilah browser HP dengan warna header.
+ */
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#0d3825",
 };
 
 export default function RootLayout({

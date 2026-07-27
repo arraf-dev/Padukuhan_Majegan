@@ -14,7 +14,11 @@ export function Header() {
   return (
     <header>
       <div className="flex items-center gap-3 bg-hutan px-5 py-3 text-krem md:gap-3.5 md:px-12">
-        <Link href="/" aria-label={`Beranda ${desa.nama}`} className="flex-none">
+        <Link
+          href="/"
+          aria-label={`Beranda ${desa.nama}`}
+          className="flex min-h-11 flex-none items-center md:min-h-0"
+        >
           <Logo ukuran={34} className="md:hidden" />
           <Logo ukuran={42} className="hidden md:block" />
         </Link>
@@ -71,7 +75,8 @@ export function NavBawah() {
   const path = usePathname();
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-50 grid grid-cols-5 border-t border-garis bg-kertas px-1.5 pt-2 pb-[18px] md:hidden">
+    // pb menyertakan safe-area: tanpa itu tab tertimpa home indicator iPhone.
+    <nav className="fixed inset-x-0 bottom-0 z-50 grid grid-cols-5 border-t border-garis bg-kertas px-1.5 pt-2 pb-[calc(18px+env(safe-area-inset-bottom))] md:hidden">
       {tab.map((t) => {
         const ini = aktif(path, t.href);
         return (
@@ -112,8 +117,13 @@ export function Footer() {
           </div>
           <div>
             <div className="mb-2 text-[12.5px] font-bold tracking-[.08em] text-emas">KONTAK</div>
-            <div>WhatsApp: {desa.whatsapp}</div>
-            <div>Email: {desa.email}</div>
+            {/* py-1: menaikkan tinggi target sentuh tautan footer dari 21px */}
+            <a href={desa.whatsappUrl} className="block py-1 hover:text-emas">
+              WhatsApp: {desa.whatsapp}
+            </a>
+            <a href={`mailto:${desa.email}`} className="block break-all py-1 hover:text-emas">
+              Email: {desa.email}
+            </a>
           </div>
           <div>
             <div className="mb-2 text-[12.5px] font-bold tracking-[.08em] text-emas">TAUTAN</div>
@@ -124,11 +134,11 @@ export function Footer() {
                 {t}
               </span>
             ))}
-            <Link href="/pengaduan/lacak" className="mt-1.5 block hover:text-emas">
+            <Link href="/pengaduan/lacak" className="mt-1.5 block py-1 hover:text-emas">
               Lacak Pengaduan
             </Link>
             {/* Untuk perangkat dusun, bukan warga — sengaja dibuat tidak menonjol. */}
-            <Link href="/admin/masuk" className="mt-1.5 block text-krem/45 hover:text-emas">
+            <Link href="/admin/masuk" className="mt-1.5 block py-1 text-krem/45 hover:text-emas">
               Masuk Panel
             </Link>
           </div>
