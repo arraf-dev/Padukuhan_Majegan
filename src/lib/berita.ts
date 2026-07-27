@@ -34,9 +34,11 @@ const keBerita = (b: Baris): Berita => ({
   lokasi: b.lokasi ?? "",
   ringkasan: b.ringkasan,
   isi: b.konten.split(/\n{2,}/).filter(Boolean),
-  // `Foto` menampilkan placeholder saat kosong — tetap begitu sampai unggahan
-  // gambar aktif (ADM-5, task 17).
+  // `gambarSampul` adalah URL, bukan keterangan. Sebelumnya nilai ini masuk ke
+  // `foto` yang dirender sebagai pil teks, sehingga URL-nya tampil sebagai
+  // tulisan di kartu berita. `Foto` menampilkan placeholder saat src kosong.
   foto: b.gambarSampul ?? "",
+  fotoKeterangan: b.gambarSampul ? b.judul : "Belum ada foto",
   suka: b.suka,
   tanggapan: b.tanggapan,
 });

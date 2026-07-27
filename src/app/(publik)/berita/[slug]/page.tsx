@@ -53,7 +53,13 @@ export default async function DetailBerita({ params }: Params) {
           </span>
         </div>
 
-        <Foto keterangan={b.foto} className="mt-5 aspect-[16/9] rounded-xl" />
+        <Foto
+          src={b.foto}
+          keterangan={b.fotoKeterangan}
+          prioritas
+          sizes="(min-width: 768px) 720px, 100vw"
+          className="mt-5 aspect-[16/9] rounded-xl"
+        />
 
         <p className="mt-5 border-l-[3px] border-emas pl-4 text-[15px] leading-[1.75] font-semibold text-tinta">
           {b.ringkasan}

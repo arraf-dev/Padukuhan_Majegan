@@ -69,10 +69,13 @@ async function main() {
       ringkasan: b.ringkasan,
       konten: b.isi.join("\n\n"),
       lokasi: b.lokasi,
+      gambarSampul: b.foto || null,
       suka: b.suka,
       tanggapan: b.tanggapan,
-      status: "terbit" as const,
-      terbitPada: new Date(b.tanggal),
+      // Sebagian sengaja draf supaya panel admin punya contoh kedua status,
+      // dan supaya terbukti draf tidak bocor ke halaman publik.
+      status: b.draft ? ("draft" as const) : ("terbit" as const),
+      terbitPada: b.draft ? null : new Date(b.tanggal),
       kategoriId: kategori.get(b.kategori)!,
       penulisId: dukuh.id,
     };
@@ -119,26 +122,34 @@ async function main() {
   }
 
   /* ---------- Anggaran ---------- */
-  await db.anggaran.deleteMany({ where: { tahun: anggaran.tahun } });
-  await db.anggaran.createMany({
-    data: [
-      ...anggaran.sumber.map((s) => ({
-        tahun: anggaran.tahun,
-        jenis: "pendapatan" as const,
-        uraian: s.nama,
-        jumlah: BigInt(s.nominal),
-        resmi: anggaran.resmi,
-      })),
-      ...anggaran.bidang.map((b) => ({
-        tahun: anggaran.tahun,
-        jenis: "belanja" as const,
-        uraian: b.nama,
-        jumlah: BigInt(b.nominal),
-        catatan: b.catatan,
-        resmi: anggaran.resmi,
-      })),
-    ],
-  });
+  // Dua tahun: tahun berjalan dari `majegan.ts`, tahun sebelumnya diturunkan
+  // dengan faktor tetap — supaya pemilih tahun di panel admin ada isinya dan
+  // bisa diuji, bukan dropdown berisi satu pilihan.
+  const barisAnggaran = (tahun: number, faktor: number) => [
+    ...anggaran.sumber.map((s) => ({
+      tahun,
+      jenis: "pendapatan" as const,
+      uraian: s.nama,
+      jumlah: BigInt(Math.round((s.nominal * faktor) / 1000) * 1000),
+      resmi: anggaran.resmi,
+    })),
+    ...anggaran.bidang.map((b) => ({
+      tahun,
+      jenis: "belanja" as const,
+      uraian: b.nama,
+      jumlah: BigInt(Math.round((b.nominal * faktor) / 1000) * 1000),
+      catatan: b.catatan,
+      resmi: anggaran.resmi,
+    })),
+  ];
+
+  for (const [tahun, faktor] of [
+    [anggaran.tahun, 1],
+    [anggaran.tahun - 1, 0.88],
+  ] as const) {
+    await db.anggaran.deleteMany({ where: { tahun } });
+    await db.anggaran.createMany({ data: barisAnggaran(tahun, faktor) });
+  }
 
   /* ---------- Statistik ---------- */
   const tahun = anggaran.tahun;
@@ -167,13 +178,26 @@ async function main() {
   }
 
   /* ---------- Pengaduan contoh ---------- */
-  for (const p of pengaduanTerbaru) {
+  // Selang-seling anonim & berindentitas: panel admin perlu menampilkan kedua
+  // bentuk, termasuk penjelasan bahwa kontak pelapor anonim memang tak disimpan.
+  const pelapor = [
+    { nama: "Suryanto", kontak: "0812-2700-1121", kategori: "Infrastruktur" },
+    { nama: "Ngatinem", kontak: "0857-4412-8890", kategori: "Kebersihan" },
+    { nama: "Yuli Astuti", kontak: "yuli.astuti@gmail.com", kategori: "Layanan Publik" },
+    { nama: "Purwadi", kontak: "0813-9087-2245", kategori: "Keamanan" },
+  ];
+
+  for (const [i, p] of pengaduanTerbaru.entries()) {
+    const anonim = i % 3 === 0;
+    const orang = pelapor[i % pelapor.length];
     const isi = {
-      kategori: "Lainnya",
+      kategori: anonim ? "Lainnya" : orang.kategori,
       isi: p.isi,
       status: p.status,
       tanggapan: p.tanggapan ?? null,
-      isAnonim: true,
+      isAnonim: anonim,
+      namaPelapor: anonim ? null : orang.nama,
+      kontak: anonim ? null : orang.kontak,
       dibuatPada: new Date(p.tanggal),
     };
     await db.pengaduan.upsert({

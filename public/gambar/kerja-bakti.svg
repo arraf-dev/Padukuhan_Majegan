@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-label="Warga bergotong royong membersihkan kali">
+  <title>Kerja bakti membersihkan kali</title>
+
+  <rect width="600" height="600" fill="#f5ebd0"/>
+  <circle cx="492" cy="88" r="38" fill="#d6b45c" opacity=".5"/>
+
+  <!-- tanggul & pepohonan -->
+  <path d="M0 268 Q 140 224 300 258 Q 460 292 600 250 L600 600 L0 600 Z" fill="#e6ede4"/>
+  <g fill="#2a5b3c" opacity=".24">
+    <circle cx="78" cy="240" r="40"/>
+    <circle cx="136" cy="258" r="28"/>
+    <circle cx="524" cy="236" r="34"/>
+  </g>
+
+  <!-- kali -->
+  <path d="M0 402 Q 150 372 300 402 Q 450 432 600 396 L600 500 Q 450 534 300 502 Q 150 470 0 500 Z" fill="#7fa3ad"/>
+  <path d="M0 402 Q 150 372 300 402 Q 450 432 600 396 L600 424 Q 450 458 300 428 Q 150 400 0 428 Z" fill="#9dbcc4"/>
+  <g stroke="#f7f3e8" stroke-width="3.4" opacity=".55" fill="none" stroke-linecap="round">
+    <path d="M78 444 q 26 -10 52 0"/>
+    <path d="M244 462 q 26 -10 52 0"/>
+    <path d="M420 448 q 26 -10 52 0"/>
+  </g>
+
+  <!-- tepian -->
+  <rect y="500" width="600" height="100" fill="#ebe6d8"/>
+  <path d="M0 500 h600 v9 H0 Z" fill="#0d3825" opacity=".09"/>
+
+  <!-- warga 1 — mencangkul -->
+  <g>
+    <circle cx="168" cy="322" r="21" fill="#c99a6b"/>
+    <path d="M147 316 q21 -20 42 0 v-5 q-21 -17 -42 0 Z" fill="#0d3825"/>
+    <rect x="151" y="343" width="34" height="52" rx="10" fill="#2a5b3c"/>
+    <rect x="155" y="392" width="12" height="42" rx="5" fill="#3f4a52"/>
+    <rect x="172" y="392" width="12" height="42" rx="5" fill="#3f4a52"/>
+    <rect x="182" y="352" width="46" height="9" rx="4.5" fill="#c99a6b" transform="rotate(26 182 352)"/>
+    <rect x="214" y="360" width="7" height="62" rx="3" fill="#8a6d2b" transform="rotate(26 214 360)"/>
+    <path d="M196 424 l30 12 l-6 14 l-30 -12 Z" fill="#8a9a8c"/>
+  </g>
+
+  <!-- warga 2 — mengangkat karung -->
+  <g>
+    <circle cx="318" cy="308" r="21" fill="#a97c4f"/>
+    <path d="M297 302 q21 -20 42 0 v-5 q-21 -17 -42 0 Z" fill="#213228"/>
+    <rect x="300" y="329" width="36" height="54" rx="10" fill="#b0532e"/>
+    <rect x="304" y="380" width="12" height="44" rx="5" fill="#3f4a52"/>
+    <rect x="322" y="380" width="12" height="44" rx="5" fill="#3f4a52"/>
+    <rect x="288" y="336" width="10" height="34" rx="5" fill="#a97c4f" transform="rotate(-30 288 336)"/>
+    <rect x="336" y="336" width="10" height="34" rx="5" fill="#a97c4f" transform="rotate(30 336 336)"/>
+    <rect x="286" y="286" width="64" height="34" rx="9" fill="#cbc3a8"/>
+    <path d="M286 296 h64" stroke="#a9a084" stroke-width="3"/>
+  </g>
+
+  <!-- warga 3 — menyapu -->
+  <g>
+    <circle cx="452" cy="330" r="20" fill="#c99a6b"/>
+    <path d="M432 324 q20 -19 40 0 v-5 q-20 -16 -40 0 Z" fill="#0d3825"/>
+    <rect x="435" y="350" width="34" height="50" rx="10" fill="#356b48"/>
+    <rect x="439" y="397" width="11" height="40" rx="5" fill="#3f4a52"/>
+    <rect x="455" y="397" width="11" height="40" rx="5" fill="#3f4a52"/>
+    <rect x="466" y="356" width="9" height="40" rx="4.5" fill="#c99a6b" transform="rotate(34 466 356)"/>
+    <rect x="486" y="368" width="6" height="58" rx="3" fill="#8a6d2b" transform="rotate(16 486 368)"/>
+    <path d="M494 424 l22 -6 l8 22 l-24 6 Z" fill="#d6b45c"/>
+  </g>
+
+  <!-- karung terkumpul -->
+  <g fill="#cbc3a8">
+    <rect x="66" y="470" width="52" height="38" rx="9"/>
+    <rect x="120" y="482" width="44" height="26" rx="8"/>
+  </g>
+
+  <text x="586" y="586" text-anchor="end" font-family="system-ui, sans-serif" font-size="14" fill="#0d3825" opacity=".33">ilustrasi</text>
+</svg>

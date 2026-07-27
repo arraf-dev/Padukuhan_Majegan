@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Berita, KategoriBerita, StatusPengaduan } from "@/content/majegan";
 import { Atap, Ikon } from "@/components/ikon";
@@ -31,17 +32,44 @@ export function JudulSection({
   );
 }
 
-/** Bingkai placeholder foto — dipakai sampai dokumentasi asli masuk. */
+/**
+ * Slot gambar: merender gambar bila `src` ada, placeholder bergaris bila tidak.
+ *
+ * `keterangan` selalu wajib — jadi teks `alt` saat gambarnya tampil, dan tulisan
+ * di dalam pil placeholder saat belum ada gambar. Satu prop, dua peran, supaya
+ * tidak ada gambar yang lolos tanpa alt.
+ */
 export function Foto({
+  src,
   keterangan,
   className = "",
+  sizes = "100vw",
+  prioritas = false,
 }: {
+  src?: string | null;
   keterangan: string;
   className?: string;
+  sizes?: string;
+  prioritas?: boolean;
 }) {
+  if (!src) {
+    return (
+      <div className={`foto flex items-center justify-center ${className}`}>
+        {keterangan && <span className="foto-cap">{keterangan}</span>}
+      </div>
+    );
+  }
+
   return (
-    <div className={`foto flex items-center justify-center ${className}`}>
-      {keterangan && <span className="foto-cap">{keterangan}</span>}
+    <div className={`relative overflow-hidden bg-foto ${className}`}>
+      <Image
+        src={src}
+        alt={keterangan}
+        fill
+        sizes={sizes}
+        priority={prioritas}
+        className="object-cover"
+      />
     </div>
   );
 }
@@ -116,7 +144,12 @@ export function KartuAlbum({ b }: { b: Berita }) {
       className="block overflow-hidden rounded-2xl border border-garis bg-kertas transition hover:-translate-y-[3px] hover:shadow-[0_10px_24px_rgba(33,50,40,.13)]"
     >
       <div className="relative px-2.5 pt-2.5">
-        <Foto keterangan={b.foto} className="aspect-square rounded-[11px]" />
+        <Foto
+          src={b.foto}
+          keterangan={b.fotoKeterangan}
+          sizes="(min-width: 768px) 33vw, 100vw"
+          className="aspect-square rounded-[11px]"
+        />
         <span
           className={`absolute top-[22px] left-[22px] rounded-full px-3 py-1.5 text-[10.5px] font-extrabold tracking-[.08em] ${warnaOverlay(b.kategori)}`}
         >
@@ -163,7 +196,9 @@ export function KartuRingkas({ b }: { b: Berita }) {
       className="flex gap-3 overflow-hidden rounded-xl border border-garis bg-kertas p-3 transition hover:border-daun md:block md:p-0 md:hover:-translate-y-[3px] md:hover:shadow-[0_8px_20px_rgba(33,50,40,.12)]"
     >
       <Foto
-        keterangan={b.foto}
+        src={b.foto}
+        keterangan={b.fotoKeterangan}
+        sizes="(min-width: 768px) 33vw, 72px"
         className="size-[72px] flex-none rounded-[9px] [&>span]:hidden md:h-[130px] md:w-full md:rounded-none md:[&>span]:inline-flex"
       />
       <div className="md:px-4.5 md:pt-4 md:pb-4.5">

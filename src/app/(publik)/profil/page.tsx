@@ -44,7 +44,12 @@ export default function Profil() {
                 </p>
               ))}
             </div>
-            <Foto keterangan="Foto balai dusun" className="h-[190px] rounded-xl border border-garis" />
+            <Foto
+              src="/gambar/balai-dusun.svg"
+              keterangan="Balai Dusun Majegan"
+              sizes="(min-width: 768px) 40vw, 100vw"
+              className="h-[190px] rounded-xl border border-garis"
+            />
           </div>
         </section>
 
@@ -86,7 +91,12 @@ export default function Profil() {
           <JudulSection anak="Struktur Organisasi" />
           <div className="flex flex-col items-center">
             <div className="flex items-center gap-3.5 rounded-xl bg-hutan px-6 py-4 text-krem shadow-[0_4px_14px_rgba(13,56,37,.25)]">
-              <Foto keterangan="" className="size-[46px] flex-none rounded-full border-2 border-emas" />
+              <Foto
+                src="/gambar/avatar-dukuh.svg"
+                keterangan={profil.dukuh.jabatan}
+                sizes="46px"
+                className="size-[46px] flex-none rounded-full border-2 border-emas"
+              />
               <div>
                 <div className="font-serif text-base font-semibold">{profil.dukuh.nama}</div>
                 <div className="text-xs font-semibold text-emas">{profil.dukuh.jabatan}</div>
@@ -101,7 +111,9 @@ export default function Profil() {
                   className="rounded-[11px] border border-garis bg-kertas p-3.5 text-center transition hover:border-daun"
                 >
                   <Foto
-                    keterangan=""
+                    src="/gambar/avatar-perangkat.svg"
+                    keterangan={p.jabatan}
+                    sizes="40px"
                     className="mx-auto mb-2 size-10 rounded-full border-[1.5px] border-emas"
                   />
                   <div className="text-[13.5px] font-bold text-tinta">{p.nama}</div>

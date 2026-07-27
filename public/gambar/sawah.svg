@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" role="img" aria-label="Hamparan sawah Padukuhan Majegan">
+  <title>Hamparan sawah Majegan</title>
+
+  <rect width="1200" height="675" fill="#f5ebd0"/>
+  <circle cx="980" cy="120" r="52" fill="#d6b45c" opacity=".45"/>
+
+  <!-- gunung latar -->
+  <path d="M0 300 L210 148 L370 300 Z" fill="#cddccf"/>
+  <path d="M250 300 L440 172 L610 300 Z" fill="#bccfc0"/>
+  <path d="M210 148 L262 186 L158 186 Z" fill="#e6ede4"/>
+
+  <!-- garis pepohonan -->
+  <path d="M0 300 Q 200 276 420 296 Q 660 318 900 292 Q 1060 274 1200 292 L1200 340 L0 340 Z" fill="#2a5b3c" opacity=".5"/>
+  <g fill="#2a5b3c" opacity=".55">
+    <circle cx="120" cy="292" r="26"/>
+    <circle cx="360" cy="286" r="22"/>
+    <circle cx="700" cy="288" r="28"/>
+    <circle cx="1040" cy="282" r="24"/>
+  </g>
+
+  <!-- petak sawah bertingkat -->
+  <path d="M0 340 Q 300 322 600 342 Q 900 362 1200 336 L1200 400 Q 900 424 600 404 Q 300 384 0 402 Z" fill="#8fbb6a"/>
+  <path d="M0 400 Q 300 382 600 402 Q 900 422 1200 396 L1200 470 Q 900 496 600 474 Q 300 452 0 472 Z" fill="#7fae5c"/>
+  <path d="M0 470 Q 300 450 600 472 Q 900 494 1200 466 L1200 550 Q 900 578 600 554 Q 300 530 0 552 Z" fill="#6d9e4d"/>
+  <path d="M0 550 Q 300 528 600 552 Q 900 576 1200 546 L1200 675 L0 675 Z" fill="#5d8c41"/>
+
+  <!-- pematang -->
+  <g stroke="#c2b894" stroke-width="4" fill="none" opacity=".85">
+    <path d="M0 400 Q 300 382 600 402 Q 900 422 1200 396"/>
+    <path d="M0 470 Q 300 450 600 472 Q 900 494 1200 466"/>
+    <path d="M0 550 Q 300 528 600 552 Q 900 576 1200 546"/>
+  </g>
+
+  <!-- rumpun padi -->
+  <g stroke="#f5ebd0" stroke-width="2.4" opacity=".4" stroke-linecap="round">
+    <path d="M90 436 v-16 M150 442 v-16 M210 446 v-16 M270 450 v-16 M330 452 v-16"/>
+    <path d="M780 448 v-16 M840 444 v-16 M900 440 v-16 M960 436 v-16 M1020 430 v-16"/>
+    <path d="M140 524 v-18 M240 530 v-18 M340 534 v-18 M840 528 v-18 M940 522 v-18"/>
+  </g>
+
+  <!-- petani bercaping -->
+  <g>
+    <path d="M556 500 q34 -26 68 0 Z" fill="#d6b45c"/>
+    <circle cx="590" cy="512" r="15" fill="#c99a6b"/>
+    <rect x="576" y="528" width="28" height="44" rx="10" fill="#2a5b3c"/>
+    <rect x="566" y="536" width="10" height="30" rx="5" fill="#c99a6b"/>
+    <rect x="604" y="536" width="10" height="30" rx="5" fill="#c99a6b"/>
+  </g>
+
+  <!-- gubuk sawah -->
+  <g>
+    <rect x="928" y="500" width="66" height="42" fill="#e0d6b6"/>
+    <path d="M961 468 L1014 504 L908 504 Z" fill="#8a6d2b"/>
+    <rect x="946" y="516" width="22" height="26" fill="#6b5432"/>
+  </g>
+
+  <text x="1180" y="656" text-anchor="end" font-family="system-ui, sans-serif" font-size="16" fill="#0d3825" opacity=".3">ilustrasi</text>
+</svg>

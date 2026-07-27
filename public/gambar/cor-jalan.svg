@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-label="Pengecoran jalan lingkungan">
+  <title>Pengecoran jalan lingkungan</title>
+
+  <rect width="600" height="600" fill="#f5ebd0"/>
+  <circle cx="112" cy="86" r="34" fill="#d6b45c" opacity=".45"/>
+
+  <!-- latar -->
+  <path d="M0 262 Q 150 222 300 254 Q 450 286 600 246 L600 600 L0 600 Z" fill="#e6ede4"/>
+  <g fill="#2a5b3c" opacity=".22">
+    <circle cx="512" cy="230" r="38"/>
+    <circle cx="562" cy="250" r="26"/>
+  </g>
+
+  <!-- rumah latar -->
+  <g opacity=".55">
+    <rect x="66" y="252" width="104" height="66" fill="#f7f3e8"/>
+    <path d="M118 214 L192 258 L44 258 Z" fill="#0d3825"/>
+    <rect x="102" y="278" width="32" height="40" rx="3" fill="#2a5b3c"/>
+  </g>
+
+  <!-- badan jalan yang dicor -->
+  <path d="M120 600 L246 350 L376 350 L502 600 Z" fill="#cbc3a8"/>
+  <path d="M150 600 L262 378 L360 378 L472 600 Z" fill="#e0dac6"/>
+  <!-- bagian basah baru dicor -->
+  <path d="M186 528 L232 436 L390 436 L436 528 Z" fill="#b9b19a"/>
+  <g stroke="#a49c85" stroke-width="2.6" opacity=".8" fill="none">
+    <path d="M232 470 h158"/>
+    <path d="M214 504 h194"/>
+  </g>
+
+  <!-- bekisting kayu -->
+  <g fill="#8a6d2b">
+    <rect x="228" y="424" width="166" height="9" rx="3"/>
+    <rect x="176" y="524" width="270" height="9" rx="3"/>
+  </g>
+
+  <!-- pekerja meratakan cor -->
+  <g>
+    <circle cx="262" cy="322" r="21" fill="#c99a6b"/>
+    <path d="M240 318 q22 -22 44 0 l6 -6 q-6 -20 -28 -20 q-22 0 -28 20 Z" fill="#d6b45c"/>
+    <rect x="245" y="344" width="35" height="54" rx="10" fill="#2a5b3c"/>
+    <rect x="249" y="395" width="12" height="44" rx="6" fill="#3f4a52"/>
+    <rect x="266" y="395" width="12" height="44" rx="6" fill="#3f4a52"/>
+    <rect x="277" y="352" width="9" height="46" rx="4.5" fill="#c99a6b" transform="rotate(32 277 352)"/>
+    <rect x="300" y="374" width="76" height="7" rx="3.5" fill="#8a6d2b" transform="rotate(16 300 374)"/>
+    <rect x="360" y="392" width="54" height="10" rx="4" fill="#8a9a8c" transform="rotate(16 360 392)"/>
+  </g>
+
+  <!-- pekerja membawa ember -->
+  <g>
+    <circle cx="418" cy="308" r="20" fill="#a97c4f"/>
+    <path d="M397 304 q21 -21 42 0 l6 -6 q-6 -19 -27 -19 q-21 0 -27 19 Z" fill="#d6b45c"/>
+    <rect x="401" y="329" width="34" height="52" rx="10" fill="#b0532e"/>
+    <rect x="405" y="378" width="11" height="42" rx="5.5" fill="#3f4a52"/>
+    <rect x="421" y="378" width="11" height="42" rx="5.5" fill="#3f4a52"/>
+    <rect x="437" y="336" width="10" height="40" rx="5" fill="#a97c4f"/>
+    <path d="M432 376 h30 l-5 30 h-20 Z" fill="#8a9a8c"/>
+  </g>
+
+  <!-- molen / tumpukan pasir -->
+  <path d="M62 468 q46 -66 92 0 Z" fill="#d8cfae"/>
+  <path d="M62 468 q46 -66 92 0" fill="none" stroke="#c2b894" stroke-width="3"/>
+  <g fill="#8a6d2b">
+    <rect x="66" y="466" width="84" height="8" rx="3"/>
+  </g>
+  <!-- sekop menancap -->
+  <rect x="140" y="398" width="6" height="72" rx="3" fill="#6b5432" transform="rotate(-12 140 398)"/>
+  <path d="M126 462 l22 -5 l6 26 l-24 5 Z" fill="#8a9a8c" transform="rotate(-12 140 398)"/>
+
+  <text x="586" y="586" text-anchor="end" font-family="system-ui, sans-serif" font-size="14" fill="#0d3825" opacity=".33">ilustrasi</text>
+</svg>

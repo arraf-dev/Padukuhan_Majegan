@@ -16,7 +16,12 @@ export default async function Beranda() {
       {/* ---------- Sambutan & akses cepat (mobile) ---------- */}
       <div className="flex flex-col gap-3.5 px-4 pt-4 md:hidden">
         <div className="flex items-center gap-3 rounded-2xl border border-garis bg-kertas p-4">
-          <Foto keterangan="" className="size-13 flex-none rounded-full border-2 border-emas" />
+          <Foto
+            src="/gambar/avatar-dukuh.svg"
+            keterangan="Dukuh Majegan"
+            sizes="52px"
+            className="size-13 flex-none rounded-full border-2 border-emas"
+          />
           <div>
             <div className="font-serif text-[15px] font-semibold text-hutan">
               Sambutan Dukuh Majegan
@@ -118,7 +123,13 @@ export default async function Beranda() {
         </div>
 
         <div className="flex flex-col gap-3.5">
-          <Foto keterangan="Foto gapura / kegiatan warga" className="min-h-[150px] flex-1 rounded-xl border border-garis" />
+          <Foto
+            src="/gambar/gapura-majegan.svg"
+            keterangan="Gapura masuk Padukuhan Majegan"
+            prioritas
+            sizes="(min-width: 768px) 40vw, 100vw"
+            className="min-h-[150px] flex-1 rounded-xl border border-garis"
+          />
           <div className="rounded-xl border border-garis bg-kertas px-5 py-4.5">
             <div className="mb-3 font-serif text-[15px] font-semibold text-hutan">Akses Cepat</div>
             <div className="grid grid-cols-2 gap-2.5">

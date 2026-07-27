@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500" role="img" aria-label="Gapura masuk Padukuhan Majegan">
+  <title>Gapura masuk Padukuhan Majegan</title>
+
+  <!-- langit -->
+  <rect width="800" height="500" fill="#f5ebd0"/>
+  <circle cx="640" cy="112" r="46" fill="#d6b45c" opacity=".55"/>
+
+  <!-- bukit latar -->
+  <path d="M0 300 Q 150 236 300 288 Q 430 332 560 276 Q 690 224 800 268 L800 500 L0 500 Z" fill="#e6ede4"/>
+  <path d="M0 348 Q 180 300 340 340 Q 500 380 660 332 Q 740 308 800 322 L800 500 L0 500 Z" fill="#cddccf"/>
+
+  <!-- petak sawah -->
+  <path d="M0 386 Q 200 358 400 384 Q 600 410 800 380 L800 500 L0 500 Z" fill="#2a5b3c" opacity=".16"/>
+  <g stroke="#2a5b3c" stroke-width="1.6" opacity=".22" fill="none">
+    <path d="M0 404 Q 200 378 400 402 Q 600 426 800 398"/>
+    <path d="M0 428 Q 200 404 400 426 Q 600 448 800 422"/>
+    <path d="M0 452 Q 200 430 400 450 Q 600 470 800 446"/>
+  </g>
+
+  <!-- pohon kiri -->
+  <g>
+    <rect x="92" y="300" width="9" height="60" rx="3" fill="#6b5432"/>
+    <circle cx="96" cy="284" r="42" fill="#2a5b3c"/>
+    <circle cx="66" cy="302" r="27" fill="#356b48"/>
+    <circle cx="126" cy="304" r="24" fill="#356b48"/>
+  </g>
+  <!-- pohon kanan -->
+  <g>
+    <rect x="702" y="312" width="8" height="52" rx="3" fill="#6b5432"/>
+    <circle cx="706" cy="298" r="34" fill="#2a5b3c"/>
+    <circle cx="682" cy="314" r="22" fill="#356b48"/>
+    <circle cx="732" cy="316" r="19" fill="#356b48"/>
+  </g>
+
+  <!-- jalan menuju gapura -->
+  <path d="M352 500 L378 372 L422 372 L448 500 Z" fill="#ebe6d8"/>
+  <path d="M398 500 L400 380 L402 380 L404 500 Z" fill="#f7f3e8" opacity=".8"/>
+
+  <!-- gapura: tiang -->
+  <rect x="286" y="252" width="42" height="124" rx="4" fill="#0d3825"/>
+  <rect x="472" y="252" width="42" height="124" rx="4" fill="#0d3825"/>
+  <rect x="286" y="252" width="42" height="124" rx="4" fill="#ffffff" opacity=".06"/>
+  <rect x="280" y="366" width="54" height="14" rx="4" fill="#0a2e1e"/>
+  <rect x="466" y="366" width="54" height="14" rx="4" fill="#0a2e1e"/>
+  <!-- ragam hias tiang -->
+  <g fill="#d6b45c" opacity=".85">
+    <rect x="298" y="272" width="18" height="4" rx="2"/>
+    <rect x="298" y="286" width="18" height="4" rx="2"/>
+    <rect x="484" y="272" width="18" height="4" rx="2"/>
+    <rect x="484" y="286" width="18" height="4" rx="2"/>
+  </g>
+
+  <!-- atap joglo bertingkat -->
+  <path d="M400 128 L556 214 L244 214 Z" fill="#0d3825"/>
+  <path d="M400 128 L556 214 L400 214 Z" fill="#ffffff" opacity=".07"/>
+  <rect x="236" y="212" width="328" height="13" rx="5" fill="#d6b45c"/>
+  <path d="M400 176 L520 244 L280 244 Z" fill="#0a2e1e"/>
+  <rect x="272" y="242" width="256" height="12" rx="5" fill="#d6b45c"/>
+  <!-- mustaka -->
+  <path d="M400 100 L412 128 L388 128 Z" fill="#d6b45c"/>
+  <circle cx="400" cy="96" r="7" fill="#d6b45c"/>
+
+  <!-- papan nama -->
+  <rect x="330" y="268" width="140" height="40" rx="7" fill="#f7f3e8" stroke="#d6b45c" stroke-width="2"/>
+  <rect x="346" y="280" width="108" height="6" rx="3" fill="#0d3825" opacity=".72"/>
+  <rect x="362" y="292" width="76" height="5" rx="2.5" fill="#2a5b3c" opacity=".5"/>
+
+  <!-- penanda ilustrasi -->
+  <text x="784" y="486" text-anchor="end" font-family="system-ui, sans-serif" font-size="13" fill="#0d3825" opacity=".33">ilustrasi</text>
+</svg>

@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-label="Panen dan kelompok wanita tani">
+  <title>Panen kelompok wanita tani</title>
+
+  <rect width="600" height="600" fill="#f5ebd0"/>
+  <circle cx="486" cy="92" r="40" fill="#d6b45c" opacity=".45"/>
+
+  <!-- gunung & pepohonan -->
+  <path d="M0 258 L128 176 L246 258 Z" fill="#cddccf"/>
+  <path d="M0 268 Q 180 236 360 262 Q 500 282 600 256 L600 320 L0 320 Z" fill="#2a5b3c" opacity=".38"/>
+
+  <!-- petak sawah menguning -->
+  <path d="M0 320 Q 200 302 400 322 Q 520 334 600 316 L600 386 Q 500 406 380 392 Q 200 372 0 390 Z" fill="#dcc45f"/>
+  <path d="M0 386 Q 200 368 400 388 Q 520 400 600 382 L600 470 Q 480 492 360 476 Q 180 454 0 474 Z" fill="#cbb04a"/>
+  <path d="M0 470 Q 200 448 400 470 Q 520 482 600 462 L600 600 L0 600 Z" fill="#b89b3d"/>
+  <g stroke="#8a6d2b" stroke-width="3" opacity=".45" fill="none">
+    <path d="M0 386 Q 200 368 400 388 Q 520 400 600 382"/>
+    <path d="M0 470 Q 200 448 400 470 Q 520 482 600 462"/>
+  </g>
+  <!-- bulir padi -->
+  <g stroke="#a68a2e" stroke-width="2.6" opacity=".55" stroke-linecap="round">
+    <path d="M60 356 v-18 M110 360 v-18 M160 364 v-18 M440 362 v-18 M490 356 v-18 M540 350 v-18"/>
+    <path d="M70 444 v-20 M130 450 v-20 M470 444 v-20 M530 436 v-20"/>
+  </g>
+
+  <!-- petani 1 — memanen -->
+  <g>
+    <path d="M186 336 q36 -28 72 0 Z" fill="#d6b45c"/>
+    <circle cx="222" cy="350" r="19" fill="#c99a6b"/>
+    <rect x="204" y="370" width="36" height="52" rx="11" fill="#b0532e"/>
+    <rect x="208" y="420" width="12" height="40" rx="6" fill="#3f4a52"/>
+    <rect x="224" y="420" width="12" height="40" rx="6" fill="#3f4a52"/>
+    <rect x="238" y="378" width="10" height="40" rx="5" fill="#c99a6b" transform="rotate(38 238 378)"/>
+    <path d="M262 408 q22 8 26 26" stroke="#8a9a8c" stroke-width="6" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- petani 2 — membawa bakul -->
+  <g>
+    <path d="M336 322 q34 -26 68 0 Z" fill="#d6b45c"/>
+    <circle cx="370" cy="336" r="19" fill="#a97c4f"/>
+    <rect x="352" y="356" width="36" height="52" rx="11" fill="#2a5b3c"/>
+    <rect x="356" y="406" width="12" height="40" rx="6" fill="#3f4a52"/>
+    <rect x="372" y="406" width="12" height="40" rx="6" fill="#3f4a52"/>
+    <rect x="340" y="360" width="10" height="34" rx="5" fill="#a97c4f" transform="rotate(-26 340 360)"/>
+    <rect x="388" y="360" width="10" height="34" rx="5" fill="#a97c4f" transform="rotate(26 388 360)"/>
+    <!-- bakul di kepala -->
+    <path d="M336 306 h68 l-8 -20 h-52 Z" fill="#c2a06a"/>
+    <ellipse cx="370" cy="286" rx="26" ry="7" fill="#d8bb82"/>
+    <circle cx="360" cy="282" r="5" fill="#b0532e"/>
+    <circle cx="374" cy="280" r="5" fill="#7fa845"/>
+    <circle cx="384" cy="283" r="5" fill="#e08b3e"/>
+  </g>
+
+  <!-- tumpukan hasil panen -->
+  <g>
+    <path d="M448 508 h96 l-10 -34 h-76 Z" fill="#c2a06a"/>
+    <ellipse cx="496" cy="474" rx="38" ry="10" fill="#d8bb82"/>
+    <circle cx="478" cy="468" r="9" fill="#b0532e"/>
+    <circle cx="496" cy="464" r="9" fill="#7fa845"/>
+    <circle cx="514" cy="468" r="9" fill="#e08b3e"/>
+    <circle cx="488" cy="458" r="8" fill="#d6b45c"/>
+  </g>
+
+  <text x="586" y="586" text-anchor="end" font-family="system-ui, sans-serif" font-size="14" fill="#0d3825" opacity=".33">ilustrasi</text>
+</svg>

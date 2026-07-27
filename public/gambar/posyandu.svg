@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="600" height="600" role="img" aria-label="Kegiatan posyandu balita">
+  <title>Posyandu balita</title>
+
+  <rect width="600" height="600" fill="#f5ebd0"/>
+
+  <!-- dinding & lantai balai -->
+  <rect width="600" height="430" fill="#f7f3e8"/>
+  <rect y="430" width="600" height="170" fill="#ebe6d8"/>
+  <path d="M0 430 h600 v9 H0 Z" fill="#0d3825" opacity=".09"/>
+
+  <!-- jendela -->
+  <rect x="60" y="96" width="118" height="96" rx="7" fill="#2a5b3c" opacity=".8"/>
+  <g stroke="#f7f3e8" stroke-width="3" opacity=".9">
+    <path d="M119 96 v96 M60 144 h118"/>
+  </g>
+
+  <!-- spanduk posyandu -->
+  <rect x="222" y="72" width="316" height="86" rx="10" fill="#0d3825"/>
+  <rect x="222" y="72" width="316" height="86" rx="10" fill="#ffffff" opacity=".05"/>
+  <rect x="248" y="96" width="180" height="11" rx="5.5" fill="#d6b45c"/>
+  <rect x="248" y="118" width="126" height="8" rx="4" fill="#f7f3e8" opacity=".6"/>
+  <g fill="#d6b45c">
+    <rect x="470" y="98" width="12" height="42" rx="4"/>
+    <rect x="455" y="113" width="42" height="12" rx="4"/>
+  </g>
+
+  <!-- timbangan gantung -->
+  <rect x="176" y="196" width="6" height="58" rx="3" fill="#8a9a8c"/>
+  <circle cx="179" cy="272" r="30" fill="#d6b45c"/>
+  <circle cx="179" cy="272" r="21" fill="#f7f3e8"/>
+  <path d="M179 272 L179 257" stroke="#b0532e" stroke-width="3.6" stroke-linecap="round"/>
+  <path d="M179 302 v18" stroke="#8a9a8c" stroke-width="5"/>
+  <path d="M152 320 h54 l-9 34 h-36 Z" fill="#7fa3ad"/>
+
+  <!-- kader posyandu (dewasa) -->
+  <g>
+    <circle cx="330" cy="252" r="26" fill="#c99a6b"/>
+    <path d="M300 252 q30 -34 60 0 q4 -34 -30 -34 q-34 0 -30 34 Z" fill="#b0532e"/>
+    <rect x="298" y="284" width="64" height="88" rx="16" fill="#2a5b3c"/>
+    <rect x="286" y="296" width="14" height="56" rx="7" fill="#c99a6b"/>
+    <rect x="360" y="296" width="14" height="56" rx="7" fill="#c99a6b"/>
+    <rect x="306" y="370" width="16" height="58" rx="8" fill="#3f4a52"/>
+    <rect x="338" y="370" width="16" height="58" rx="8" fill="#3f4a52"/>
+  </g>
+
+  <!-- ibu menggendong balita -->
+  <g>
+    <circle cx="464" cy="266" r="24" fill="#a97c4f"/>
+    <path d="M436 266 q28 -32 56 0 q4 -32 -28 -32 q-32 0 -28 32 Z" fill="#213228"/>
+    <rect x="434" y="296" width="60" height="82" rx="15" fill="#8a6d2b"/>
+    <rect x="446" y="376" width="15" height="54" rx="7.5" fill="#3f4a52"/>
+    <rect x="470" y="376" width="15" height="54" rx="7.5" fill="#3f4a52"/>
+    <!-- balita -->
+    <rect x="418" y="314" width="46" height="34" rx="14" fill="#f7f3e8"/>
+    <circle cx="418" cy="322" r="17" fill="#c99a6b"/>
+    <path d="M404 316 q14 -16 28 0 q2 -16 -14 -16 q-16 0 -14 16 Z" fill="#4b3a24"/>
+  </g>
+
+  <!-- meja pendaftaran -->
+  <rect x="40" y="376" width="150" height="12" rx="5" fill="#8a6d2b"/>
+  <rect x="52" y="388" width="10" height="42" rx="4" fill="#6b5432"/>
+  <rect x="168" y="388" width="10" height="42" rx="4" fill="#6b5432"/>
+  <rect x="66" y="352" width="52" height="24" rx="4" fill="#ffffff"/>
+  <g stroke="#cbc3a8" stroke-width="2.4">
+    <path d="M74 360 h36 M74 368 h26"/>
+  </g>
+
+  <text x="586" y="586" text-anchor="end" font-family="system-ui, sans-serif" font-size="14" fill="#0d3825" opacity=".33">ilustrasi</text>
+</svg>
