@@ -1,0 +1,66 @@
+"use server";
+
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { db } from "@/lib/db";
+import { wajibSuperadmin } from "@/lib/sesi";
+import { TAHUN_DATA } from "@/lib/statistik";
+
+const teks = (fd: FormData, nama: string) => String(fd.get(nama) ?? "").trim();
+
+const angka = (fd: FormData, nama: string, baku = 0) => {
+  const n = Number.parseInt(teks(fd, nama), 10);
+  return Number.isFinite(n) ? n : baku;
+};
+
+function segarkan() {
+  revalidatePath("/");
+  revalidatePath("/statistik");
+  revalidatePath("/admin/statistik");
+}
+
+/**
+ * ADM-7 — simpan satu baris statistik.
+ *
+ * `@@unique([tahun, kategori, label])` sudah ada di skema, jadi `upsert` cukup —
+ * tidak perlu cek-lalu-buat yang bisa balapan.
+ */
+export async function simpanStatistik(data: FormData) {
+  await wajibSuperadmin();
+
+  const tahun = angka(data, "tahun", TAHUN_DATA);
+  const kategori = teks(data, "kategori") === "usia" ? ("usia" as const) : ("ringkasan" as const);
+  const label = teks(data, "label");
+  const nilai = angka(data, "nilai");
+  const urutan = angka(data, "urutan");
+
+  const kembali = `/admin/statistik?tahun=${tahun}`;
+  if (!label) redirect(`${kembali}&galat=label`);
+
+  // Persentase kelompok usia menentukan tinggi batang grafik; di luar 0–100
+  // batangnya melampaui kotaknya atau hilang sama sekali.
+  if (kategori === "usia" && (nilai < 0 || nilai > 100)) redirect(`${kembali}&galat=persen`);
+  if (nilai < 0) redirect(`${kembali}&galat=negatif`);
+
+  await db.statistikPenduduk.upsert({
+    where: { tahun_kategori_label: { tahun, kategori, label } },
+    update: { nilai, urutan },
+    create: { tahun, kategori, label, nilai, urutan },
+  });
+
+  segarkan();
+  redirect(`${kembali}&tersimpan=1`);
+}
+
+export async function hapusStatistik(data: FormData) {
+  await wajibSuperadmin();
+
+  const id = teks(data, "id");
+  const tahun = angka(data, "tahun", TAHUN_DATA);
+  if (!id) redirect(`/admin/statistik?tahun=${tahun}`);
+
+  await db.statistikPenduduk.delete({ where: { id } });
+
+  segarkan();
+  redirect(`/admin/statistik?tahun=${tahun}&terhapus=1`);
+}

@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
-import { desa, profil } from "@/content/majegan";
+import { desa } from "@/content/majegan";
 import { Ikon } from "@/components/ikon";
 import { Foto, JudulSection } from "@/components/potongan";
+import { profilDesa } from "@/lib/profil";
 
 export const metadata: Metadata = { title: "Profil" };
+
+// Isi halaman ini disunting dari panel admin, jadi dirender saat diminta.
+// Pindah ke ISR (`revalidate`) di Minggu 5 — lihat TASKS.md bagian Minggu 5.
+export const dynamic = "force-dynamic";
 
 const bagian = [
   { id: "sejarah", label: "Sejarah" },
@@ -12,7 +17,9 @@ const bagian = [
   { id: "wilayah", label: "Wilayah & Kontak" },
 ];
 
-export default function Profil() {
+export default async function Profil() {
+  const profil = await profilDesa();
+
   return (
     <div className="gap-10 px-4 py-8 md:grid md:grid-cols-[210px_1fr] md:px-12 md:pt-9 md:pb-12">
       {/* ponytail: daftar isi tanpa scroll-spy — anchor biasa sudah cukup. */}
@@ -92,7 +99,7 @@ export default function Profil() {
           <div className="flex flex-col items-center">
             <div className="flex items-center gap-3.5 rounded-xl bg-hutan px-6 py-4 text-krem shadow-[0_4px_14px_rgba(13,56,37,.25)]">
               <Foto
-                src="/gambar/avatar-dukuh.svg"
+                src={profil.dukuh.foto}
                 keterangan={profil.dukuh.jabatan}
                 sizes="46px"
                 className="size-[46px] flex-none rounded-full border-2 border-emas"
@@ -107,11 +114,11 @@ export default function Profil() {
             <div className="grid w-full grid-cols-2 gap-4 pt-5 md:grid-cols-4">
               {profil.perangkat.map((p) => (
                 <div
-                  key={p.nama}
+                  key={p.id}
                   className="rounded-[11px] border border-garis bg-kertas p-3.5 text-center transition hover:border-daun"
                 >
                   <Foto
-                    src="/gambar/avatar-perangkat.svg"
+                    src={p.foto}
                     keterangan={p.jabatan}
                     sizes="40px"
                     className="mx-auto mb-2 size-10 rounded-full border-[1.5px] border-emas"

@@ -12,7 +12,6 @@ import { loadEnvFile } from "node:process";
 import { hashKataSandi } from "../src/lib/auth.ts";
 import { slugkan } from "../src/lib/teks.ts";
 import {
-  anggaran,
   berita,
   kategoriBerita,
   kelompokUsia,
@@ -121,38 +120,11 @@ async function main() {
     await db.layanan.upsert({ where: { slug: l.slug }, update: isi, create: { ...isi, slug: l.slug } });
   }
 
-  /* ---------- Anggaran ---------- */
-  // Dua tahun: tahun berjalan dari `majegan.ts`, tahun sebelumnya diturunkan
-  // dengan faktor tetap — supaya pemilih tahun di panel admin ada isinya dan
-  // bisa diuji, bukan dropdown berisi satu pilihan.
-  const barisAnggaran = (tahun: number, faktor: number) => [
-    ...anggaran.sumber.map((s) => ({
-      tahun,
-      jenis: "pendapatan" as const,
-      uraian: s.nama,
-      jumlah: BigInt(Math.round((s.nominal * faktor) / 1000) * 1000),
-      resmi: anggaran.resmi,
-    })),
-    ...anggaran.bidang.map((b) => ({
-      tahun,
-      jenis: "belanja" as const,
-      uraian: b.nama,
-      jumlah: BigInt(Math.round((b.nominal * faktor) / 1000) * 1000),
-      catatan: b.catatan,
-      resmi: anggaran.resmi,
-    })),
-  ];
-
-  for (const [tahun, faktor] of [
-    [anggaran.tahun, 1],
-    [anggaran.tahun - 1, 0.88],
-  ] as const) {
-    await db.anggaran.deleteMany({ where: { tahun } });
-    await db.anggaran.createMany({ data: barisAnggaran(tahun, faktor) });
-  }
-
   /* ---------- Statistik ---------- */
-  const tahun = anggaran.tahun;
+  // Tahun data ditulis tetap, bukan `new Date().getFullYear()`: kunci upsert
+  // `[tahun, kategori, label]` harus stabil, kalau tidak pergantian tahun
+  // diam-diam membuat satu set baris kembar.
+  const tahun = 2026;
   const barisStatistik = [
     ...statistik.map((s, i) => ({
       tahun,

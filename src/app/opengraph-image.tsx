@@ -73,7 +73,7 @@ export default async function Gambar() {
             color: "#a9b4a9",
           }}
         >
-          Berita · Layanan Surat · Pengaduan Warga · Transparansi Anggaran
+          Berita · Layanan Surat · Pengaduan Warga · Statistik Penduduk
         </div>
       </div>
     ),

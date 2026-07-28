@@ -147,6 +147,14 @@ model Pengaduan {
   @@map("pengaduan")
 }
 
+/// TIDAK DIPAKAI sejak 28 Jul 2026 — modul Transparansi Anggaran dihapus dari
+/// lingkup proker (izin publikasi APBDes tidak pasti turun tepat waktu; PRD
+/// menandainya "Penting", bukan "Wajib").
+///
+/// ponytail: tabelnya sengaja ditinggal, bukan di-drop. Menghapusnya menuntut
+/// migrasi baru dan membuang data yang sudah ter-seed, sedangkan tabel kosong
+/// yang menganggur tidak berbiaya apa pun saat berjalan. Kalau izinnya turun,
+/// modul ini hidup lagi tanpa menyentuh skema.
 model Anggaran {
   id      String        @id @default(cuid())
   tahun   Int

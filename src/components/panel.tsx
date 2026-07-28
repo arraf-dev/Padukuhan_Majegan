@@ -30,20 +30,6 @@ export function Sidebar({ peran, nama }: { peran: Peran; nama: string }) {
           const pertamaKunci = kunci && !menuAdmin[i - 1]?.superadmin;
           const aktif = !kunci && path === m.href;
 
-          if (!kunci && m.belum) {
-            return (
-              <span
-                key={m.href}
-                aria-disabled="true"
-                title="Modul ini belum dibangun"
-                className={`${dasar} cursor-not-allowed font-medium text-krem/45`}
-              >
-                <Ikon nama={m.ikon} ukuran={17} />
-                <span className="flex-1">{m.label}</span>
-              </span>
-            );
-          }
-
           if (kunci) {
             return (
               <div key={m.href}>
@@ -105,27 +91,17 @@ export function MenuAtas({ peran }: { peran: Peran }) {
     <div className="flex gap-1.5 overflow-x-auto border-b border-krem/15 bg-hutan px-4 py-2.5 md:hidden">
       {menuAdmin
         .filter((m) => !(terbatas && m.superadmin))
-        .map((m) =>
-          m.belum ? (
-            <span
-              key={m.href}
-              aria-disabled="true"
-              className="rounded-full px-3 py-1.5 text-xs font-medium whitespace-nowrap text-krem/40"
-            >
-              {m.label}
-            </span>
-          ) : (
-            <Link
-              key={m.href}
-              href={m.href}
-              className={`rounded-full px-3 py-1.5 text-xs whitespace-nowrap ${
-                path === m.href ? "bg-emas font-bold text-hutan" : "font-medium text-krem/80"
-              }`}
-            >
-              {m.label}
-            </Link>
-          ),
-        )}
+        .map((m) => (
+          <Link
+            key={m.href}
+            href={m.href}
+            className={`rounded-full px-3 py-1.5 text-xs whitespace-nowrap ${
+              path === m.href ? "bg-emas font-bold text-hutan" : "font-medium text-krem/80"
+            }`}
+          >
+            {m.label}
+          </Link>
+        ))}
     </div>
   );
 }

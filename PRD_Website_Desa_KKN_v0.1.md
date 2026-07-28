@@ -11,37 +11,45 @@
 | **Disusun oleh** | Abdul Rafi — Tim KKN UNY (Pengembang) |
 | **Untuk** | Pemerintah Kalurahan Pandowoharjo (Klien) |
 | **Tanggal** | 14 Juli 2026 |
-| **Dokumen Terkait** | Belum ada. Dokumen ini disusun dari perencanaan awal tim KKN dan akan diperbarui setelah observasi lapangan serta diskusi resmi (MoM) dengan pemerintah desa. |
+| **Dokumen Terkait** | `TASKS.md` (rencana eksekusi 6 minggu), `DEPLOY_VPS.md` (runbook infrastruktur), `RAB_Infrastruktur_Website.md`. |
+
+## Riwayat Perubahan Lingkup
+
+| Tanggal | Perubahan | Alasan |
+| --- | --- | --- |
+| 28 Jul 2026 | **Modul Transparansi Anggaran (APBDes) dihapus seluruhnya** — kebutuhan APB-1/2/3 (bekas Bab 6.5), ADM-6, alur 7.4, dan entitas `anggaran` pada Bab 8. | Publikasi APBDes menuntut izin resmi kalurahan yang tidak dapat dipastikan turun dalam masa KKN 6 minggu. Prioritasnya **Penting**, bukan Wajib, sehingga penghapusannya tidak mengurangi MVP. Modul Statistik Penduduk **tetap dikerjakan**. |
+
+> Nomor ID kebutuhan (ADM-7, ADM-8, dst.) **sengaja tidak digeser** setelah ADM-6 dihapus. ID dipakai sebagai rujukan di `TASKS.md` dan komentar kode; menomori ulang akan membuat rujukan lama menunjuk kebutuhan yang salah.
 
 ---
 
 # 1. Ringkasan Produk (Overview)
 
-Saat ini penyebaran informasi di tingkat desa umumnya masih mengandalkan kanal konvensional seperti papan pengumuman kantor desa, undangan fisik, dan grup WhatsApp yang terfragmentasi. Warga yang ingin mengurus layanan administrasi (surat keterangan, surat pengantar, dan sejenisnya) sering kali harus datang langsung ke kantor desa hanya untuk menanyakan persyaratan, lalu kembali lagi ketika berkas sudah lengkap. Di sisi lain, data publik seperti anggaran desa (APBDes) dan statistik kependudukan belum tersaji dalam bentuk yang mudah diakses masyarakat, sehingga transparansi pengelolaan desa sulit dirasakan langsung oleh warga.
+Saat ini penyebaran informasi di tingkat desa umumnya masih mengandalkan kanal konvensional seperti papan pengumuman kantor desa, undangan fisik, dan grup WhatsApp yang terfragmentasi. Warga yang ingin mengurus layanan administrasi (surat keterangan, surat pengantar, dan sejenisnya) sering kali harus datang langsung ke kantor desa hanya untuk menanyakan persyaratan, lalu kembali lagi ketika berkas sudah lengkap. Di sisi lain, data publik seperti statistik kependudukan belum tersaji dalam bentuk yang mudah diakses masyarakat, sehingga gambaran kondisi desa sulit dilihat langsung oleh warga.
 
-Sebagai program kerja utama KKN, tim pengembang akan membangun **DesaKu**, sebuah website desa berbasis web (fullstack Next.js) yang terdiri dari dua bagian besar: (1) **situs publik** yang menampilkan profil desa, berita dan pengumuman, informasi layanan administrasi, transparansi anggaran, statistik penduduk, serta kanal pengaduan warga; dan (2) **panel admin** bagi perangkat desa untuk mengelola seluruh konten dan menindaklanjuti pengaduan. Tujuan besarnya adalah memusatkan informasi resmi desa dalam satu kanal digital yang mudah diakses, meningkatkan transparansi, serta meninggalkan sistem yang berkelanjutan dan dapat dikelola mandiri oleh perangkat desa setelah masa KKN berakhir.
+Sebagai program kerja utama KKN, tim pengembang akan membangun **DesaKu**, sebuah website desa berbasis web (fullstack Next.js) yang terdiri dari dua bagian besar: (1) **situs publik** yang menampilkan profil desa, berita dan pengumuman, informasi layanan administrasi, statistik penduduk, serta kanal pengaduan warga; dan (2) **panel admin** bagi perangkat desa untuk mengelola seluruh konten dan menindaklanjuti pengaduan. Tujuan besarnya adalah memusatkan informasi resmi desa dalam satu kanal digital yang mudah diakses, meningkatkan transparansi, serta meninggalkan sistem yang berkelanjutan dan dapat dikelola mandiri oleh perangkat desa setelah masa KKN berakhir.
 
 **Catatan pemetaan program kerja KKN (usulan pengembang, perlu konfirmasi DPL):**
 
 | **Kategori Proker** | **Cakupan dalam Dokumen Ini** |
 | --- | --- |
 | **Proker Utama** | Pembangunan website inti: situs publik (profil, berita, layanan, pengaduan) + panel admin — kebutuhan berprioritas **Wajib** di Bab 6. |
-| **Proker Penunjang** | Modul transparansi anggaran & statistik penduduk (prioritas **Penting**) serta pelatihan dan pendampingan perangkat desa dalam mengelola website. |
+| **Proker Penunjang** | Modul statistik penduduk (prioritas **Penting**) serta pelatihan dan pendampingan perangkat desa dalam mengelola website. |
 | **Proker Tambahan** | Fitur usulan / Fase Lanjutan pada Bab 11 (direktori UMKM, galeri kegiatan, agenda desa, dsb.) yang dikerjakan setelah rilis awal jika waktu KKN memungkinkan. |
 
 # 2. Tujuan & Sasaran (Goals)
 
 - Memusatkan informasi resmi desa (profil, berita, pengumuman, layanan) dalam satu kanal digital yang mudah diakses warga kapan saja.
 - Mengurangi kebutuhan warga datang langsung ke kantor desa hanya untuk menanyakan persyaratan layanan administrasi.
-- Memberikan transparansi pengelolaan anggaran desa (APBDes) dan data kependudukan kepada publik.
+- Menyajikan data kependudukan desa kepada publik dalam bentuk agregat yang mudah dibaca.
 - Menyediakan kanal aspirasi dan pengaduan warga yang terdokumentasi dan dapat dipantau statusnya.
 - Meninggalkan sistem yang berkelanjutan: perangkat desa mampu mengelola konten secara mandiri setelah masa KKN berakhir.
 - Menjadi fondasi digitalisasi layanan desa yang dapat dikembangkan pada fase-fase berikutnya (promosi UMKM, pengajuan surat online, dsb.).
 
 # 3. Pengguna & Peran (Users & Roles)
 
-- **Pengunjung / Warga :** Mengakses situs publik tanpa perlu login — melihat profil desa, membaca berita dan pengumuman, mencari informasi persyaratan layanan, melihat transparansi anggaran dan statistik, serta mengirim dan memantau status pengaduan.
-- **Admin Desa (Perangkat Desa) :** Masuk ke panel admin untuk mengelola seluruh konten situs (berita, profil, layanan, anggaran, statistik) dan menindaklanjuti pengaduan warga (mengubah status, menulis tanggapan).
+- **Pengunjung / Warga :** Mengakses situs publik tanpa perlu login — melihat profil desa, membaca berita dan pengumuman, mencari informasi persyaratan layanan, melihat statistik penduduk, serta mengirim dan memantau status pengaduan.
+- **Admin Desa (Perangkat Desa) :** Masuk ke panel admin untuk mengelola seluruh konten situs (berita, profil, layanan, statistik) dan menindaklanjuti pengaduan warga (mengubah status, menulis tanggapan).
 - **Super Admin :** Mengelola akun Admin Desa (menambah, menonaktifkan) dan konfigurasi dasar sistem. Selama pengembangan dipegang oleh tim KKN, kemudian diserahterimakan kepada perangkat desa yang ditunjuk.
 
 # 4. Ruang Lingkup (Scope)
@@ -52,7 +60,7 @@ Sebagai program kerja utama KKN, tim pengembang akan membangun **DesaKu**, sebua
 - Modul berita & pengumuman desa dengan kategori.
 - Modul informasi layanan administrasi (jenis surat, persyaratan, alur pengurusan).
 - Modul pengaduan & aspirasi warga dengan kode tiket dan pelacakan status.
-- Modul transparansi anggaran (APBDes) dan statistik penduduk dalam bentuk grafik (bagian proker penunjang).
+- Modul statistik penduduk dalam bentuk grafik (bagian proker penunjang).
 - Panel admin dengan autentikasi untuk pengelolaan seluruh konten di atas.
 - Pelatihan singkat dan dokumentasi penggunaan bagi perangkat desa (kegiatan pendamping, bagian proker penunjang).
 
@@ -67,7 +75,7 @@ Fitur pengajuan surat secara online (end-to-end), direktori UMKM & potensi desa,
 - **(Asumsi pengembang)** Penyimpanan media (gambar berita, lampiran pengaduan) menggunakan layanan gratis seperti Vercel Blob atau Cloudinary free tier.
 - **(Asumsi pengembang)** Sampai domain resmi tersedia, website berjalan pada subdomain gratis (`*.vercel.app`). Pengajuan domain **desa.id** memerlukan proses resmi oleh pemerintah desa (lihat Bab 12).
 - Proses layanan administrasi (verifikasi berkas, penerbitan surat) pada MVP **tetap berlangsung manual di kantor desa**; website hanya menyediakan informasi persyaratan dan alurnya.
-- Konten awal (sejarah desa, foto perangkat, daftar layanan resmi, data anggaran dan statistik) disediakan oleh pemerintah desa; input awal ke sistem dibantu tim KKN.
+- Konten awal (sejarah desa, foto perangkat, daftar layanan resmi, data statistik penduduk) disediakan oleh pemerintah desa; input awal ke sistem dibantu tim KKN.
 - Tidak ada biaya operasional pada MVP. Potensi biaya di masa depan: pembelian/perpanjangan domain dan peningkatan tier layanan jika lalu lintas melampaui batas free tier.
 - Pengembangan mengikuti masa pelaksanaan KKN, sehingga cakupan fitur menyesuaikan waktu yang tersedia.
 
@@ -108,22 +116,14 @@ Fitur pengajuan surat secara online (end-to-end), direktori UMKM & potensi desa,
 | **LPR-3** | Warga dapat melacak status pengaduan ("Terkirim", "Diproses", "Selesai") beserta tanggapan admin menggunakan kode tiket. | **Penting** |
 | **LPR-4** | Sistem menyediakan opsi pengiriman pengaduan secara anonim (kebijakannya perlu disepakati — lihat Bab 12). | **Penting** |
 
-## 6.5 Publik — Transparansi Anggaran
-
-| **ID** | **Kebutuhan Fungsional** | **Prioritas** |
-| --- | --- | --- |
-| **APB-1** | Sistem menampilkan ringkasan APBDes tahun berjalan: pendapatan, belanja, dan pembiayaan. | **Penting** |
-| **APB-2** | Sistem menampilkan visualisasi anggaran dalam bentuk grafik/infografis yang mudah dipahami warga. | **Penting** |
-| **APB-3** | Pengunjung dapat melihat arsip anggaran tahun-tahun sebelumnya. | **Penting** |
-
-## 6.6 Publik — Statistik Penduduk
+## 6.5 Publik — Statistik Penduduk
 
 | **ID** | **Kebutuhan Fungsional** | **Prioritas** |
 | --- | --- | --- |
 | **STA-1** | Sistem menampilkan statistik kependudukan agregat (jumlah penduduk, jenis kelamin, kelompok usia, pekerjaan, pendidikan) dalam bentuk grafik. | **Penting** |
 | **STA-2** | Data statistik yang ditampilkan bersifat agregat, tanpa data pribadi individual warga. | **Penting** |
 
-## 6.7 Admin — Autentikasi & Manajemen Akun
+## 6.6 Admin — Autentikasi & Manajemen Akun
 
 | **ID** | **Kebutuhan Fungsional** | **Prioritas** |
 | --- | --- | --- |
@@ -132,7 +132,7 @@ Fitur pengajuan surat secara online (end-to-end), direktori UMKM & potensi desa,
 | **AUTH-3** | Super Admin dapat menambah dan menonaktifkan akun Admin Desa. | **Penting** |
 | **AUTH-4** | Admin dapat mengganti kata sandi akunnya sendiri. | **Penting** |
 
-## 6.8 Admin — Manajemen Konten & Pengaduan
+## 6.7 Admin — Manajemen Konten & Pengaduan
 
 | **ID** | **Kebutuhan Fungsional** | **Prioritas** |
 | --- | --- | --- |
@@ -141,7 +141,6 @@ Fitur pengajuan surat secara online (end-to-end), direktori UMKM & potensi desa,
 | **ADM-3** | Admin dapat mengelola daftar layanan administrasi beserta persyaratan dan alurnya. | **Wajib** |
 | **ADM-4** | Admin dapat melihat daftar pengaduan masuk, mengubah statusnya, dan menulis tanggapan. | **Wajib** |
 | **ADM-5** | Admin dapat mengunggah gambar untuk kebutuhan konten (sampul berita, foto perangkat, dsb.). | **Wajib** |
-| **ADM-6** | Admin dapat mengelola data anggaran (APBDes) per tahun. | **Penting** |
 | **ADM-7** | Admin dapat mengelola data statistik penduduk agregat. | **Penting** |
 | **ADM-8** | Sistem menampilkan dashboard ringkas: jumlah berita terbit, pengaduan baru, dan pengaduan yang belum ditanggapi. | **Penting** |
 
@@ -171,13 +170,6 @@ Fitur pengajuan surat secara online (end-to-end), direktori UMKM & potensi desa,
 3. Admin meninjau pratinjau tampilan berita.
 4. Admin menekan tombol terbitkan; status berubah menjadi "Terbit" dan berita tampil di situs publik.
 
-## 7.4 Admin Memperbarui Data Anggaran
-
-1. Admin membuka menu "Anggaran" pada panel admin.
-2. Admin memilih tahun anggaran berjalan atau membuat entri tahun baru.
-3. Admin memasukkan pos-pos pendapatan, belanja, dan pembiayaan.
-4. Sistem menyimpan data dan memperbarui ringkasan serta grafik pada halaman publik "Transparansi Anggaran".
-
 # 8. Model Data (High-Level)
 
 | **Entitas** | **Field Utama** | **Keterangan** |
@@ -189,7 +181,6 @@ Fitur pengajuan surat secara online (end-to-end), direktori UMKM & potensi desa,
 | **kategori_berita** | id, nama, slug | Kategori untuk penyaringan berita. |
 | **layanan** | id, nama_layanan, deskripsi, persyaratan, alur, estimasi_waktu, file_templat | Informasi layanan administrasi. |
 | **pengaduan** | id, kode_tiket, nama_pelapor, kontak, is_anonim, kategori, isi, lampiran_url, status, tanggapan, created_at | Status: terkirim / diproses / selesai. |
-| **anggaran** | id, tahun, jenis, uraian, jumlah | Jenis: pendapatan / belanja / pembiayaan. |
 | **statistik_penduduk** | id, tahun, kategori, label, nilai | Data agregat; kategori: jenis_kelamin / usia / pekerjaan / pendidikan. |
 | **[umkm]** | [id, nama_usaha, pemilik, kategori, deskripsi, kontak, foto_url] | Direktori UMKM — Fase Lanjutan. |
 | **[galeri]** | [id, judul, foto_url, kegiatan, tanggal] | Galeri kegiatan — Fase Lanjutan. |
@@ -232,7 +223,7 @@ Fitur-fitur berikut diusulkan sebagai kandidat **proker tambahan** dan dikerjaka
 - Pembagian resmi modul ke proker utama/penunjang/tambahan — perlu disesuaikan dengan ketentuan LPPM UNY dan disetujui DPL (pemetaan pada Bab 1 baru usulan pengembang).
 - Nama/brand resmi website dan logo yang akan digunakan.
 - Domain: apakah pemerintah desa akan mengajukan domain **desa.id** (memerlukan surat permohonan resmi), atau cukup subdomain gratis untuk tahap awal?
-- Ketersediaan dan izin publikasi data APBDes serta data statistik kependudukan dari pemerintah desa.
+- Ketersediaan dan izin publikasi data statistik kependudukan dari pemerintah desa.
 - Kebijakan pengaduan: apakah opsi anonim diizinkan, dan perangkat desa mana yang bertanggung jawab menanggapi?
 - Siapa perangkat desa yang ditunjuk sebagai pengelola (admin dan super admin) setelah serah terima pasca-KKN?
 - Kesiapan konten awal: naskah sejarah desa, foto perangkat, daftar lengkap layanan beserta persyaratan resminya.
@@ -246,7 +237,6 @@ Fitur-fitur berikut diusulkan sebagai kandidat **proker tambahan** dan dikerjaka
 - **DPL :** Dosen Pembimbing Lapangan KKN.
 - **PRD :** Product Requirements Document — dokumen kebutuhan produk seperti dokumen ini.
 - **MVP :** Minimum Viable Product — cakupan fitur minimum yang layak dirilis pada tahap awal.
-- **APBDes :** Anggaran Pendapatan dan Belanja Desa.
 - **Kalurahan :** Sebutan resmi untuk desa di Daerah Istimewa Yogyakarta.
 - **Panel Admin :** Antarmuka khusus terproteksi login untuk mengelola konten website.
 - **Free Tier :** Paket layanan cloud gratis dengan batasan pemakaian tertentu.

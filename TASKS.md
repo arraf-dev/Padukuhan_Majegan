@@ -7,6 +7,28 @@
 
 ---
 
+## Status per 28 Jul 2026
+
+**Sudah jalan:** database Neon (9 tabel terisi) · auth + proteksi `/admin` · pengaduan warga tersimpan & bisa dilacak · **seluruh panel admin: berita, pengaduan, profil & struktur, layanan, statistik, akun & pengguna, ganti sandi** · dashboard angka nyata · **seluruh halaman publik membaca DB** · sistem gambar + ilustrasi · pass responsif mobile. `npm test`: 23 lolos, `next build` hijau.
+
+**Belum jalan:** unggah berkas gambar (ADM-5, task 17) dan ISR. Situs belum di-deploy — **dijadwalkan Minggu 3**. Itu satu-satunya penghalang besar yang tersisa.
+
+**Keputusan 28 Jul — lingkup dipangkas:**
+
+| Perubahan | Akibat |
+|---|---|
+| Deploy VPS ditunda ke **Minggu 3** | Minggu 1 & 2 murni koding + konten; `DEPLOY_VPS.md` tetap berlaku, cuma bergeser |
+| **MoM resmi dihapus** dari rencana | TBD Bab 12 (nama resmi, kebijakan anonim, siapa admin) dijawab lewat komunikasi biasa, tanpa forum formal |
+| Permintaan konten asli pindah ke **Minggu 2** | Digabung sekali kirim dengan izin data statistik |
+| **Modul Transparansi Anggaran (APBDes) dihapus** | APB-1/2/3 & ADM-6 keluar dari lingkup. Sudah dihapus dari kode (halaman `/anggaran`, tautan navigasi, data contoh) **dan dari PRD** (Bab 6.5, ADM-6, alur 7.4, entitas `anggaran` Bab 8) |
+| Statistik penduduk **tetap** | STA-1/2 & ADM-7 jalan terus |
+
+**Berubah lebih awal (27 Jul):** target deploy pindah dari Vercel ke **VPS** (`DEPLOY_VPS.md`, `RAB_Infrastruktur_Website.md`). Vercel tetap dipertahankan sebagai jalan keluar bila VPS tidak terbiayai — checklist-nya di bagian B.
+
+> **PRD sudah disesuaikan** (28 Jul): APBDes dihapus dari ringkasan produk, tujuan, peran pengguna, ruang lingkup, kebutuhan fungsional, alur pengguna, model data, TBD, dan glosarium. Bab 6 dinomori ulang jadi 6.1–6.7, tapi **ID kebutuhan sengaja tidak digeser** — ADM-6 dibiarkan kosong supaya rujukan ADM-7/ADM-8 di dokumen ini dan di komentar kode tidak berubah arti. Alasan penghapusan tercatat di tabel **Riwayat Perubahan Lingkup** di kepala PRD, jadi laporan akhir punya pembenaran tertulis.
+
+---
+
 ## Minggu 1 (23–29 Jul) — Fondasi & Koordinasi Awal
 
 **Teknis**
@@ -14,74 +36,80 @@
 - [x] Setup Prisma + Neon Postgres, migrasi skema inti Bab 8 (`pengguna`, `halaman_profil`, `perangkat_desa`, `berita`, `kategori_berita`, `layanan`, `pengaduan`) — *migrasi `20260726000000_awal` diterapkan & seed jalan 27 Jul 2026; 9 tabel terisi*
 - [x] Autentikasi admin dasar (AUTH-1, AUTH-2) — login + proteksi route `/admin`
 - [x] Struktur folder: route group publik vs admin, layout dasar mobile-first (wireframe 1a–1e)
-- [ ] Deploy awal ke Vercel (Hobby)
-
 **Non-teknis / koordinasi ke kalurahan**
-- [ ] MoM resmi dengan pemerintah desa — jawab TBD Bab 12 (nama resmi, kebijakan anonim, admin/super admin, target rilis)
-- [ ] Minta konten: naskah sejarah desa, foto perangkat, daftar layanan resmi
-- [ ] Minta izin publikasi data APBDes & statistik penduduk (blocker paling umum — kejar dari sekarang)
 
-**Target minggu ini:** project ter-deploy (skeleton), skema DB jalan, admin bisa login, TBD PRD mulai terjawab.
+Kosong — seluruhnya digeser ke Minggu 2 (permintaan konten & izin data) atau dihapus (MoM resmi).
+
+**Target minggu ini:** ✅ **tercapai** — skema DB jalan, admin bisa login, modul pengaduan tembus end-to-end. Deploy dipindah ke Minggu 3 atas keputusan 28 Jul, jadi tidak lagi dihitung sebagai target minggu ini.
 
 ---
 
 ## Minggu 2 (30 Jul–5 Ags) — Profil Desa & Berita
 
 **Teknis**
-- [ ] Beranda publik (pilih varian wireframe 1a/1b/1c, atau gabungkan)
-- [ ] Profil Desa publik: sejarah, visi-misi, struktur organisasi, kontak & peta (PRF-2/3/4, wireframe 1d/1e)
-- [ ] Admin: CRUD Berita + status Draft/Terbit (ADM-1)
-- [ ] Publik: daftar & detail berita (BRT-1/2/3/4, wireframe 2a)
-- [ ] Admin: kelola profil desa & struktur organisasi (ADM-2)
-- [ ] Upload gambar (ADM-5) — setup Vercel Blob / Cloudinary
+- [x] Beranda publik (pilih varian wireframe 1a/1b/1c, atau gabungkan) — *blok berita sudah dari DB, sisanya masih `majegan.ts`*
+- [x] Profil Desa publik: sejarah, visi-misi, struktur organisasi, kontak & peta (PRF-2/3/4, wireframe 1d/1e) — *tampilannya jadi, datanya masih `majegan.ts` sampai Langkah 4*
+- [x] Admin: CRUD Berita + status Draft/Terbit (ADM-1)
+- [x] Publik: daftar & detail berita (BRT-1/2/3/4, wireframe 2a) — *dari DB, draf tidak bocor ke publik*
+- [x] Admin: kelola profil desa & struktur organisasi (ADM-2) — *`/admin/profil`, naskah + struktur dalam satu halaman*
+- [ ] Upload gambar (ADM-5) — di VPS cukup tulis ke folder disk + sajikan lewat nginx; Cloudinary hanya kalau tetap di Vercel
 
-**Non-teknis**
-- [ ] Input konten asli begitu data dari kalurahan masuk
+**Non-teknis — kirim di awal minggu, jangan menunggu koding selesai**
+- [ ] **Minta konten asli ke kalurahan** (pindahan dari Minggu 1): naskah sejarah dusun, foto perangkat + jabatan, daftar layanan resmi beserta syarat & alurnya, nomor WhatsApp resmi
+- [ ] **Minta izin publikasi data statistik penduduk** — cukup statistik saja; permintaan data APBDes dibatalkan seiring modulnya dihapus
+- [ ] Jawab TBD Bab 12 lewat percakapan biasa dengan Dukuh (nama resmi situs, kebijakan pengaduan anonim, siapa admin & super admin, target rilis) — catat jawabannya di sini, tidak perlu forum resmi
+- [ ] Input konten asli begitu datanya masuk
 
 **Target minggu ini:** Beranda, Profil Desa, Berita (publik + admin) jalan end-to-end dengan konten mendekati asli.
+
+> Permintaan konten dan izin statistik sebaiknya **satu kali kirim** — dua permintaan terpisah ke orang yang sama dalam seminggu lebih mudah tertunda daripada satu daftar yang jelas.
 
 ---
 
 ## Minggu 3 (6–12 Ags) — Layanan Administrasi & Pengaduan
 
 **Teknis**
-- [ ] Publik: Informasi Layanan Administrasi (LYN-1/2/3, wireframe 2b)
-- [ ] Admin: kelola layanan (ADM-3)
-- [ ] Publik: Formulir Pengaduan (LPR-1/2/4, wireframe 2c)
-- [ ] Publik: Lacak Pengaduan via kode tiket (LPR-3, wireframe 2d)
-- [ ] Admin: tindak lanjut pengaduan — ubah status, tulis tanggapan (ADM-4, wireframe 2j)
-- [ ] Tautan WhatsApp (wa.me) di titik kontak
+- [x] Publik: Informasi Layanan Administrasi (LYN-1/2/3, wireframe 2b) — *tampilan jadi, data masih `majegan.ts` sampai Langkah 5*
+- [x] Admin: kelola layanan (ADM-3) — *`/admin/layanan`, slug lama dipertahankan saat nama disunting*
+- [x] Publik: Formulir Pengaduan (LPR-1/2/4, wireframe 2c) — *tersimpan ke DB + anti-spam*
+- [x] Publik: Lacak Pengaduan via kode tiket (LPR-3, wireframe 2d)
+- [x] Admin: tindak lanjut pengaduan — ubah status, tulis tanggapan (ADM-4, wireframe 2j)
+- [x] Tautan WhatsApp (wa.me) di titik kontak — ⚠️ **nomornya masih placeholder** (`majegan.ts:19`), ganti begitu nomor asli turun dari kalurahan
+- [ ] **Deploy VPS — task 25** *(pindahan dari Minggu 1, keputusan 28 Jul)*. Runbook `DEPLOY_VPS.md`; kode sudah siap (`output: "standalone"`, build teruji 23 MB)
 
 **Non-teknis**
 - [ ] Validasi ulang syarat & alur tiap layanan bersama perangkat desa berwenang
+- [ ] **5 prasyarat `DEPLOY_VPS.md` §2 — beres sebelum VPS disewa:** nama pemegang akses, mata anggaran APBDes tahun depan, metode bayar atas nama desa, pengingat perpanjangan ke 2 kontak, alasan teknis tertulis
 
-**Target minggu ini:** Flow 7.1 (kirim & lacak pengaduan) dan 7.2 (cari info layanan) jalan penuh dari sisi warga maupun admin.
+**Target minggu ini:** Flow 7.1 (kirim & lacak pengaduan) dan 7.2 (cari info layanan) jalan penuh dari sisi warga maupun admin, **dan situs sudah hidup di alamat sungguhan**.
+
+> ⏳ Minggu 3 sekarang jadi minggu paling padat: layanan + deploy sekaligus. Kalau harus memilih, **deploy duluan** — Minggu 5 (uji coba bareng perangkat desa) dan Minggu 6 (pelatihan) sama-sama menuntut situs yang bisa dibuka dari HP mereka, bukan dari `localhost` laptop Anda.
 
 ---
 
-## Minggu 4 (13–19 Ags) — Anggaran, Statistik, Dashboard Admin
+## Minggu 4 (13–19 Ags) — Statistik, Akun, Dashboard Admin
+
+> ~~Transparansi Anggaran (APB-1/2/3, ADM-6)~~ **dihapus dari lingkup 28 Jul.** Halaman `/anggaran`, tautan navigasinya, dan data contohnya sudah dikeluarkan dari kode. Tabel `anggaran` sengaja ditinggal di skema — modulnya bisa dihidupkan lagi tanpa migrasi kalau izin kalurahan ternyata turun.
 
 **Teknis**
-- [ ] Publik: Transparansi Anggaran (APB-1/2/3, wireframe 2e)
-- [ ] Publik: Statistik Penduduk (STA-1/2, wireframe 2f)
-- [ ] Admin: kelola anggaran per tahun (ADM-6)
-- [ ] Admin: kelola statistik penduduk (ADM-7) — belum ada di wireframe admin, cukup form input sederhana
-- [ ] Dashboard admin ringkas (ADM-8, wireframe 2h)
-- [ ] AUTH-3 (super admin kelola akun admin) & AUTH-4 (ganti password)
+- [x] Publik: Statistik Penduduk (STA-1/2, wireframe 2f) — *tampilan jadi, angka masih contoh sampai Langkah 6*
+- [x] Admin: kelola statistik penduduk (ADM-7) — *`/admin/statistik`, pemilih tahun + dua kategori (ringkasan & usia)*
+- [x] Dashboard admin ringkas (ADM-8, wireframe 2h) — *hitungan nyata dari DB, bukan angka statis*
+- [x] AUTH-3 (super admin kelola akun admin) & AUTH-4 (ganti password) — *`/admin/akun` + `/admin/sandi`*
 
 **Non-teknis**
-- [ ] Kejar izin publikasi data APBDes & statistik kalau minggu 1 belum turun
+- [ ] Kejar izin publikasi data statistik penduduk kalau Minggu 2 belum turun
 
-**Target minggu ini:** Seluruh modul MVP (Wajib + sebagian besar Penting) punya versi publik & admin yang jalan.
+**Target minggu ini:** Seluruh modul MVP yang tersisa punya versi publik & admin yang jalan. Minggu ini jadi lebih longgar setelah APBDes dicoret — pakai kelonggarannya untuk menutup utang cek manual dan bug dari deploy Minggu 3.
 
 ---
 
 ## Minggu 5 (20–26 Ags) — Polish, Responsif, Performa, Testing
 
 **Teknis**
-- [ ] Review responsif mobile-first semua halaman vs wireframe mobile
+- [x] Review responsif mobile-first semua halaman vs wireframe mobile — *dikerjakan lebih awal 28 Jul: target sentuh ≥44px, skeleton pemuatan (`(publik)/loading.tsx`, `admin/loading.tsx`), bilah bawah mobile. Ulangi sekilas di Minggu 5 setelah 5 halaman admin sisa jadi*
 - [ ] Terapkan ISR/static generation untuk halaman publik
-- [ ] Metadata & sitemap dasar (SEO)
+- [x] Metadata & sitemap dasar (SEO) — *`robots.ts`, `sitemap.ts` dari DB, `opengraph-image.tsx` untuk pratinjau tautan di WhatsApp*
 - [ ] Cek validasi input & proteksi dasar (XSS/injeksi) di semua form
 - [ ] Testing manual menyeluruh: semua user flow Bab 7, semua role
 - [ ] Perbaikan bug dari hasil testing
@@ -97,8 +125,8 @@
 
 **Teknis**
 - [ ] Perbaikan berdasar feedback minggu 5
-- [ ] Pindahkan kepemilikan akun layanan (Vercel, Neon, dll) ke email resmi desa
-- [ ] Final deploy & cek status domain (subdomain `.vercel.app` kalau `desa.id` belum siap)
+- [ ] Pindahkan kepemilikan akun layanan (VPS, domain, Neon/DB, UptimeRobot) ke email resmi desa — checklist serah terima lengkap di `DEPLOY_VPS.md` §9
+- [ ] Final deploy & cek status domain (IP VPS langsung kalau `desa.id` belum siap)
 
 **Non-teknis**
 - [ ] Pelatihan singkat perangkat desa yang ditunjuk jadi admin
@@ -118,38 +146,40 @@ Urut sesuai ketergantungan — kerjakan dari atas.
 | #  | Task | Lapisan | Berkas utama | Status | Butuh |
 |----|------|---------|--------------|--------|-------|
 | 1  | Shell situs: header, footer, layout publik & admin | FE | `components/situs.tsx`, `app/layout.tsx` | ✅ | — |
-| 2  | Beranda (1a–1c) | FE | `app/(publik)/page.tsx` | 🟡 | 10 · blok berita sudah dari DB |
-| 3  | Profil desa (PRF-2/3/4) | FE | `app/(publik)/profil/page.tsx` | 🟡 | 10 |
+| 2  | Beranda (1a–1c) | FE | `app/(publik)/page.tsx` | ✅ | berita & statistik dari DB |
+| 3  | Profil desa (PRF-2/3/4) | FE | `app/(publik)/profil/page.tsx` | ✅ | dari DB lewat `lib/profil.ts` |
 | 4  | Berita: daftar + detail (BRT-1..4) | FE | `app/(publik)/berita/**` | ✅ | sumber data dari DB |
-| 5  | Layanan (LYN-1/2/3) | FE | `app/(publik)/layanan/[[...slug]]/page.tsx` | 🟡 | 10 |
-| 6  | Anggaran (APB-1/2/3) & Statistik (STA-1/2) | FE | `app/(publik)/anggaran`, `/statistik` | 🟡 | 10 |
-| 7  | Pengaduan: form, terkirim, lacak (LPR-1..4) | FE | `app/(publik)/pengaduan/**` | 🟡 | 13, 14 |
-| 8  | Panel admin: login, dashboard, form berita | FE | `app/admin/**` | 🟡 | 5 halaman admin sisa: profil, layanan, anggaran, statistik, akun |
+| 5  | Layanan (LYN-1/2/3) | FE | `app/(publik)/layanan/[[...slug]]/page.tsx` | ✅ | dari DB lewat `lib/layanan.ts` |
+| 6  | Statistik (STA-1/2) | FE | `app/(publik)/statistik` | ✅ | ~~Anggaran~~ dihapus dari lingkup 28 Jul |
+| 7  | Pengaduan: form, terkirim, lacak (LPR-1..4) | FE | `app/(publik)/pengaduan/**` | ✅ | — |
+| 8  | Panel admin: 7 halaman + login | FE | `app/admin/**` | ✅ | — |
 | 9  | `error.tsx`, `not-found.tsx`, `robots.ts`, `sitemap.ts`, metadata | FE | `app/*` | ✅ | — |
-| 10 | Prisma + Neon Postgres: skema Bab 8 + migrasi + seed dari `majegan.ts` | BE | `prisma/schema.prisma`, `prisma/seed.ts`, `lib/db.ts` | 🟡 | Neon |
+| 10 | Prisma + Neon Postgres: skema Bab 8 + migrasi + seed dari `majegan.ts` | BE | `prisma/schema.prisma`, `prisma/seed.ts`, `lib/db.ts` | ✅ | — |
 | 11 | Auth admin: hash password, sesi cookie, `masuk`/`keluar` (AUTH-1) | BE | `lib/auth.ts`, `lib/sesi.ts`, `app/admin/aksi.ts` | ✅ | — |
 | 12 | Proteksi route `/admin` + redirect ke `/admin/masuk` (AUTH-2) | BE | `src/proxy.ts` (Next 16: pengganti `middleware.ts`) | ✅ | — |
-| 13 | Server action simpan pengaduan → DB, pakai `periksaPengaduan` + `buatKodeTiket` | BE | `app/(publik)/pengaduan/aksi.ts` | 🟡 | Neon |
-| 14 | Query lacak pengaduan by kode tiket (LPR-3) | BE | `app/(publik)/pengaduan/lacak` | 🟡 | Neon |
+| 13 | Server action simpan pengaduan → DB, pakai `periksaPengaduan` + `buatKodeTiket` | BE | `app/(publik)/pengaduan/aksi.ts` | ✅ | — |
+| 14 | Query lacak pengaduan by kode tiket (LPR-3) | BE | `app/(publik)/pengaduan/lacak` | ✅ | — |
 | 15 | Rate limit + honeypot form pengaduan (anti-spam) | BE | `lib/pengaduan.ts` | ✅ | — |
-| 16 | Admin CRUD berita + status Draft/Terbit (ADM-1) | BE | `app/admin/berita/**` | 🟡 | Neon |
-| 17 | Upload gambar via Vercel Blob (ADM-5) | BE | `lib/unggah.ts` | ⬜ | 12 |
-| 18 | Admin kelola profil & struktur organisasi (ADM-2) | BE | `app/admin/profil` | ⬜ | 16, 17 |
-| 19 | Admin kelola layanan (ADM-3) | BE | `app/admin/layanan` | ⬜ | 16 |
-| 20 | Admin tindak lanjut pengaduan: ubah status + tanggapan (ADM-4) | BE | `app/admin/pengaduan` | 🟡 | Neon |
-| 21 | Admin kelola anggaran (ADM-6) & statistik (ADM-7) | BE | `app/admin/anggaran`, `/statistik` | ⬜ | 16 |
-| 22 | Dashboard admin: hitungan nyata dari DB (ADM-8) | BE | `app/admin/page.tsx` | 🟡 | Neon |
-| 23 | Super admin kelola akun (AUTH-3) + ganti password (AUTH-4) | BE | `app/admin/pengguna` | ⬜ | 11 |
-| 24 | Ganti sumber data halaman publik: `majegan.ts` → query DB, pasang `revalidate` | FE+BE | `app/(publik)/**` | 🟡 | berita & sitemap sudah; profil/layanan/anggaran/statistik menyusul (18–21) |
-| 25 | Deploy Vercel + env (`DATABASE_URL`, secret sesi, token Blob) | Infra | — | ⬜ | 10, 11 |
+| 16 | Admin CRUD berita + status Draft/Terbit (ADM-1) | BE | `app/admin/berita/**` | ✅ | — |
+| 17 | Upload gambar (ADM-5) | BE | `lib/unggah.ts` | ⬜ | **satu-satunya modul tersisa** · butuh keputusan penampung berkas (disk VPS vs Blob); sementara isian URL + `remotePatterns` |
+| 18 | Admin kelola profil & struktur organisasi (ADM-2) | BE | `app/admin/profil/**`, `lib/profil.ts` | ✅ | — |
+| 19 | Admin kelola layanan (ADM-3) | BE | `app/admin/layanan/**`, `lib/layanan.ts` | ✅ | — |
+| 20 | Admin tindak lanjut pengaduan: ubah status + tanggapan (ADM-4) | BE | `app/admin/pengaduan` | ✅ | — |
+| 21 | Admin kelola statistik penduduk (ADM-7) | BE | `app/admin/statistik`, `lib/statistik.ts` | ✅ | ~~ADM-6 anggaran~~ dicoret |
+| 22 | Dashboard admin: hitungan nyata dari DB (ADM-8) | BE | `app/admin/page.tsx` | ✅ | — |
+| 23 | Super admin kelola akun (AUTH-3) + ganti password (AUTH-4) | BE | `app/admin/akun/**`, `app/admin/sandi` | ✅ | — |
+| 24 | Ganti sumber data halaman publik: `majegan.ts` → query DB | FE+BE | `app/(publik)/**` | ✅ | `revalidate`/ISR menyusul di Minggu 5 |
+| 25 | Deploy **VPS** + env (`DATABASE_URL`, `RAHASIA_SESI`, `NEXT_PUBLIC_URL`) | Infra | `DEPLOY_VPS.md` | ⬜ | **dijadwalkan Minggu 3** · sewa VPS + 5 prasyarat §2 |
+| 26 | Sistem gambar: `<Foto>`, 11 ilustrasi SVG, `opengraph-image`, panduan tukar foto | FE | `components/potongan.tsx`, `public/gambar/` | ✅ | foto asli dari kalurahan |
+| 27 | Responsif mobile + skeleton pemuatan | FE | `app/**/loading.tsx`, `components/situs.tsx` | ✅ | — |
 
-Jalur kritis: **10 → 11 → 12 → 16** membuka hampir semua sisa task admin. Task 13–15 bisa jalan paralel setelah 10.
+Jalur kritis: **10 → 11 → 12 → 16** sudah tembus — itu yang membuka 18–23. Sisa jalur kritis sekarang **25 (deploy, Minggu 3)**, karena tanpa itu tidak ada yang bisa dilatihkan ke perangkat desa di Minggu 6.
 
 ---
 
 ## Plan Eksekusi — sisa Minggu 1 (26–29 Jul)
 
-Target: task 10, 11, 12, 25 kelar. Tiap langkah punya **cek:** — kalau ceknya gagal, jangan lanjut ke langkah berikutnya.
+Target semula: task 10, 11, 12, 25 kelar. **Hasil: 10, 11, 12 selesai; task 25 (deploy) digeser ke Minggu 3.** Tiap langkah punya **cek:** — kalau ceknya gagal, jangan lanjut ke langkah berikutnya.
 
 ### Hari 1 (26 Jul) — Task 10: database
 
@@ -162,7 +192,7 @@ Target: task 10, 11, 12, 25 kelar. Tiap langkah punya **cek:** — kalau ceknya 
 - [x] `@unique` pada `berita.slug`, `pengaduan.kode_tiket`, `pengguna.email`, `halaman_profil.slug`
 - [x] `npx prisma migrate deploy` — SQL migrasi `20260726000000_awal` ditulis tangan, diterapkan bersih tanpa perlu `migrate dev`
 - [x] `src/lib/db.ts` — singleton `PrismaClient` (tanpa ini, hot-reload dev bikin koneksi bocor sampai Neon nolak)
-- [x] `prisma/seed.ts` — impor `berita`, `layanan`, `profil`, `anggaran`, `statistik`, `peranPengguna` dari `majegan.ts`, `upsert` semuanya. Idempoten, aman dijalankan berulang
+- [x] `prisma/seed.ts` — impor `berita`, `layanan`, `profil`, `statistik`, `peranPengguna` dari `majegan.ts`, `upsert` semuanya. Idempoten, aman dijalankan berulang *(blok anggaran dibuang 28 Jul bersama modulnya)*
 - [x] **cek:** 9 tabel terisi, tidak ada yang kosong. `berita` 4 = `majegan.ts` 4, `layanan` 5 = 5. Superadmin `Sarjiman, S.Pd.` ada
 
 ### Hari 2 (27 Jul) — Task 11 & 12: auth + proteksi
@@ -179,26 +209,28 @@ Target: task 10, 11, 12, 25 kelar. Tiap langkah punya **cek:** — kalau ceknya 
 - [x] Bonus: panel admin lepas dari `?peran=` dummy — `admin/page.tsx` & `admin/berita/baru` sekarang baca sesi via `wajibMasuk()`
 - [ ] **cek:** buka `/admin` di jendela penyamaran → kelempar ke login. Masuk dengan sandi benar → tembus. Ubah 1 huruf cookie di DevTools → kelempar lagi
 
-### Hari 3 (28 Jul) — Task 25: deploy
+### Hari 3 (28 Jul) — Task 25: deploy — **digeser ke Minggu 3**
+
+Persiapan kodenya tetap selesai di minggu ini; yang bergeser hanya pemasangan servernya.
 
 - [x] `package.json`: `"build": "prisma generate && prisma migrate deploy && next build"`
-- [ ] Selebihnya: lihat **bagian B** di *Langkah Berikutnya* — checklist lengkapnya ada di sana supaya tidak ada dua salinan yang bisa berbeda
+- [x] `next.config.ts`: `output: "standalone"` — build teruji, `.next/standalone` 23 MB
+- [x] Kode sudah aman: `origin/main` berisi seluruh 9 commit
+- [ ] Pemasangan server — **Minggu 3**, runbook `DEPLOY_VPS.md`. Prasyarat §2 dikejar mulai Minggu 2 bareng permintaan konten
 
-### Hari 4 (29 Jul) — Task 13–15: pengaduan masuk DB
+### Hari 4 (29 Jul) — Task 13–15: pengaduan masuk DB — ✅ selesai
 
-Rinciannya di bagian **Langkah Berikutnya** di bawah — tidak butuh auth, jadi aman dikerjakan duluan sebelum CRUD admin.
+Kodenya sudah jadi (lihat bagian **C**), tinggal cek manual lewat browser.
 
-### Paralel — kirim hari ini juga, jangan nunggu koding
+### Paralel — dipindah ke Minggu 2
 
-- [ ] Surat/pesan ke kalurahan: izin publikasi APBDes & statistik penduduk
-- [ ] Minta naskah sejarah desa, foto perangkat + jabatan, daftar layanan resmi beserta syaratnya
-- [ ] Ajukan jadwal MoM untuk jawab TBD Bab 12 (nama resmi, kebijakan anonim, siapa admin/super admin, target rilis)
+Permintaan konten & izin statistik sekarang ada di daftar non-teknis **Minggu 2**, dikirim sekali jalan. Permintaan data APBDes dibatalkan (modulnya dihapus), MoM resmi dihapus dan diganti percakapan biasa dengan Dukuh.
 
 ---
 
 ## Langkah Berikutnya (mulai 26 Jul) — urut, jangan diacak
 
-Kode Hari 1 & 2 sudah ditulis semua. Yang menghambat sekarang **satu hal**: belum ada database sungguhan, jadi tidak ada satu pun cek yang bisa dijalankan. Selesaikan A dulu — B, C, D semuanya menunggu di belakangnya.
+A dan C sudah selesai; database hidup dan seluruh cek otomatis lolos. **B (deploy) dijadwal ulang ke Minggu 3** — hambatannya bukan kode, tapi menyewa VPS dan lima prasyarat non-teknis di `DEPLOY_VPS.md` §2. Kerjakan **D** dulu (Langkah 4 dst.), dan mulai kejar prasyarat §2 di Minggu 2 supaya Minggu 3 tinggal mengeksekusi runbook.
 
 ### A. Nyalakan Neon & buktikan Hari 1–2 benar (≤ 1 jam, hari ini)
 
@@ -214,26 +246,22 @@ Kode Hari 1 & 2 sudah ditulis semua. Yang menghambat sekarang **satu hal**: belu
 
 > ⚠️ **Restart `npm run dev` setiap kali `.env.local` berubah.** `lib/db.ts:23` menyimpan `PrismaClient` di `globalThis`, jadi connection string lama tetap nempel di server yang sudah jalan meski berkas env-nya sudah diperbarui.
 
-### B. Deploy ke Vercel — Task 25 (½ hari)
+### B. Deploy — Task 25 · **dijadwalkan Minggu 3 (6–12 Ags)**
 
-#### B0. Push dulu — sebelum apa pun (10 menit, kerjakan hari ini)
+> **Jalur utama sekarang VPS, bukan Vercel.** Runbook lengkapnya `DEPLOY_VPS.md` — jangan disalin ke sini supaya tidak ada dua versi yang bisa berbeda. Yang paling menentukan di sana bukan perintah shell-nya, tapi **§2: lima prasyarat yang harus beres sebelum VPS disewa** (siapa pemegang akses, mata anggaran APBDes, rekening desa). Kejar itu bareng permintaan konten ke kalurahan.
+>
+> **B2–B6 di bawah tetap dipertahankan** sebagai jalan keluar bila VPS tidak terbiayai (`DEPLOY_VPS.md` §11) — kode ini netral penyedia, jadi checklist-nya tetap sahih kapan pun dibutuhkan.
 
-> 🔴 **Branch `fondasi-database-auth` belum pernah di-push.** Remote hanya punya `main` (isinya prototipe UI). Seluruh kerja database, auth, dan panel admin — 4 commit — **cuma ada di satu laptop**. Laptop hilang atau disk rusak = proker hilang. Ini risiko terbesar saat ini, dan perbaikannya satu perintah.
+#### B0. ✅ Push — selesai
 
-- [ ] `git push -u origin fondasi-database-auth`
-- [ ] **cek:** buka repo di GitHub → branch-nya ada, 4 commit terlihat
+- [x] Branch `fondasi-database-auth` sudah ada di `origin`
+- [x] **cek:** `main` lokal = `origin/main`, 9 commit. Tidak ada lagi kerja yang cuma ada di satu laptop
 
-Setelah ini aman, baru pikirkan Vercel.
+#### B1. ✅ Gabungkan ke `main` — selesai
 
-#### B1. Gabungkan ke `main`
+- [x] Seluruh kerja database, auth, dan panel admin sudah ada di `main`
 
-Vercel men-deploy *production* dari branch default (`main`); branch lain jadi *preview*.
-
-- [ ] Buka PR `fondasi-database-auth` → `main` di GitHub, lalu merge
-
-> Solo dev tidak punya reviewer, jadi PR di sini bukan soal review — ia meninggalkan catatan tertulis apa yang berubah dan kapan. Berguna untuk laporan akhir KKN. Kalau tidak perlu, `git switch main && git merge fondasi-database-auth && git push` sama sahnya.
-
-#### B2. Hubungkan project (butuh Anda, ada login browser)
+#### B2. Hubungkan project (butuh Anda, ada login browser) — *jalur cadangan Vercel*
 
 - [ ] `! npx vercel login` — otentikasi lewat browser, tidak bisa diwakilkan
 - [ ] `! npx vercel link` — pilih scope pribadi, buat project baru, nama `padukuhan-majegan`
@@ -276,7 +304,7 @@ Merge ke `main` di B1 sudah otomatis memicu deploy. Kalau env baru diisi sesudah
 
 #### B6. Kepemilikan (jangan ditunda ke Minggu 6)
 
-Akun Vercel & Neon sekarang atas nama pribadi Anda. PRD `:240` sudah menandai ini sebagai risiko keberlanjutan. Begitu email resmi desa tersedia, pindahkan kepemilikan — jangan tunggu minggu terakhir, transfer butuh email tujuan aktif dan itu sering yang paling lama ditunggu.
+Akun VPS/Vercel & Neon sekarang atas nama pribadi Anda. PRD `:231` (TBD Bab 12) sudah menandai ini sebagai risiko keberlanjutan. Begitu email resmi desa tersedia, pindahkan kepemilikan — jangan tunggu minggu terakhir, transfer butuh email tujuan aktif dan itu sering yang paling lama ditunggu.
 
 ### C. Pengaduan masuk DB — Task 13, 14, 15 (28–29 Jul, 1 hari)
 
@@ -285,15 +313,20 @@ Ini modul *Wajib* pertama yang jadi utuh end-to-end, dan tidak bergantung ke CRU
 - [x] **13** — server action `kirimPengaduan` di `src/app/(publik)/pengaduan/aksi.ts` (pola sama dengan `app/admin/aksi.ts`), `lib/pengaduan.ts` tetap bebas impor Prisma. Tabrakan `kodeTiket` ditangani: tangkap `P2002`, ulang maks 3×. Kolom `lokasi` ditambahkan ke model `Pengaduan` + SQL migrasi — form sudah punya isiannya tapi tabelnya belum
 - [x] **14** — `pengaduan/lacak/page.tsx` pakai `db.pengaduan.findUnique` dengan `select` sempit (`kodeTiket, kategori, isi, status, tanggapan, dibuatPada`); nama & kontak pelapor tidak pernah ikut ke browser
 - [x] **15** — jebakan bot (`NAMA_JEBAKAN` dipakai bersama form & action; terisi → sukses palsu, tidak disimpan) + rate limit `bolehKirim(ip)` 60 detik per IP di `lib/pengaduan.ts`, ada tesnya. `npm test`: 12 lolos
-- [ ] **cek (butuh langkah A lebih dulu):** kirim laporan → dapat kode tiket → muncul di `prisma studio` → kode itu ketemu di `/pengaduan/lacak`, kode ngawur tidak ketemu, dan **View Source** halaman lacak tidak memuat nama/kontak pelapor. Kirim 2× beruntun → yang kedua ditolak
+- [ ] **cek (DB sudah siap — tinggal dijalankan di browser):** kirim laporan → dapat kode tiket → muncul di `prisma studio` → kode itu ketemu di `/pengaduan/lacak`, kode ngawur tidak ketemu, dan **View Source** halaman lacak tidak memuat nama/kontak pelapor. Kirim 2× beruntun → yang kedua ditolak
 
-### D. Masuk Minggu 2 — Task 16 lalu 24
+### D. ✅ Seluruh modul admin — selesai 28 Jul
 
-Jalur kritisnya: **16 (CRUD berita + Draft/Terbit)** membuka 18–22. Sesudah 16 jalan, langsung kerjakan **24** untuk halaman berita saja (`majegan.ts` → query DB + `revalidate`) supaya satu modul benar-benar tembus dari admin ke publik, sebelum melebar ke layanan/anggaran. Task 17 (upload gambar) menyusul setelah itu — sampai ada Vercel Blob, pakai URL gambar yang diisi manual.
+Task 16, 18, 19, 20, 21, 22, 23, 24 semuanya jadi. Empat lapisan yang sama di tiap modul:
+`lib/<modul>.ts` (query + pemetaan) → `app/admin/<modul>/aksi.ts` (server action) → `app/admin/<modul>/page.tsx` (daftar/form) → halaman publik ganti impor.
+
+Diverifikasi lawan Neon: `next build` hijau, seluruh halaman publik balas `200` dan memuat isi dari DB, seluruh halaman admin balas `307` ke `/admin/masuk` tanpa sesi, dan dengan sesi superadmin menampilkan data sungguhan. `npm test`: 23 lolos.
+
+**Sisa satu: task 17 (unggah gambar).** Sengaja ditahan — penampung berkasnya bergantung pada tempat situs berjalan, dan itu belum ditentukan sampai VPS disewa. Sampai saat itu komposer & form perangkat memakai isian URL, dengan daftar host yang diizinkan di `next.config.ts`.
 
 ---
 
-## Plan Frontend — 7 halaman admin yang belum ada + lepas dari data dummy
+## Plan Frontend — halaman admin yang belum ada + lepas dari data dummy
 
 Prasyarat: **langkah A (Neon) sudah jalan**. Semua di bawah ini menulis/membaca DB; dibangun sebelum itu = UI kosong yang tidak bisa diuji.
 
@@ -322,7 +355,7 @@ Prasyarat: **langkah A (Neon) sudah jalan**. Semua di bawah ini menulis/membaca 
 - [x] `berita/aksi.ts` — `simpanBerita` (create/update), `hapusBerita`, `revalidatePath` halaman publik
 - [x] Slug dari judul (`lib/teks.ts`), unik dengan sufiks `-2`, `-3`; **slug lama dipertahankan** saat judul disunting supaya tautan yang sudah tersebar di WhatsApp tidak mati
 - [x] `menuAdmin` — "Berita" mengarah ke `/admin/berita`
-- [ ] **cek (butuh DB):** simpan draf → muncul di daftar berlencana DRAF, tidak muncul di `/berita`. Terbitkan → muncul. Sunting judul → slug tidak berubah. Hapus → hilang dari keduanya
+- [ ] **cek (DB sudah siap — tinggal dijalankan di browser):** simpan draf → muncul di daftar berlencana DRAF, tidak muncul di `/berita`. Terbitkan → muncul. Sunting judul → slug tidak berubah. Hapus → hilang dari keduanya
 
 Dua hal yang berubah dari mockup, sengaja:
 
@@ -335,7 +368,7 @@ Dua hal yang berubah dari mockup, sengaja:
 - [x] `(publik)/berita/page.tsx`, `berita/[slug]/page.tsx`, blok berita di beranda → dari DB, hanya `status: "terbit"`
 - [x] Draf tidak bisa dibuka warga meski slug-nya ketebak
 - [x] `sitemap.ts` juga dari DB — sebelumnya menyebut slug dummy, jadi berita baru tidak terdaftar dan yang dihapus tetap tercatat
-- [ ] **cek (butuh DB):** terbitkan berita dari panel → refresh `/berita` → langsung ada
+- [ ] **cek (DB sudah siap — tinggal dijalankan di browser):** terbitkan berita dari panel → refresh `/berita` → langsung ada
 
 > `generateStaticParams` + `revalidate` **ditunda**, halaman publik dirender on-demand dulu (`dynamic = "force-dynamic"`). Alasannya: prerender saat build menuntut koneksi DB, dan itu bikin `next build` gagal selama Neon belum ada. Pasang ISR di Minggu 5 — sudah jadi task di daftar Minggu 5.
 
@@ -347,7 +380,7 @@ Dua hal yang berubah dari mockup, sengaja:
 - [x] **Status SELESAI ditolak tanpa tanggapan** — tanggapan itu satu-satunya yang dibaca warga di halaman Lacak
 - [x] Dashboard: `ringkasanAdmin` & `pengaduanTerbaru` statis diganti `count()` per status + 5 pengaduan terakhir dari DB
 - [x] `LencanaStatus` di `components/potongan.tsx` — satu komponen, menggantikan 3 salinan peta warna status
-- [ ] **cek (butuh DB):** ubah status di panel → warga melihat perubahannya di `/pengaduan/lacak` dengan kode tiketnya
+- [ ] **cek (DB sudah siap — tinggal dijalankan di browser):** ubah status di panel → warga melihat perubahannya di `/pengaduan/lacak` dengan kode tiketnya
 
 ### Langkah 4–7 — sisa modul, pola sama persis
 
@@ -359,7 +392,7 @@ Tiap langkah punya bentuk yang identik, jadi ditulis sekali di sini:
 
 ---
 
-#### Langkah 4 — `/admin/profil` (ADM-2, task 18) · Minggu 2
+#### Langkah 4 — ✅ `/admin/profil` (ADM-2, task 18) · selesai 28 Jul
 
 Dua tabel dalam satu halaman: `halaman_profil` (naskah) dan `perangkat_desa` (struktur).
 
@@ -381,7 +414,7 @@ Keputusan yang diambil di muka:
 
 ---
 
-#### Langkah 5 — `/admin/layanan` (ADM-3, task 19) · Minggu 3
+#### Langkah 5 — ✅ `/admin/layanan` (ADM-3, task 19) · selesai 28 Jul
 
 - [ ] `app/admin/layanan/page.tsx` — daftar layanan (nama, durasi, biaya, urutan) + tombol Sunting/Hapus, tombol "Layanan Baru"
 - [ ] `app/admin/layanan/[id]/page.tsx` + `baru/page.tsx` — satu komponen form dipakai keduanya lewat prop `awal`, persis cara `<Komposer>` dipakai `berita/baru` dan `berita/[id]`
@@ -399,27 +432,26 @@ Dua celah skema yang harus diputuskan **sebelum** menulis formnya (`seed.ts:107`
 
 ---
 
-#### Langkah 6 — `/admin/anggaran` + `/admin/statistik` (ADM-6/7, task 21) · Minggu 4
+#### Langkah 6 — ✅ `/admin/statistik` (ADM-7, task 21) · selesai 28 Jul
 
-- [ ] **Tambahkan `/admin/anggaran` ke `menuAdmin`** (`majegan.ts:420`) — modulnya *Wajib* tapi menunya memang tidak pernah ada
-- [ ] `app/admin/anggaran/page.tsx` — pemilih tahun (`?tahun=2026`), tabel baris anggaran per jenis, form tambah baris (jenis, uraian, jumlah, catatan), checkbox **Resmi** per tahun
-- [ ] `app/admin/anggaran/aksi.ts` — `simpanBaris`, `hapusBaris`, `tandaiResmi(tahun)`
+> ~~`/admin/anggaran` (ADM-6)~~ **dicoret 28 Jul** bersama modul publiknya. Langkah ini jadi tinggal separuh — bagian yang paling banyak jebakannya (BigInt, kolom `diperbarui` yang tidak ada) ikut hilang.
+
 - [ ] `app/admin/statistik/page.tsx` + `aksi.ts` — tabel `tahun × kategori × label → nilai`. `@@unique([tahun, kategori, label])` sudah ada, jadi pakai `upsert`, bukan create+cek
-- [ ] `lib/anggaran.ts`, `lib/statistik.ts` → bentuknya sama dengan `anggaran` & `statistik`/`kelompokUsia` di `majegan.ts`
-- [ ] `(publik)/anggaran/page.tsx`, `(publik)/statistik/page.tsx`, dan teaser statistik di beranda → pakai lib baru
+- [ ] `lib/statistik.ts` → bentuknya sama dengan `statistik` & `kelompokUsia` di `majegan.ts`
+- [ ] `(publik)/statistik/page.tsx` dan teaser statistik di beranda → pakai lib baru
+- [ ] `menuAdmin` — buka `belum: true` pada entri Statistik (`majegan.ts`)
 
 Jebakan konkret:
 
-- **`jumlah` bertipe `BigInt`** — tidak bisa diserialisasi ke komponen klien dan `JSON.stringify` melemparkan `TypeError`. Konversi ke `Number` di dalam `lib/anggaran.ts` (rupiah APBDes padukuhan jauh di bawah `Number.MAX_SAFE_INTEGER`), jangan diteruskan mentah
-- **`anggaran.diperbarui` tidak punya kolom.** → tampilkan dari `updated_at`… yang juga tidak ada di tabel `anggaran`. Paling murah: tambah `diperbaruiPada DateTime @updatedAt` ke model `Anggaran` saat migrasi berikutnya, atau buang barisnya dari tampilan. Putuskan saat mengerjakan, jangan biarkan tanggal contoh membeku di halaman publik
 - **Kategori statistik `jenis_kelamin`, `pekerjaan`, `pendidikan` ada di enum tapi tidak ditampilkan di UI mana pun.** Form admin hanya melayani `ringkasan` & `usia` — yang benar-benar dipakai. Menambah isian untuk data yang tidak pernah tampil = form yang membuang isian admin diam-diam
 - **`kelompokUsia.persen`** disimpan sebagai `nilai` (0–100), bukan jumlah jiwa. Beri label jelas di form supaya admin tidak mengisi jumlah orang
+- **Tahun data ditulis tetap `2026` di `seed.ts`**, bukan tahun berjalan — kunci upsert harus stabil. Form admin perlu isian tahun yang eksplisit, jangan diam-diam memakai `new Date().getFullYear()`
 
-- [ ] **cek:** ubah 1 nominal belanja → total & panjang bar di `/anggaran` ikut berubah. Centang Resmi → banner "angka contoh" hilang. Ubah jumlah jiwa → angka di beranda & `/statistik` berubah
+- [ ] **cek:** ubah jumlah jiwa di panel → angka di beranda & `/statistik` ikut berubah. Ubah 1 persen kelompok usia → panjang bar berubah
 
 ---
 
-#### Langkah 7 — `/admin/akun` (AUTH-3/4, task 23) · Minggu 4
+#### Langkah 7 — ✅ `/admin/akun` (AUTH-3/4, task 23) · selesai 28 Jul
 
 - [ ] `app/admin/akun/page.tsx` — `wajibSuperadmin()`. Daftar pengguna (nama, email, peran, aktif) + form tambah admin
 - [ ] `app/admin/akun/aksi.ts` — `simpanPengguna` (peran, aktif/nonaktif), `hapusPengguna`, `gantiSandi`. Hash pakai `hashKataSandi()` yang sudah ada di `lib/auth.ts` — jangan tulis ulang
@@ -435,23 +467,26 @@ Pengaman yang **tidak boleh disederhanakan**:
 
 ### Langkah 8 — sisa kecil (Minggu 5, saat polish)
 
-- [ ] Unggah gambar ke Vercel Blob (ADM-5, task 17) — sampai ini jadi, komposer & form pengaduan pakai isian URL manual
+- [ ] Unggah gambar (ADM-5, task 17) — sampai ini jadi, komposer pakai isian URL manual (host yang diizinkan diatur di `next.config.ts`) dan 11 ilustrasi SVG di `public/gambar/` menutupi slot yang kosong. Cara menukarnya dengan foto asli: `public/gambar/GAMBAR.md`
 - [ ] Hitungan suka & tanggapan di detail berita (sekarang statis) — atau buang saja kalau tidak ada yang memakainya
 - [ ] URL sosial media & WhatsApp di footer, begitu datanya turun dari kalurahan
 
 ### Peta ke jadwal mingguan
 
-| Minggu | Langkah |
-|---|---|
-| 2 (30 Jul–5 Ags) | 0, 1, 2, 4 |
-| 3 (6–12 Ags) | 5, 3 |
-| 4 (13–19 Ags) | 6, 7 |
-| 5 (20–26 Ags) | 8 + polish |
+| Minggu | Langkah | Status |
+|---|---|---|
+| 2 (30 Jul–5 Ags) | 0, 1, 2, 4 | ✅ semua · tersisa **kirim permintaan konten & izin statistik** |
+| 3 (6–12 Ags) | 5, 3 | ✅ semua · tersisa **deploy VPS (bagian B)** |
+| 4 (13–19 Ags) | 6, 7 | ✅ semua |
+| 5 (20–26 Ags) | 8 + polish | responsif ✅ · sisa unggah gambar, ISR, testing |
+
+**Seluruh Langkah 0–7 selesai pada 28 Jul — tiga minggu di depan jadwal.** Yang tersisa bukan lagi soal koding: deploy, konten asli dari kalurahan, dan pelatihan. Jangan pakai kelonggaran ini untuk menambah fitur; pakai untuk **deploy lebih awal**, supaya uji coba bareng perangkat desa (Minggu 5) berlangsung di situs sungguhan dan bukan di laptop.
 
 ---
 
 ## Rencana Cadangan (kalau ada minggu yang molor)
 
-- **Boleh dikorbankan lebih dulu:** modul Anggaran & Statistik (prioritas *Penting*, bukan *Wajib*) — kalau minggu 4 mepet, turunkan jadi tabel statis input manual tanpa CRUD admin penuh.
-- **Tidak boleh dikorbankan:** Minggu 6 (pelatihan + serah terima) — inti dari tujuan keberlanjutan proker.
-- **Blocker paling mungkin bukan soal koding**, tapi kelengkapan & izin konten dari kalurahan. Kejar dari Minggu 1.
+- **Sudah dikorbankan 28 Jul:** modul Transparansi Anggaran (APBDes) — dihapus seluruhnya, bukan sekadar disederhanakan.
+- **Boleh dikorbankan berikutnya:** modul Statistik Penduduk (prioritas *Penting*, bukan *Wajib*) — kalau Minggu 4 mepet, biarkan angkanya diperbarui lewat `prisma studio` dan lewati `/admin/statistik`. Sesudah itu tidak ada lagi yang aman dicoret; sisanya semua *Wajib*.
+- **Tidak boleh dikorbankan:** Minggu 6 (pelatihan + serah terima) — inti dari tujuan keberlanjutan proker. Deploy Minggu 3 juga tidak boleh molor lagi, karena Minggu 5 dan 6 sama-sama menuntut situs yang sudah hidup.
+- **Blocker paling mungkin bukan soal koding**, tapi kelengkapan & izin konten dari kalurahan. Sekarang dikejar mulai Minggu 2 — jangan mundur lagi.

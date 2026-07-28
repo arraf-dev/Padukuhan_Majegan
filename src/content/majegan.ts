@@ -44,34 +44,11 @@ export const kelompokUsia = [
   { rentang: "65+", persen: 44 },
 ];
 
-/**
- * Ringkasan anggaran padukuhan (APB-1/2/3).
- *
- * ponytail: angka contoh berskala padukuhan — izin publikasi APBDes belum turun
- * dari kalurahan (blocker Minggu 1 di TASKS.md). Halaman menandai dirinya sendiri
- * sebagai contoh selama `resmi: false`, jadi tidak ada risiko angka palsu
- * terbaca warga sebagai data resmi.
- */
-export const anggaran = {
-  tahun: 2026,
-  resmi: false,
-  diperbarui: "2026-07-20",
-  pendapatan: 486_000_000,
-  belanja: 412_500_000,
-  sumber: [
-    { nama: "Dana Desa (DD)", nominal: 268_000_000 },
-    { nama: "Alokasi Dana Desa (ADD)", nominal: 142_000_000 },
-    { nama: "Swadaya & partisipasi warga", nominal: 51_000_000 },
-    { nama: "Pendapatan lain-lain", nominal: 25_000_000 },
-  ],
-  bidang: [
-    { nama: "Pembangunan & infrastruktur", nominal: 196_000_000, catatan: "Cor jalan RT 03, talud kali" },
-    { nama: "Pembinaan kemasyarakatan", nominal: 87_500_000, catatan: "PKK, karang taruna, merti dusun" },
-    { nama: "Penyelenggaraan pemerintahan", nominal: 64_000_000, catatan: "Operasional balai dusun" },
-    { nama: "Pemberdayaan masyarakat", nominal: 45_000_000, catatan: "KWT, pelatihan UMKM" },
-    { nama: "Penanggulangan bencana & darurat", nominal: 20_000_000, catatan: "Cadangan tak terduga" },
-  ],
-};
+// Modul Transparansi Anggaran (APB-1/2/3, ADM-6) dihapus 28 Jul 2026 atas
+// keputusan tim: publikasi APBDes butuh izin kalurahan yang tidak pasti turun
+// dalam 6 minggu, sementara PRD menandainya "Penting", bukan "Wajib".
+// Statistik penduduk tetap ada. Tabel `anggaran` sengaja ditinggal di skema
+// (lihat schema.prisma) supaya modul ini bisa dihidupkan lagi tanpa migrasi.
 
 export const navigasi = [
   { href: "/", label: "Beranda" },
@@ -79,7 +56,6 @@ export const navigasi = [
   { href: "/berita", label: "Berita" },
   { href: "/layanan", label: "Layanan" },
   { href: "/pengaduan", label: "Pengaduan" },
-  { href: "/anggaran", label: "Anggaran" },
   { href: "/statistik", label: "Statistik" },
 ];
 
@@ -371,7 +347,10 @@ export type Layanan = {
   deskripsi: string;
   syarat: string[];
   alur: { judul: string; detail: string }[];
-  berkas?: { nama: string; ukuran: string };
+  // ponytail: ukuran berkas dibuang — tabel `layanan` hanya menyimpan nama
+  // templatnya. Angka ukuran yang tak pernah bisa diperbarui admin lebih
+  // menyesatkan daripada tidak ditampilkan.
+  berkas?: { nama: string };
 };
 
 const alurStandar = [
@@ -396,7 +375,7 @@ export const layanan: Layanan[] = [
       "Surat pengantar **RT/RW** setempat",
     ],
     alur: alurStandar,
-    berkas: { nama: "Templat-Formulir-Domisili.pdf", ukuran: "86 KB · bisa diisi di rumah" },
+    berkas: { nama: "Templat-Formulir-Domisili.pdf" },
   },
   {
     slug: "surat-pengantar-ktp-kk",
@@ -671,14 +650,16 @@ export const aksiCepatAdmin = [
 /**
  * Menu panel admin.
  * `superadmin: true` = terkunci untuk peran Admin (matriks peran).
- * `belum: true` = modulnya memang belum dibangun, jadi tidak ditautkan.
  */
 export const menuAdmin = [
   { href: "/admin", label: "Dashboard", ikon: "kisi" as const },
   { href: "/admin/berita", label: "Berita", ikon: "berita" as const },
   { href: "/admin/pengaduan", label: "Pengaduan", ikon: "obrolan" as const },
-  { href: "/admin/profil", label: "Profil & Struktur", ikon: "warga" as const, superadmin: true, belum: true },
-  { href: "/admin/layanan", label: "Layanan", ikon: "surat" as const, superadmin: true, belum: true },
-  { href: "/admin/statistik", label: "Statistik", ikon: "batang" as const, superadmin: true, belum: true },
-  { href: "/admin/akun", label: "Akun & Pengguna", ikon: "warga" as const, superadmin: true, belum: true },
+  // Terbuka untuk kedua peran: AUTH-4 berlaku juga bagi Admin, dan tanpa entri
+  // ini peran Admin tidak punya jalan ke sana — /admin/akun terkunci baginya.
+  { href: "/admin/sandi", label: "Ganti Sandi", ikon: "gembok" as const },
+  { href: "/admin/profil", label: "Profil & Struktur", ikon: "warga" as const, superadmin: true },
+  { href: "/admin/layanan", label: "Layanan", ikon: "surat" as const, superadmin: true },
+  { href: "/admin/statistik", label: "Statistik", ikon: "batang" as const, superadmin: true },
+  { href: "/admin/akun", label: "Akun & Pengguna", ikon: "warga" as const, superadmin: true },
 ];

@@ -1,6 +1,13 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { bacaToken, buatToken, hashKataSandi, periksaKataSandi, type IsiSesi } from "./auth.ts";
+import {
+  bacaToken,
+  buatToken,
+  hashKataSandi,
+  type IsiSesi,
+  periksaKataSandi,
+  periksaSandiBaru,
+} from "./auth.ts";
 
 const RAHASIA = "rahasia-untuk-uji-saja";
 const isi = (exp = Date.now() + 60_000): IsiSesi => ({
@@ -48,4 +55,15 @@ test("token yang diutak-atik ditolak", () => {
 
 test("token kedaluwarsa ditolak", () => {
   assert.equal(bacaToken(buatToken(isi(Date.now() - 1), RAHASIA), RAHASIA), null);
+});
+
+test("sandi baru wajib minimal 12 karakter", () => {
+  assert.ok(periksaSandiBaru("pendek123"));
+  assert.ok(periksaSandiBaru("12345678901"), "11 karakter masih ditolak");
+  assert.equal(periksaSandiBaru("123456789012"), null, "12 karakter diterima");
+  assert.equal(periksaSandiBaru("sandi dusun majegan"), null);
+});
+
+test("sandi berisi spasi saja ditolak", () => {
+  assert.ok(periksaSandiBaru(" ".repeat(20)));
 });

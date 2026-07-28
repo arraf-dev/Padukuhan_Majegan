@@ -1,16 +1,18 @@
 import Link from "next/link";
-import { aksesCepat, desa, kelompokUsia, pengumuman, statistik } from "@/content/majegan";
+import { aksesCepat, desa, pengumuman } from "@/content/majegan";
 import { Hitung } from "@/components/gerak";
 import { Ikon } from "@/components/ikon";
 import { Foto, JudulSection, KartuRingkas } from "@/components/potongan";
 import { beritaTerbit } from "@/lib/berita";
+import { type KelompokUsia, statistikPenduduk } from "@/lib/statistik";
 import { tanggalPendek } from "@/lib/tanggal";
 
 // ponytail: sama seperti halaman Berita — on-demand dulu, ISR di Minggu 5.
 export const dynamic = "force-dynamic";
 
 export default async function Beranda() {
-  const terbaru = await beritaTerbit(3);
+  const [terbaru, { ringkasan, usia }] = await Promise.all([beritaTerbit(3), statistikPenduduk()]);
+
   return (
     <>
       {/* ---------- Sambutan & akses cepat (mobile) ---------- */}
@@ -106,11 +108,11 @@ export default async function Beranda() {
           </div>
 
           <dl className="mt-[30px] flex border-t border-garis pt-5">
-            {statistik.map((s, i) => (
+            {ringkasan.map((s, i) => (
               <div
                 key={s.label}
                 className={`px-7 ${i === 0 ? "pl-0" : "border-l border-garis"} ${
-                  i === statistik.length - 1 ? "pr-0" : ""
+                  i === ringkasan.length - 1 ? "pr-0" : ""
                 }`}
               >
                 <dd className="font-serif text-[27px] font-bold text-hutan">
@@ -176,14 +178,14 @@ export default async function Beranda() {
             <div className="mb-2 font-serif text-[13px] font-semibold text-hutan md:mb-2.5 md:text-[15px]">
               Statistik Penduduk
             </div>
-            <BatangUsia />
+            <BatangUsia usia={usia} />
             <div className="mt-2 flex justify-between text-[10.5px] text-samar max-md:hidden">
-              {kelompokUsia.map((k) => (
+              {usia.map((k) => (
                 <span key={k.rentang}>{k.rentang}</span>
               ))}
             </div>
             <div className="mt-2 font-serif text-lg font-bold text-hutan md:hidden">
-              <Hitung ke={statistik[0].angka} />
+              <Hitung ke={ringkasan[0]?.angka ?? 0} />
             </div>
             <div className="text-[10.5px] text-samar md:hidden">jiwa · data 2026</div>
             <Link
@@ -219,16 +221,18 @@ export default async function Beranda() {
 }
 
 /** Batang kelompok usia — dipakai di teaser Beranda. */
-function BatangUsia() {
+function BatangUsia({ usia }: { usia: KelompokUsia[] }) {
+  const puncak = Math.max(0, ...usia.map((u) => u.persen));
+
   return (
     <div className="flex h-10 items-end gap-[5px] md:h-[52px] md:gap-[7px]">
-      {kelompokUsia.map((k) => (
+      {usia.map((k) => (
         <div
           key={k.rentang}
           style={{ height: `${k.persen}%` }}
           title={`${k.rentang} tahun`}
           className={`flex-1 rounded-t md:rounded-t-[4px] ${
-            k.persen === 100 ? "bg-emas" : "bg-garis-tebal"
+            k.persen === puncak ? "bg-emas" : "bg-garis-tebal"
           }`}
         />
       ))}

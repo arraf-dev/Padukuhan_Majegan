@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { desa, layanan } from "@/content/majegan";
+import { desa } from "@/content/majegan";
 import { CentangKotak, Ikon } from "@/components/ikon";
+import { semuaLayanan } from "@/lib/layanan";
+
+// Daftar layanan disunting dari panel admin; `generateStaticParams` dilepas
+// karena prerender saat build menuntut koneksi DB. ISR menyusul di Minggu 5.
+export const dynamic = "force-dynamic";
 
 type Params = {
   params: Promise<{ slug?: string[] }>;
@@ -10,15 +15,11 @@ type Params = {
 };
 
 /** Tanpa slug = layanan pertama, sama seperti tampilan awal pada mockup. */
-const cari = (slug?: string[]) =>
-  slug?.length ? layanan.find((l) => l.slug === slug[0]) : layanan[0];
-
-export async function generateStaticParams() {
-  return [{ slug: [] }, ...layanan.map((l) => ({ slug: [l.slug] }))];
-}
+const cari = (daftar: Awaited<ReturnType<typeof semuaLayanan>>, slug?: string[]) =>
+  slug?.length ? daftar.find((l) => l.slug === slug[0]) : daftar[0];
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const l = cari((await params).slug);
+  const l = cari(await semuaLayanan(), (await params).slug);
   return l ? { title: l.nama, description: l.deskripsi } : {};
 }
 
@@ -34,7 +35,8 @@ function Tebal({ teks }: { teks: string }) {
 }
 
 export default async function Layanan({ params, searchParams }: Params) {
-  const aktif = cari((await params).slug);
+  const layanan = await semuaLayanan();
+  const aktif = cari(layanan, (await params).slug);
   if (!aktif) notFound();
 
   // ponytail: memakai searchParams membuat rute ini dirender on-demand, bukan
@@ -154,7 +156,7 @@ export default async function Layanan({ params, searchParams }: Params) {
                   <div className="truncate text-[13.5px] font-bold text-tinta">
                     {aktif.berkas.nama}
                   </div>
-                  <div className="text-[11.5px] text-samar">{aktif.berkas.ukuran}</div>
+                  <div className="text-[11.5px] text-samar">templat isian, bisa diisi di rumah</div>
                 </div>
                 {/* ponytail: berkas asli menyusul dari perangkat dusun. */}
                 <span className="flex-none rounded-lg border-[1.5px] border-daun px-4 py-2 text-[13px] font-bold text-hutan/50">

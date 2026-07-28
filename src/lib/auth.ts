@@ -30,6 +30,22 @@ export function periksaKataSandi(sandi: string, tersimpan: string): boolean {
   return timingSafeEqual(disimpan, scryptSync(sandi, garam, PANJANG_KUNCI));
 }
 
+/** Panel admin adalah satu-satunya pintu masuk, jadi sandinya tidak boleh pendek. */
+export const PANJANG_SANDI_MIN = 12;
+
+/**
+ * Mengembalikan pesan galat, atau null bila sandinya sah.
+ *
+ * ponytail: cuma aturan panjang — tanpa syarat huruf besar/angka/simbol. Aturan
+ * komposisi mendorong perangkat dusun menulis sandi di kertas tempel, dan itu
+ * menurunkan keamanan, bukan menaikkannya.
+ */
+export function periksaSandiBaru(sandi: string): string | null {
+  if (sandi.length < PANJANG_SANDI_MIN) return `Sandi minimal ${PANJANG_SANDI_MIN} karakter.`;
+  if (sandi.trim().length === 0) return "Sandi tidak boleh hanya spasi.";
+  return null;
+}
+
 /* ---------- Token sesi ---------- */
 
 export type IsiSesi = { id: string; nama: string; peran: Peran; exp: number };
