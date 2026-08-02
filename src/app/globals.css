@@ -72,6 +72,19 @@
     font-weight: 600;
     color: var(--color-samar);
   }
+
+  /* Tombol ajakan utama — emas, terangkat sedikit saat disentuh kursor. */
+  .tombol-utama {
+    background: var(--color-emas);
+    color: var(--color-hutan);
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  .tombol-utama:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgb(138 109 43 / 0.35);
+  }
 }
 
 /* Pengumuman berjalan di mobile — 5 baris setinggi 24px, berhenti sejenak tiap baris. */
@@ -113,15 +126,63 @@
   transform: none;
 }
 
+/* Muncul berurutan, bukan serempak — `data-jeda` menunda tiap elemen ~80ms. */
+[data-reveal][data-jeda="1"] {
+  transition-delay: 0.08s;
+}
+[data-reveal][data-jeda="2"] {
+  transition-delay: 0.16s;
+}
+[data-reveal][data-jeda="3"] {
+  transition-delay: 0.24s;
+}
+[data-reveal][data-jeda="4"] {
+  transition-delay: 0.32s;
+}
+[data-reveal][data-jeda="5"] {
+  transition-delay: 0.4s;
+}
+
+/**
+ * Parallax gambar hero — digerakkan posisi gulir, bukan JavaScript.
+ *
+ * Yang bergerak gambar di dalam bingkai, bukan bingkainya, supaya garis tepi
+ * kartu tetap diam. `scale(1.08)` memberi kelebihan 4% di tiap sisi sehingga
+ * pergeseran 2.2% tidak pernah menyingkap celah kosong.
+ *
+ * ponytail: `@supports` menjaga peramban lama — tanpa penjaga itu animasi
+ * tetap dipasang dengan durasi 0s dan gambarnya menetap di posisi akhir.
+ */
+@supports (animation-timeline: view()) {
+  .paralaks > img {
+    animation: geserParalaks linear both;
+    animation-timeline: view();
+    animation-range: cover 0% cover 100%;
+  }
+  @keyframes geserParalaks {
+    from {
+      transform: scale(1.08) translateY(-2.2%);
+    }
+    to {
+      transform: scale(1.08) translateY(2.2%);
+    }
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     animation: none !important;
     transition: none !important;
+    transition-delay: 0s !important;
+    animation-timeline: none !important;
   }
   [data-reveal] {
     opacity: 1;
     transform: none;
+  }
+  .paralaks > img {
+    transform: none !important;
   }
 }
