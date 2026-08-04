@@ -17,13 +17,13 @@
 
 | Perubahan | Akibat |
 |---|---|
-| Deploy VPS ditunda ke **Minggu 3** | Minggu 1 & 2 murni koding + konten; `DEPLOY_VPS.md` tetap berlaku, cuma bergeser |
+| Deploy VPS ditunda ke **Minggu 3** | Minggu 1 & 2 murni koding + konten; rencana deploy ada di bagian B |
 | **MoM resmi dihapus** dari rencana | TBD Bab 12 (nama resmi, kebijakan anonim, siapa admin) dijawab lewat komunikasi biasa, tanpa forum formal |
 | Permintaan konten asli pindah ke **Minggu 2** | Digabung sekali kirim dengan izin data statistik |
 | **Modul Transparansi Anggaran (APBDes) dihapus** | APB-1/2/3 & ADM-6 keluar dari lingkup. Sudah dihapus dari kode (halaman `/anggaran`, tautan navigasi, data contoh) **dan dari PRD** (Bab 6.5, ADM-6, alur 7.4, entitas `anggaran` Bab 8) |
 | Statistik penduduk **tetap** | STA-1/2 & ADM-7 jalan terus |
 
-**Berubah lebih awal (27 Jul):** target deploy pindah dari Vercel ke **VPS** (`DEPLOY_VPS.md`, `RAB_Infrastruktur_Website.md`). Vercel tetap dipertahankan sebagai jalan keluar bila VPS tidak terbiayai — checklist-nya di bagian B.
+**Berubah lebih awal (27 Jul):** target deploy pindah dari Vercel ke **VPS** (`RAB_Infrastruktur_Website.md`). Vercel tetap dipertahankan sebagai jalan keluar bila VPS tidak terbiayai — checklist-nya di bagian B.
 
 > **PRD sudah disesuaikan** (28 Jul): APBDes dihapus dari ringkasan produk, tujuan, peran pengguna, ruang lingkup, kebutuhan fungsional, alur pengguna, model data, TBD, dan glosarium. Bab 6 dinomori ulang jadi 6.1–6.7, tapi **ID kebutuhan sengaja tidak digeser** — ADM-6 dibiarkan kosong supaya rujukan ADM-7/ADM-8 di dokumen ini dan di komentar kode tidak berubah arti. Alasan penghapusan tercatat di tabel **Riwayat Perubahan Lingkup** di kepala PRD, jadi laporan akhir punya pembenaran tertulis.
 
@@ -75,11 +75,11 @@ Kosong — seluruhnya digeser ke Minggu 2 (permintaan konten & izin data) atau d
 - [x] Publik: Lacak Pengaduan via kode tiket (LPR-3, wireframe 2d)
 - [x] Admin: tindak lanjut pengaduan — ubah status, tulis tanggapan (ADM-4, wireframe 2j)
 - [x] Tautan WhatsApp (wa.me) di titik kontak — ⚠️ **nomornya masih placeholder** (`majegan.ts:19`), ganti begitu nomor asli turun dari kalurahan
-- [ ] **Deploy VPS — task 25** *(pindahan dari Minggu 1, keputusan 28 Jul)*. Runbook `DEPLOY_VPS.md`; kode sudah siap (`output: "standalone"`, build teruji 23 MB)
+- [ ] **Deploy VPS — task 25** *(pindahan dari Minggu 1, keputusan 28 Jul)*. Rencana deploy ada di bagian B; kode sudah siap (`output: "standalone"`, build teruji 23 MB)
 
 **Non-teknis**
 - [ ] Validasi ulang syarat & alur tiap layanan bersama perangkat desa berwenang
-- [ ] **5 prasyarat `DEPLOY_VPS.md` §2 — beres sebelum VPS disewa:** nama pemegang akses, mata anggaran APBDes tahun depan, metode bayar atas nama desa, pengingat perpanjangan ke 2 kontak, alasan teknis tertulis
+- [ ] **5 prasyarat sebelum VPS disewa:** nama pemegang akses, mata anggaran APBDes tahun depan, metode bayar atas nama desa, pengingat perpanjangan ke 2 kontak, alasan teknis tertulis
 
 **Target minggu ini:** Flow 7.1 (kirim & lacak pengaduan) dan 7.2 (cari info layanan) jalan penuh dari sisi warga maupun admin, **dan situs sudah hidup di alamat sungguhan**.
 
@@ -125,7 +125,7 @@ Kosong — seluruhnya digeser ke Minggu 2 (permintaan konten & izin data) atau d
 
 **Teknis**
 - [ ] Perbaikan berdasar feedback minggu 5
-- [ ] Pindahkan kepemilikan akun layanan (VPS, domain, Neon/DB, UptimeRobot) ke email resmi desa — checklist serah terima lengkap di `DEPLOY_VPS.md` §9
+- [ ] Pindahkan kepemilikan akun layanan (VPS, domain, Neon/DB, UptimeRobot) ke email resmi desa
 - [ ] Final deploy & cek status domain (IP VPS langsung kalau `desa.id` belum siap)
 
 **Non-teknis**
@@ -169,7 +169,7 @@ Urut sesuai ketergantungan — kerjakan dari atas.
 | 22 | Dashboard admin: hitungan nyata dari DB (ADM-8) | BE | `app/admin/page.tsx` | ✅ | — |
 | 23 | Super admin kelola akun (AUTH-3) + ganti password (AUTH-4) | BE | `app/admin/akun/**`, `app/admin/sandi` | ✅ | — |
 | 24 | Ganti sumber data halaman publik: `majegan.ts` → query DB | FE+BE | `app/(publik)/**` | ✅ | `revalidate`/ISR menyusul di Minggu 5 |
-| 25 | Deploy **VPS** + env (`DATABASE_URL`, `RAHASIA_SESI`, `NEXT_PUBLIC_URL`) | Infra | `DEPLOY_VPS.md` | ⬜ | **dijadwalkan Minggu 3** · sewa VPS + 5 prasyarat §2 |
+| 25 | Deploy **VPS** + env (`DATABASE_URL`, `RAHASIA_SESI`, `NEXT_PUBLIC_URL`) | Infra | Bagian B | ⬜ | **dijadwalkan Minggu 3** · sewa VPS + 5 prasyarat |
 | 26 | Sistem gambar: `<Foto>`, 11 ilustrasi SVG, `opengraph-image`, panduan tukar foto | FE | `components/potongan.tsx`, `public/gambar/` | ✅ | foto asli dari kalurahan |
 | 27 | Responsif mobile + skeleton pemuatan | FE | `app/**/loading.tsx`, `components/situs.tsx` | ✅ | — |
 
@@ -216,7 +216,7 @@ Persiapan kodenya tetap selesai di minggu ini; yang bergeser hanya pemasangan se
 - [x] `package.json`: `"build": "prisma generate && prisma migrate deploy && next build"`
 - [x] `next.config.ts`: `output: "standalone"` — build teruji, `.next/standalone` 23 MB
 - [x] Kode sudah aman: `origin/main` berisi seluruh 9 commit
-- [ ] Pemasangan server — **Minggu 3**, runbook `DEPLOY_VPS.md`. Prasyarat §2 dikejar mulai Minggu 2 bareng permintaan konten
+- [ ] Pemasangan server — **Minggu 3**, mengikuti rencana di bagian B. Prasyarat deploy dikejar mulai Minggu 2 bareng permintaan konten
 
 ### Hari 4 (29 Jul) — Task 13–15: pengaduan masuk DB — ✅ selesai
 
@@ -230,7 +230,7 @@ Permintaan konten & izin statistik sekarang ada di daftar non-teknis **Minggu 2*
 
 ## Langkah Berikutnya (mulai 26 Jul) — urut, jangan diacak
 
-A dan C sudah selesai; database hidup dan seluruh cek otomatis lolos. **B (deploy) dijadwal ulang ke Minggu 3** — hambatannya bukan kode, tapi menyewa VPS dan lima prasyarat non-teknis di `DEPLOY_VPS.md` §2. Kerjakan **D** dulu (Langkah 4 dst.), dan mulai kejar prasyarat §2 di Minggu 2 supaya Minggu 3 tinggal mengeksekusi runbook.
+A dan C sudah selesai; database hidup dan seluruh cek otomatis lolos. **B (deploy) dijadwal ulang ke Minggu 3** — hambatannya bukan kode, tapi menyewa VPS dan lima prasyarat non-teknis. Kerjakan **D** dulu (Langkah 4 dst.), dan mulai kejar prasyarat deploy di Minggu 2 supaya Minggu 3 tinggal mengeksekusi rencana di bagian B.
 
 ### A. Nyalakan Neon & buktikan Hari 1–2 benar (≤ 1 jam, hari ini)
 
@@ -248,9 +248,9 @@ A dan C sudah selesai; database hidup dan seluruh cek otomatis lolos. **B (deplo
 
 ### B. Deploy — Task 25 · **dijadwalkan Minggu 3 (6–12 Ags)**
 
-> **Jalur utama sekarang VPS, bukan Vercel.** Runbook lengkapnya `DEPLOY_VPS.md` — jangan disalin ke sini supaya tidak ada dua versi yang bisa berbeda. Yang paling menentukan di sana bukan perintah shell-nya, tapi **§2: lima prasyarat yang harus beres sebelum VPS disewa** (siapa pemegang akses, mata anggaran APBDes, rekening desa). Kejar itu bareng permintaan konten ke kalurahan.
+> **Jalur utama sekarang VPS, bukan Vercel.** Sebelum VPS disewa, selesaikan lima prasyarat non-teknis: pemegang akses, mata anggaran APBDes, metode pembayaran desa, dua kontak pengingat, dan alasan teknis tertulis.
 >
-> **B2–B6 di bawah tetap dipertahankan** sebagai jalan keluar bila VPS tidak terbiayai (`DEPLOY_VPS.md` §11) — kode ini netral penyedia, jadi checklist-nya tetap sahih kapan pun dibutuhkan.
+> **B2–B6 di bawah tetap dipertahankan** sebagai jalan keluar bila VPS tidak terbiayai — kode ini netral penyedia, jadi checklist-nya tetap sahih kapan pun dibutuhkan.
 
 #### B0. ✅ Push — selesai
 
@@ -467,7 +467,7 @@ Pengaman yang **tidak boleh disederhanakan**:
 
 ### Langkah 8 — sisa kecil (Minggu 5, saat polish)
 
-- [ ] Unggah gambar (ADM-5, task 17) — sampai ini jadi, komposer pakai isian URL manual (host yang diizinkan diatur di `next.config.ts`) dan 11 ilustrasi SVG di `public/gambar/` menutupi slot yang kosong. Cara menukarnya dengan foto asli: `public/gambar/GAMBAR.md`
+- [ ] Unggah gambar (ADM-5, task 17) — sampai ini jadi, komposer pakai isian URL manual (host yang diizinkan diatur di `next.config.ts`) dan 11 ilustrasi SVG di `public/gambar/` menutupi slot yang kosong. Ganti ilustrasi dengan foto asli memakai nama berkas dan rasio yang sama.
 - [ ] Hitungan suka & tanggapan di detail berita (sekarang statis) — atau buang saja kalau tidak ada yang memakainya
 - [ ] URL sosial media & WhatsApp di footer, begitu datanya turun dari kalurahan
 

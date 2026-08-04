@@ -11,7 +11,7 @@
 | **Disusun oleh** | Abdul Rafi — Tim KKN UNY (Pengembang) |
 | **Untuk** | Pemerintah Kalurahan Pandowoharjo (Klien) |
 | **Tanggal** | 14 Juli 2026 |
-| **Dokumen Terkait** | `TASKS.md` (rencana eksekusi 6 minggu), `DEPLOY_VPS.md` (runbook infrastruktur), `RAB_Infrastruktur_Website.md`. |
+| **Dokumen Terkait** | `TASKS.md` (rencana eksekusi 6 minggu), `RAB_Infrastruktur_Website.md`. |
 
 ## Riwayat Perubahan Lingkup
 
