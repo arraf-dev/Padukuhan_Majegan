@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { type StatusPengaduan } from "@/content/majegan";
 import { Ikon } from "@/components/ikon";
+import { isianTebal, kartu } from "@/components/primitif";
 import { db } from "@/lib/db";
 import { tanggalPanjang } from "@/lib/tanggal";
 
@@ -43,16 +44,16 @@ export default async function Lacak({
     : null;
 
   return (
-    <div className="mx-auto max-w-2xl px-4 py-8 md:py-12">
-      <h1 className="font-serif text-2xl font-semibold text-hutan md:text-[30px]">
+    <div className="mx-auto max-w-2xl px-4 py-8 md:py-12 lg:max-w-3xl lg:py-16">
+      <h1 data-reveal className="judul-halaman">
         Lacak Pengaduan
       </h1>
-      <p className="mt-1.5 text-sm leading-relaxed text-teks">
+      <p className="mt-1.5 text-sm leading-relaxed text-teks lg:mt-2.5 lg:text-[15px]">
         Masukkan kode tiket yang Anda terima setelah mengirim laporan — contohnya{" "}
         <span className="font-mono font-bold text-emas-tua">MJG-2607-4X9K</span>.
       </p>
 
-      <form className="mt-5 flex flex-wrap gap-2.5">
+      <form data-reveal data-jeda="1" className="mt-5 flex flex-wrap gap-2.5">
         <label htmlFor="kode" className="sr-only">
           Kode tiket
         </label>
@@ -63,11 +64,13 @@ export default async function Lacak({
           required
           autoCapitalize="characters"
           placeholder="MJG-XXXX-XXXX"
-          className="min-w-52 flex-1 rounded-[9px] border-[1.5px] border-garis-tebal bg-kertas px-3.5 py-3 font-mono text-sm tracking-wide text-tinta uppercase placeholder:font-sans placeholder:normal-case placeholder:text-samar focus:border-daun"
+          className={`${isianTebal} min-w-52 flex-1 font-mono tracking-wide uppercase placeholder:font-sans placeholder:normal-case`}
         />
+        {/* Latar hutan, bukan emas: di halaman ini "Lacak" adalah aksi tunggal,
+            tidak bersaing dengan CTA lain, dan kontras gelapnya lebih tegas. */}
         <button
           type="submit"
-          className="min-h-11 rounded-[10px] bg-hutan px-6 py-3 text-sm font-extrabold text-krem hover:bg-daun"
+          className="inline-flex min-h-11 items-center justify-center rounded-[10px] bg-hutan px-6 py-3 text-sm font-bold text-krem transition-colors duration-200 ease-out hover:bg-daun"
         >
           Lacak
         </button>
@@ -84,7 +87,7 @@ export default async function Lacak({
       )}
 
       {hasil && (
-        <section className="mt-5 rounded-2xl border border-garis bg-kertas px-5 py-5 md:px-7 md:py-6">
+        <section data-reveal className={`${kartu()} mt-5 px-5 py-5 md:px-7 md:py-6`}>
           <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <span className="font-mono text-base font-bold text-hutan">{hasil.kodeTiket}</span>
             <span className="text-xs text-samar">
@@ -138,7 +141,10 @@ export default async function Lacak({
       <div className="mt-6 flex flex-wrap items-center gap-3 rounded-[10px] border border-garis bg-krem px-4 py-3.5 text-[12.5px] text-redup">
         <Ikon nama="obrolan" ukuran={16} className="flex-none text-daun" />
         Kehilangan kode tiket?{" "}
-        <Link href="/pengaduan" className="font-semibold text-daun underline">
+        <Link
+          href="/pengaduan"
+          className="font-semibold text-daun underline transition-colors duration-200 ease-out hover:text-hutan"
+        >
           kirim laporan baru
         </Link>{" "}
         atau hubungi perangkat dusun lewat WhatsApp.

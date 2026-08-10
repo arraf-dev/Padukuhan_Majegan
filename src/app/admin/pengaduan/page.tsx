@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import type { StatusPengaduan } from "@/content/majegan";
 import { LencanaStatus } from "@/components/potongan";
+import { KopHalaman, kartu, kartuPutus } from "@/components/primitif";
 import { db } from "@/lib/db";
 import { wajibMasuk } from "@/lib/sesi";
 import { tanggalPendekTahun } from "@/lib/tanggal";
@@ -37,12 +38,12 @@ export default async function PengaduanAdmin({
 
   return (
     <Kerangka peran={peran} nama={nama}>
-      <h1 className="font-serif text-xl font-semibold text-hutan md:text-2xl">Pengaduan Warga</h1>
-      <p className="mt-1 text-[12.5px] text-samar">
-        Identitas pelapor hanya terlihat di panel ini, tidak pernah di halaman publik.
-      </p>
+      <KopHalaman
+        judul="Pengaduan Warga"
+        keterangan="Identitas pelapor hanya terlihat di panel ini, tidak pernah di halaman publik."
+      />
 
-      <div className="my-4.5 flex flex-wrap gap-2">
+      <div className="mb-4 flex flex-wrap gap-2">
         {[undefined, ...semuaStatus].map((s) => {
           const ini = s === pilihan;
           return (
@@ -50,10 +51,10 @@ export default async function PengaduanAdmin({
               key={s ?? "semua"}
               href={s ? `/admin/pengaduan?status=${s}` : "/admin/pengaduan"}
               aria-current={ini ? "true" : undefined}
-              className={`rounded-full px-4 py-2 text-[12.5px] ${
+              className={`rounded-full px-4 py-2 text-[12.5px] transition-colors duration-200 ease-out ${
                 ini
                   ? "bg-hutan font-bold text-krem"
-                  : "border border-garis-tebal font-semibold text-teks hover:border-daun hover:text-hutan"
+                  : "border border-garis-tebal font-semibold text-teks hover:border-daun hover:bg-emas-lembut hover:text-hutan"
               }`}
             >
               {s ?? "Semua"}
@@ -63,16 +64,18 @@ export default async function PengaduanAdmin({
       </div>
 
       {daftar.length === 0 ? (
-        <p className="rounded-xl border border-dashed border-garis-tebal bg-panel px-5 py-10 text-center text-sm text-redup">
+        <p className={kartuPutus}>
           {pilihan ? `Tidak ada pengaduan berstatus ${pilihan}.` : "Belum ada pengaduan masuk."}
         </p>
       ) : (
-        <ul className="flex flex-col gap-2.5">
+        // Sengaja tetap satu kolom: barisnya memuat cuplikan isi yang panjang,
+        // dua kolom malah menyempitkan teks yang jadi alasan baris ini dibaca.
+        <ul className="flex flex-col gap-2.5 lg:gap-3">
           {daftar.map((p) => (
             <li key={p.id}>
               <Link
                 href={`/admin/pengaduan/${p.id}`}
-                className="block rounded-xl border border-garis bg-kertas px-4 py-3.5 transition hover:border-daun md:px-5"
+                className={`${kartu(true)} block px-4 py-3.5 md:px-5 lg:px-6 lg:py-4`}
               >
                 <div className="flex flex-wrap items-center gap-x-3.5 gap-y-2">
                   <span className="flex-none font-mono text-[13px] font-bold text-hutan">

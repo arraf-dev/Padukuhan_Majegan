@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { akun, menuAdmin, type Peran } from "@/content/majegan";
 import { Ikon, Logo } from "@/components/ikon";
+import { keluar } from "@/app/admin/aksi";
 
 /**
  * Sidebar panel admin. Peran `admin` hanya melihat Dashboard, Berita, dan
@@ -12,19 +13,24 @@ import { Ikon, Logo } from "@/components/ikon";
 export function Sidebar({ peran, nama }: { peran: Peran; nama: string }) {
   const path = usePathname();
   const terbatas = peran === "admin";
-  const dasar = "flex items-center gap-3 rounded-[9px] px-3 py-2.5 text-[13.5px]";
+  const dasar =
+    "flex items-center gap-3 rounded-[10px] px-3 py-2.5 text-[13.5px] transition-colors duration-200 ease-out lg:px-3.5 lg:py-3 lg:text-sm";
 
   return (
-    <aside className="flex flex-col bg-hutan px-3.5 pt-5 pb-4.5 text-krem max-md:hidden">
+    // Sticky setinggi layar: daftar isi panel sering panjang (berita, pengaduan),
+    // tanpa ini menu ikut tergulir hilang dan harus balik ke atas untuk pindah.
+    <aside className="flex flex-col bg-hutan px-3.5 pt-5 pb-4.5 text-krem max-md:hidden md:sticky md:top-0 md:h-screen lg:px-4 lg:pt-6">
       <div className="flex items-center gap-2.5 border-b border-krem/15 px-2.5 pb-4.5">
         <Logo ukuran={30} />
         <div>
-          <div className="font-serif text-sm font-semibold">Majegan Admin</div>
-          <div className="text-[10px] text-krem/60">panel perangkat dusun</div>
+          <div className="font-serif text-sm font-semibold lg:text-[15px]">Majegan Admin</div>
+          <div className="text-[10px] text-krem/70 lg:text-[11px]">panel perangkat dusun</div>
         </div>
       </div>
 
-      <nav className="flex flex-1 flex-col gap-[3px] pt-3.5">
+      {/* min-h-0 + overflow: di layar pendek menu terpanjang (superadmin) tidak
+          terpotong tanpa bisa dijangkau karena induknya dipatok h-screen. */}
+      <nav className="flex min-h-0 flex-1 flex-col gap-[3px] overflow-y-auto pt-3.5">
         {menuAdmin.map((m, i) => {
           const kunci = terbatas && m.superadmin;
           const pertamaKunci = kunci && !menuAdmin[i - 1]?.superadmin;
@@ -36,7 +42,7 @@ export function Sidebar({ peran, nama }: { peran: Peran; nama: string }) {
                 {pertamaKunci && (
                   <>
                     <div className="mx-2.5 mt-2.5 mb-1.5 border-t border-dashed border-krem/20" />
-                    <div className="px-3 pt-1 pb-1.5 text-[10px] font-bold tracking-[.1em] text-krem/45">
+                    <div className="px-3 pt-1 pb-1.5 text-[10px] font-bold tracking-[.1em] text-krem/70">
                       KHUSUS SUPERADMIN
                     </div>
                   </>
@@ -44,7 +50,8 @@ export function Sidebar({ peran, nama }: { peran: Peran; nama: string }) {
                 <span
                   aria-disabled="true"
                   title="Hanya SuperAdmin (Dukuh) yang dapat membuka menu ini"
-                  className={`${dasar} cursor-not-allowed font-medium text-krem/35`}
+                  // /55, bukan /35: tetap terbaca "terkunci" tapi labelnya masih bisa dibaca.
+                  className={`${dasar} cursor-not-allowed font-medium text-krem/55`}
                 >
                   <Ikon nama="gembok" ukuran={15} />
                   {m.label}
@@ -71,12 +78,22 @@ export function Sidebar({ peran, nama }: { peran: Peran; nama: string }) {
         })}
       </nav>
 
-      <div className="flex items-center gap-2.5 border-t border-krem/15 px-2.5 pt-3">
-        <div className="foto size-8 flex-none rounded-full border-[1.5px] border-emas" />
-        <div className="flex-1">
-          <div className="text-[12.5px] font-bold">{nama}</div>
-          <div className="text-[10px] text-krem/60">{akun[peran].jabatan}</div>
+      {/* Keluar dipindah ke sini dari Dashboard: sebelumnya hanya bisa diakses
+          dari satu halaman. Aksi `keluar` sendiri tidak diubah. */}
+      <div className="flex flex-none items-center gap-2.5 border-t border-krem/15 px-2.5 pt-3 lg:pt-4">
+        <div className="foto size-8 flex-none rounded-full border-[1.5px] border-emas lg:size-9" />
+        <div className="min-w-0 flex-1">
+          <div className="truncate text-[12.5px] font-bold lg:text-[13.5px]">{nama}</div>
+          <div className="text-[10px] text-krem/70 lg:text-[11px]">{akun[peran].jabatan}</div>
         </div>
+        <form action={keluar}>
+          <button
+            type="submit"
+            className="rounded-[10px] px-2.5 py-2 text-[11.5px] font-bold text-krem/70 transition-colors duration-200 ease-out hover:bg-krem/10 hover:text-emas"
+          >
+            Keluar
+          </button>
+        </form>
       </div>
     </aside>
   );

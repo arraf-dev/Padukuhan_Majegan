@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Atap, Ikon } from "@/components/ikon";
 import { Foto, JudulSection, KartuRingkas, LencanaKategori } from "@/components/potongan";
+import { tombol } from "@/components/primitif";
 import { beritaSlug, beritaTerbit } from "@/lib/berita";
 import { tanggalPanjang } from "@/lib/tanggal";
 
@@ -25,22 +26,23 @@ export default async function DetailBerita({ params }: Params) {
   const lainnya = (await beritaTerbit(4)).filter((x) => x.slug !== b.slug).slice(0, 3);
 
   return (
-    <div className="px-4 pt-5 pb-10 md:px-12 md:pt-7 md:pb-12">
-      <Link
-        href="/berita"
-        className="inline-flex items-center gap-2 text-[13px] font-semibold text-daun hover:text-hutan"
-      >
+    <div className="wadah px-4 pt-5 pb-10 md:px-12 md:pt-8 md:pb-12 lg:px-16 lg:pt-10 lg:pb-16">
+      <Link href="/berita" className={`${tombol("teks")} text-[13px] lg:text-sm`}>
         <Ikon nama="kembali" ukuran={15} />
         Kembali ke Kabar Majegan
       </Link>
 
-      <article className="mx-auto mt-4 max-w-3xl">
+      {/**
+       * Di bawah xl: susunannya persis seperti sebelumnya — artikel 768px di
+       * tengah, "Berita Lainnya" menumpuk di bawah. Mulai 1280px keduanya
+       * masuk satu grid sehingga gutter kosong di kanan terpakai jadi rail.
+       */}
+      <div className="xl:grid xl:grid-cols-[minmax(0,760px)_300px] xl:items-start xl:justify-center xl:gap-12">
+      <article className="mx-auto mt-4 max-w-3xl xl:mx-0 xl:max-w-none">
         <LencanaKategori kategori={b.kategori} />
-        <h1 className="mt-3 font-serif text-2xl leading-tight font-semibold text-hutan md:text-[34px]">
-          {b.judul}
-        </h1>
+        <h1 className="judul-halaman mt-3">{b.judul}</h1>
 
-        <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-dashed border-garis pb-4 text-[12.5px] text-samar">
+        <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-dashed border-garis pb-4 text-[12.5px] text-samar lg:mt-4 lg:pb-5 lg:text-[13.5px]">
           <span className="inline-flex items-center gap-2">
             <Atap ukuran={20} className="flex-none" />
             <time dateTime={b.tanggal} className="font-mono font-bold text-emas-tua">
@@ -57,44 +59,36 @@ export default async function DetailBerita({ params }: Params) {
           src={b.foto}
           keterangan={b.fotoKeterangan}
           prioritas
-          sizes="(min-width: 768px) 720px, 100vw"
-          className="mt-5 aspect-[16/9] rounded-xl"
+          sizes="(min-width: 768px) 760px, 100vw"
+          className="mt-5 aspect-[16/9] rounded-xl lg:mt-7 lg:aspect-[21/9] lg:rounded-2xl"
         />
 
-        <p className="mt-5 border-l-[3px] border-emas pl-4 text-[15px] leading-[1.75] font-semibold text-tinta">
+        <p className="mt-5 border-l-[3px] border-emas pl-4 text-[15px] leading-[1.75] font-semibold text-tinta lg:mt-7 lg:pl-5 lg:text-[18px]">
           {b.ringkasan}
         </p>
 
         {b.isi.map((paragraf) => (
-          <p key={paragraf.slice(0, 40)} className="mt-4 text-[15px] leading-[1.85] text-teks">
+          <p
+            key={paragraf.slice(0, 40)}
+            className="mt-4 text-[15px] leading-[1.85] text-teks lg:mt-5 lg:text-[17px] lg:leading-[1.9]"
+          >
             {paragraf}
           </p>
         ))}
-
-        {/* ponytail: suka & tanggapan masih angka statis — butuh tabel + sesi
-            sebelum tombolnya bisa ditekan. Ditampilkan sebagai info, bukan aksi. */}
-        <div className="mt-7 flex flex-wrap items-center gap-3 border-t border-garis pt-4">
-          <span className="inline-flex items-center gap-[7px] rounded-full border border-emas-garis bg-emas-muda px-3.5 py-[7px] text-xs font-extrabold text-emas-tua">
-            <Ikon nama="hati" ukuran={14} />
-            {b.suka} warga suka
-          </span>
-          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-redup">
-            <Ikon nama="balon" ukuran={14} />
-            {b.tanggapan} tanggapan
-          </span>
-          <span className="flex-1" />
-          <span className="text-xs text-samar">Dikelola perangkat dusun &amp; karang taruna</span>
-        </div>
       </article>
 
-      <section className="mx-auto mt-10 max-w-3xl">
+      {/* Jadi rail kanan yang menempel mulai xl; di bawah itu tetap blok biasa
+          di bawah artikel. KartuRingkas sudah bertumpuk vertikal sejak md:,
+          jadi bentuknya langsung cocok untuk kolom sempit. */}
+      <section className="mx-auto mt-10 max-w-3xl xl:sticky xl:top-24 xl:mx-0 xl:mt-4 xl:max-w-none">
         <JudulSection anak="Berita Lainnya" tautan={{ href: "/berita", label: "semua berita" }} />
-        <div className="grid gap-3 md:grid-cols-3">
+        <div className="grid gap-3 md:grid-cols-3 xl:grid-cols-1 xl:gap-4">
           {lainnya.map((l) => (
             <KartuRingkas key={l.slug} b={l} />
           ))}
         </div>
       </section>
+      </div>
     </div>
   );
 }

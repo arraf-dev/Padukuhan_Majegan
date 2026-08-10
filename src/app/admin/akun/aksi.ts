@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { hashKataSandi, periksaKataSandi, periksaSandiBaru } from "@/lib/auth";
+import { emailSah, hashKataSandi, periksaKataSandi, periksaSandiBaru } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { wajibMasuk, wajibSuperadmin } from "@/lib/sesi";
 
@@ -33,7 +33,7 @@ export async function tambahPengguna(data: FormData) {
   const sandi = String(data.get("sandi") ?? "");
   const peran = teks(data, "peran") === "superadmin" ? ("superadmin" as const) : ("admin" as const);
 
-  if (!nama || !email) redirect(kembali("lengkapi"));
+  if (!nama || !emailSah(email)) redirect(kembali("lengkapi"));
   if (periksaSandiBaru(sandi)) redirect(kembali("sandi-pendek"));
 
   const ada = await db.pengguna.findUnique({ where: { email }, select: { id: true } });

@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { KopHalaman, isian, kartu, kartuPutus, label } from "@/components/primitif";
+import { Button } from "@/components/ui/button";
 import { Kerangka } from "@/app/admin/kerangka";
 import { hapusPengguna, setelSandi, simpanPengguna, tambahPengguna } from "@/app/admin/akun/aksi";
 import { PANJANG_SANDI_MIN } from "@/lib/auth";
@@ -23,9 +26,6 @@ const kabar: Record<string, string> = {
   "galat-diri-sendiri": "Anda tidak bisa menonaktifkan atau menghapus akun Anda sendiri.",
 };
 
-const isian =
-  "w-full rounded-[9px] border border-garis bg-krem px-3.5 py-2.5 text-[13.5px] text-tinta placeholder:text-samar focus:border-daun focus:outline-none";
-const label = "mb-1.5 block text-[11px] font-bold tracking-[.08em] text-samar";
 
 export default async function KelolaAkun({
   searchParams,
@@ -60,20 +60,25 @@ export default async function KelolaAkun({
 
   return (
     <Kerangka peran={saya.peran} nama={saya.nama}>
-      <div className="mb-5">
-        <h1 className="font-serif text-xl font-semibold text-hutan md:text-2xl">Akun & Pengguna</h1>
-        <p className="mt-1 text-[12.5px] text-samar">
-          {daftar.length} akun · {superadminAktif} superadmin aktif ·{" "}
-          <Link href="/admin/sandi" className="font-semibold text-daun underline">
-            ganti sandi saya
-          </Link>
-        </p>
-      </div>
+      <KopHalaman
+        judul="Akun & Pengguna"
+        keterangan={
+          <>
+            {daftar.length} akun · {superadminAktif} superadmin aktif ·{" "}
+            <Link
+              href="/admin/sandi"
+              className="font-semibold text-daun underline transition-colors duration-200 ease-out hover:text-hutan"
+            >
+              ganti sandi saya
+            </Link>
+          </>
+        }
+      />
 
       {pesan && (
         <p
           role="status"
-          className={`mb-4 rounded-[10px] px-4 py-3 text-[13px] font-semibold ${
+          className={`mb-4 rounded-xl px-4 py-3 text-[13px] font-semibold ${
             q.galat
               ? "border border-bata/35 bg-bata/10 text-bata"
               : "border border-emas-garis bg-emas-muda text-emas-teks"
@@ -83,13 +88,19 @@ export default async function KelolaAkun({
         </p>
       )}
 
-      <div className="flex flex-col gap-2.5">
+      <div className="flex flex-col gap-2.5 lg:gap-3">
+        {daftar.length === 0 && (
+          <p className={kartuPutus}>
+            Belum ada akun terdaftar. Tambahkan lewat borang <strong>Tambah Akun Admin</strong> di
+            bawah.
+          </p>
+        )}
         {daftar.map((p) => {
           const sayaSendiri = p.id === saya.id;
           const setelUlang = q.sandi === p.id;
 
           return (
-            <div key={p.id} className="rounded-xl border border-garis bg-kertas px-4 py-3.5 md:px-5">
+            <div key={p.id} className={`${kartu()} px-4 py-3.5 md:px-5 lg:px-6 lg:py-5`}>
               <form action={simpanPengguna} className="flex flex-wrap items-end gap-3">
                 <input type="hidden" name="id" value={p.id} />
 
@@ -127,18 +138,15 @@ export default async function KelolaAkun({
                   Aktif
                 </label>
 
-                <button
-                  type="submit"
-                  className="min-h-11 rounded-lg border-[1.5px] border-daun px-3.5 py-2.5 text-xs font-bold text-hutan hover:bg-[#EFE9D6]"
-                >
+                <Button type="submit" variant="outline" className="min-h-11 border-daun">
                   Simpan
-                </button>
+                </Button>
               </form>
 
               <div className="mt-2.5 flex flex-wrap items-center gap-3 text-xs">
                 <Link
                   href={setelUlang ? "/admin/akun" : `/admin/akun?sandi=${p.id}`}
-                  className="font-semibold text-redup hover:text-hutan"
+                  className="font-semibold text-redup transition-colors duration-200 ease-out hover:text-hutan"
                 >
                   {setelUlang ? "Batal setel sandi" : "Setel ulang sandi"}
                 </Link>
@@ -148,9 +156,10 @@ export default async function KelolaAkun({
                 ) : (
                   <form action={hapusPengguna}>
                     <input type="hidden" name="id" value={p.id} />
-                    <button
+                    <Button
                       type="submit"
-                      className="font-semibold text-redup hover:text-bata"
+                      variant="ghost"
+                      className="min-h-11 px-2"
                       // Akun yang pernah menulis berita dinonaktifkan, bukan dihapus.
                       title={
                         p._count.berita > 0
@@ -159,7 +168,7 @@ export default async function KelolaAkun({
                       }
                     >
                       {p._count.berita > 0 ? "Nonaktifkan" : "Hapus"}
-                    </button>
+                    </Button>
                   </form>
                 )}
               </div>
@@ -167,7 +176,7 @@ export default async function KelolaAkun({
               {setelUlang && (
                 <form
                   action={setelSandi}
-                  className="mt-3 flex flex-wrap items-end gap-3 rounded-[10px] border border-emas-garis bg-emas-muda px-4 py-3"
+                  className="mt-3 flex flex-wrap items-end gap-3 rounded-xl border border-emas-garis bg-emas-muda px-4 py-3"
                 >
                   <input type="hidden" name="id" value={p.id} />
                   <div className="min-w-52 flex-1">
@@ -183,12 +192,9 @@ export default async function KelolaAkun({
                       className={isian}
                     />
                   </div>
-                  <button
-                    type="submit"
-                    className="min-h-11 rounded-lg bg-hutan px-4 py-2.5 text-xs font-bold text-krem hover:bg-daun"
-                  >
+                  <Button type="submit" className="min-h-11">
                     Setel Sandi
-                  </button>
+                  </Button>
                   <p className="w-full text-[11.5px] text-emas-teks">
                     Sandi tampil terbaca supaya bisa langsung dicatat dan disampaikan — mintalah
                     yang bersangkutan menggantinya sendiri setelah berhasil masuk.
@@ -203,10 +209,10 @@ export default async function KelolaAkun({
       {/* ---------- Tambah akun ---------- */}
       <form
         action={tambahPengguna}
-        className="mt-6 rounded-xl border-[1.5px] border-dashed border-garis-tebal bg-panel px-4 py-4 md:px-5"
+        className="mt-6 rounded-xl border border-dashed border-garis-tebal bg-panel px-4 py-4 md:px-5 lg:mt-8 lg:rounded-2xl lg:px-6 lg:py-6"
       >
-        <h2 className="mb-3 font-serif text-[15px] font-semibold text-hutan">Tambah Akun Admin</h2>
-        <div className="flex flex-wrap items-end gap-3">
+        <h2 className="mb-3 font-serif text-base font-semibold text-hutan lg:mb-4 lg:text-[19px]">Tambah Akun Admin</h2>
+        <div className="flex flex-wrap items-end gap-3 lg:gap-4">
           <div className="min-w-40 flex-1">
             <label className={label} htmlFor="nama-baru">
               NAMA
@@ -253,12 +259,10 @@ export default async function KelolaAkun({
               className={isian}
             />
           </div>
-          <button
-            type="submit"
-            className="inline-flex min-h-11 items-center gap-2 rounded-[9px] bg-hutan px-4.5 py-2.5 text-[13.5px] font-bold text-krem hover:bg-daun"
-          >
-            <span className="text-base leading-none">+</span> Tambah
-          </button>
+          <Button type="submit" className="group min-h-11">
+            Tambah
+            <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+          </Button>
         </div>
       </form>
     </Kerangka>

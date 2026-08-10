@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { kategoriBerita, type KategoriBerita } from "@/content/majegan";
 import { Atap, CentangBulat, Ikon } from "@/components/ikon";
+import { IsianBerkas } from "@/components/isian-berkas";
 import { tanggalKapital } from "@/lib/tanggal";
 
 const BATAS_CAPTION = 2200;
@@ -23,10 +24,6 @@ export type BeritaAwal = {
  * Komposer berita 3 langkah (ADM-1). Pratinjau di kanan memakai state yang sama
  * dengan form, jadi yang dilihat penulis benar-benar bentuk kartunya di halaman
  * Berita. Dipakai untuk tulis baru maupun sunting — bedanya cuma `awal`.
- *
- * ponytail: isian foto masih berupa tautan gambar, bukan unggahan. Pemilih
- * berkas dihapus, bukan dibiarkan sebagai hiasan — file-nya toh belum bisa
- * dikirim ke mana pun. Kembalikan dropzone-nya begitu Vercel Blob aktif (ADM-5).
  */
 export function Komposer({
   aksi,
@@ -59,18 +56,22 @@ export function Komposer({
   return (
     <form
       action={aksi}
-      className="grid items-start gap-7 px-4 py-6 md:grid-cols-[1fr_460px] md:px-8.5 md:pt-7.5 md:pb-9.5"
+      // max-w di lg: rail pratayang dipatok 460px, tanpa batas kolom penyunting
+      // melar sampai 1400px+ di monitor lebar dan barisnya jadi sulit dibaca.
+      className="grid items-start gap-7 px-4 py-6 md:grid-cols-[1fr_460px] md:px-8.5 md:pt-7.5 md:pb-9.5 lg:mx-auto lg:w-full lg:max-w-[1400px] lg:gap-10 lg:px-12 lg:pt-9 lg:pb-12"
     >
       <input type="hidden" name="id" value={awal?.id ?? ""} />
       <input type="hidden" name="kategori" value={kategori ?? ""} />
 
-      <div className="rounded-2xl border border-garis bg-kertas px-5 py-6 md:px-7.5 md:py-6.5">
+      <div className="rounded-2xl border border-garis bg-kertas px-5 py-6 md:px-7.5 md:py-6.5 lg:px-9 lg:py-8">
         {galat && (
           <p
             role="alert"
             className="mb-5 rounded-[10px] border border-bata/40 bg-bata/10 px-4 py-3 text-[13px] font-semibold text-bata"
           >
-            Judul, tulisan, dan kategori wajib terisi sebelum disimpan.
+            {galat === "berkas"
+              ? "Foto harus berformat JPG, PNG, atau WEBP dengan ukuran maksimal 4 MB."
+              : "Judul, tulisan, dan kategori wajib terisi sebelum disimpan."}
           </p>
         )}
 
@@ -100,30 +101,24 @@ export function Komposer({
         </ol>
 
         {/* 1 · foto */}
-        <label htmlFor="gambarSampul" className={label}>
+        <span className={label}>
           Foto kegiatan <span className="font-medium text-samar">(opsional)</span>
-        </label>
-        <div className="flex items-stretch gap-3.5">
-          {gambar.trim() && (
-            <div className="size-[190px] flex-none overflow-hidden rounded-xl border border-garis">
-              {/* eslint-disable-next-line @next/next/no-img-element -- URL luar, belum ada Blob */}
+        </span>
+        {awal?.gambarSampul && <input type="hidden" name="gambarSampul" value={awal.gambarSampul} />}
+        <div className="grid gap-3.5 sm:grid-cols-[190px_1fr]">
+          <div className="foto flex aspect-square items-center justify-center overflow-hidden rounded-xl border border-garis">
+            {gambar.trim() ? (
+              // eslint-disable-next-line @next/next/no-img-element -- pratinjau unggahan lokal/Blob
               <img src={gambar} alt="" className="size-full object-cover" />
-            </div>
-          )}
-          <div className="flex flex-1 flex-col justify-center gap-2 rounded-xl border-[1.5px] border-dashed border-garis-tebal bg-krem px-4 py-5">
-            <div className="flex items-center gap-2 text-[13px] text-samar">
-              <Ikon nama="foto" ukuran={22} className="flex-none" />
-              Tempel tautan foto — unggahan langsung dari HP menyusul (ADM-5).
-            </div>
-            <input
-              id="gambarSampul"
-              name="gambarSampul"
-              value={gambar}
-              onChange={(e) => setGambar(e.target.value)}
-              placeholder="https://…/foto-kegiatan.jpg"
-              className={`${kotak} border-garis-tebal`}
-            />
+            ) : (
+              <span className="foto-cap text-[10px]">Foto belum ada</span>
+            )}
           </div>
+          <IsianBerkas
+            name="gambarSampulBerkas"
+            awal={awal?.gambarSampul}
+            onPilih={setGambar}
+          />
         </div>
 
         {/* 2 · tulis */}
@@ -219,7 +214,9 @@ export function Komposer({
       </div>
 
       {/* ---------- Pratinjau ---------- */}
-      <div className="flex flex-col gap-3.5">
+      {/* Menempel di lg: penyunting jauh lebih panjang dari pratayang, tanpa ini
+          pratayang tergulir hilang justru saat isinya sedang diketik. */}
+      <div className="flex flex-col gap-3.5 lg:sticky lg:top-6 lg:gap-4">
         <div className="rounded-2xl border border-garis bg-kertas px-5 py-4.5">
           <h2 className="mb-3 font-serif text-[15px] font-semibold text-hutan">
             Pratinjau di website
@@ -228,7 +225,7 @@ export function Komposer({
             <div className="relative px-2 pt-2">
               <div className="foto flex aspect-square items-center justify-center overflow-hidden rounded-[9px]">
                 {gambar.trim() ? (
-                  // eslint-disable-next-line @next/next/no-img-element -- URL luar, belum ada Blob
+                  // eslint-disable-next-line @next/next/no-img-element -- pratinjau unggahan lokal/Blob
                   <img src={gambar} alt="" className="size-full object-cover" />
                 ) : (
                   <span className="foto-cap text-[10px]">Foto belum ada</span>

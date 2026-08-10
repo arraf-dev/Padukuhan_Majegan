@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Ikon } from "@/components/ikon";
+import { KopHalaman, kartu, kartuPutus, tombol } from "@/components/primitif";
 import { db } from "@/lib/db";
 import { wajibMasuk } from "@/lib/sesi";
 import { tanggalPendekTahun } from "@/lib/tanggal";
@@ -40,46 +41,40 @@ export default async function KelolaBerita({
 
   return (
     <Kerangka peran={peran} nama={nama}>
-      <div className="mb-5 flex flex-wrap items-center gap-4">
-        <div>
-          <h1 className="font-serif text-xl font-semibold text-hutan md:text-2xl">Kelola Berita</h1>
-          <p className="mt-1 text-[12.5px] text-samar">
-            {daftar.length} berita · {daftar.filter((b) => b.status === "draft").length} masih draf
-          </p>
-        </div>
-        <span className="flex-1" />
-        <Link
-          href="/admin/berita/baru"
-          className="inline-flex min-h-11 items-center gap-2 rounded-[9px] bg-hutan px-4.5 py-2.5 text-[13.5px] font-bold text-krem hover:bg-daun"
-        >
-          <span className="text-base leading-none">+</span> Tulis Berita
-        </Link>
-      </div>
+      <KopHalaman
+        judul="Kelola Berita"
+        keterangan={`${daftar.length} berita · ${daftar.filter((b) => b.status === "draft").length} masih draf`}
+        aksi={
+          <Link href="/admin/berita/baru" className={tombol("primer")}>
+            <span className="text-base leading-none">+</span> Tulis Berita
+          </Link>
+        }
+      />
 
       {pesan && (
         <p
           role="status"
-          className="mb-4 rounded-[10px] border border-emas-garis bg-emas-muda px-4 py-3 text-[13px] font-semibold text-emas-teks"
+          className="mb-4 rounded-xl border border-emas-garis bg-emas-muda px-4 py-3 text-[13px] font-semibold text-emas-teks"
         >
           {pesan}
         </p>
       )}
 
       {daftar.length === 0 ? (
-        <p className="rounded-xl border border-dashed border-garis-tebal bg-panel px-5 py-10 text-center text-sm text-redup">
+        <p className={kartuPutus}>
           Belum ada berita. Mulai dari tombol <strong>Tulis Berita</strong> di atas.
         </p>
       ) : (
-        <ul className="flex flex-col gap-2.5">
+        // Dua kolom mulai xl: barisnya pendek, satu kolom menyisakan ruang
+        // kosong lebar. items-start agar kartu yang membuka konfirmasi hapus
+        // tidak ikut meninggikan tetangganya.
+        <ul className="flex flex-col gap-2.5 xl:grid xl:grid-cols-2 xl:items-start xl:gap-3">
           {daftar.map((b) => {
             const draf = b.status === "draft";
             const mintaHapus = konfirmasi === b.id;
 
             return (
-              <li
-                key={b.id}
-                className="rounded-xl border border-garis bg-kertas px-4 py-3.5 md:px-5"
-              >
+              <li key={b.id} className={`${kartu()} px-4 py-3.5 md:px-5 lg:px-6 lg:py-4`}>
                 <div className="flex flex-wrap items-center gap-x-3.5 gap-y-2">
                   <span
                     className={`flex-none rounded-full px-2.5 py-1 text-[11px] font-extrabold ${
@@ -100,14 +95,14 @@ export default async function KelolaBerita({
                     {!draf && (
                       <Link
                         href={`/berita/${b.slug}`}
-                        className="rounded-lg border border-garis px-3 py-2 text-xs font-semibold text-tinta hover:border-daun hover:text-hutan"
+                        className={tombol("sekunder", "kecil")}
                       >
                         Lihat
                       </Link>
                     )}
                     <Link
                       href={`/admin/berita/${b.id}`}
-                      className="inline-flex items-center gap-1.5 rounded-lg border-[1.5px] border-daun px-3 py-2 text-xs font-bold text-hutan hover:bg-[#EFE9D6]"
+                      className={`${tombol("sekunder", "kecil")} border-daun`}
                     >
                       <Ikon nama="berita" ukuran={13} />
                       Sunting
@@ -116,7 +111,7 @@ export default async function KelolaBerita({
                         muncul di baris ini juga. */}
                     <Link
                       href={mintaHapus ? "/admin/berita" : `/admin/berita?konfirmasi=${b.id}`}
-                      className="rounded-lg px-3 py-2 text-xs font-semibold text-redup hover:text-bata"
+                      className="rounded-[10px] px-3 py-2 text-xs font-semibold text-redup transition-colors duration-200 ease-out hover:text-bata"
                     >
                       {mintaHapus ? "Batal" : "Hapus"}
                     </Link>
@@ -126,7 +121,7 @@ export default async function KelolaBerita({
                 {mintaHapus && (
                   <form
                     action={hapusBerita}
-                    className="mt-3 flex flex-wrap items-center gap-3 rounded-[10px] border border-bata/35 bg-bata/10 px-4 py-3"
+                    className="mt-3 flex flex-wrap items-center gap-3 rounded-xl border border-bata/35 bg-bata/10 px-4 py-3"
                   >
                     <input type="hidden" name="id" value={b.id} />
                     <span className="flex-1 text-[12.5px] leading-relaxed text-bata">
@@ -135,7 +130,7 @@ export default async function KelolaBerita({
                     </span>
                     <button
                       type="submit"
-                      className="min-h-10 flex-none rounded-lg bg-bata px-4 py-2 text-xs font-bold text-krem hover:opacity-90"
+                      className="min-h-10 flex-none rounded-[10px] bg-bata px-4 py-2 text-xs font-bold text-krem transition-opacity duration-200 ease-out hover:opacity-90"
                     >
                       Ya, hapus
                     </button>

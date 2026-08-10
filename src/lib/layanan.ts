@@ -38,6 +38,8 @@ function bacaAlur(nilai: Prisma.JsonValue): LangkahAlur[] {
   );
 }
 
+const namaBerkas = (url: string) => decodeURIComponent(new URL(url).pathname.split("/").pop() ?? "Templat layanan");
+
 const keLayanan = (l: Baris): Layanan => ({
   slug: l.slug,
   nama: l.namaLayanan,
@@ -50,9 +52,11 @@ const keLayanan = (l: Baris): Layanan => ({
   deskripsi: l.deskripsi,
   syarat: l.persyaratan,
   alur: bacaAlur(l.alur),
-  // Ukuran berkas tidak punya kolom dan tidak bisa diperbarui admin, jadi
-  // tidak ditampilkan sama sekali — angka yang membeku lebih menyesatkan.
-  berkas: l.fileTemplat ? { nama: l.fileTemplat } : undefined,
+  berkas: l.fileTemplat
+    ? l.fileTemplat.startsWith("http")
+      ? { nama: namaBerkas(l.fileTemplat), url: l.fileTemplat }
+      : { nama: l.fileTemplat }
+    : undefined,
 });
 
 export async function semuaLayanan(): Promise<Layanan[]> {

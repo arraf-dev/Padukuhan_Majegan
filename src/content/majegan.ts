@@ -21,12 +21,12 @@ export const desa = {
   koordinat: [-7.69139, 110.37167] as const,
 };
 
-/**
- * Alamat kanonik situs — dipakai metadataBase, sitemap, dan robots.
- * ponytail: domain `.desa.id` belum aktif; saat deploy ke Vercel cukup set
- * NEXT_PUBLIC_URL di environment, tanpa mengubah kode.
- */
-export const situsUrl = process.env.NEXT_PUBLIC_URL ?? `https://${desa.domain}`;
+/** Alamat kanonik situs — dipakai metadataBase, sitemap, dan robots. */
+const situsDariEnv = process.env.NEXT_PUBLIC_URL?.trim();
+if (!situsDariEnv && process.env.NODE_ENV === "production") {
+  throw new Error("NEXT_PUBLIC_URL belum diset di environment production");
+}
+export const situsUrl = situsDariEnv ?? `https://${desa.domain}`;
 
 export const statistik = [
   { angka: 1284, label: "jiwa penduduk" },
@@ -61,7 +61,7 @@ export const navigasi = [
 
 export const aksesCepat = [
   { href: "/layanan", label: "Layanan Surat", ringkas: "persyaratan & alur", ikon: "surat" },
-  { href: "/pengaduan", label: "Kirim Pengaduan", ringkas: "form + lampiran", ikon: "obrolan" },
+  { href: "/pengaduan", label: "Kirim Pengaduan", ringkas: "form + tautan lampiran", ikon: "obrolan" },
   { href: "/berita", label: "Berita Warga", ringkas: "kabar terbaru dusun", ikon: "berita" },
   { href: "/profil", label: "Profil Padukuhan", ringkas: "sejarah & struktur", ikon: "warga" },
 ] as const;
@@ -347,10 +347,7 @@ export type Layanan = {
   deskripsi: string;
   syarat: string[];
   alur: { judul: string; detail: string }[];
-  // ponytail: ukuran berkas dibuang — tabel `layanan` hanya menyimpan nama
-  // templatnya. Angka ukuran yang tak pernah bisa diperbarui admin lebih
-  // menyesatkan daripada tidak ditampilkan.
-  berkas?: { nama: string };
+  berkas?: { nama: string; url?: string };
 };
 
 const alurStandar = [
@@ -638,13 +635,6 @@ export const pengaduanTerbaru: Pengaduan[] = [
     status: "TERKIRIM",
     tanggal: "2026-06-25",
   },
-];
-
-export const aksiCepatAdmin = [
-  "Perbarui profil padukuhan",
-  "Kelola daftar layanan",
-  "Kelola akun admin",
-  "Perbarui statistik penduduk",
 ];
 
 /**

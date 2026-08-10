@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Berita, KategoriBerita, StatusPengaduan } from "@/content/majegan";
 import { Atap, Ikon } from "@/components/ikon";
+import { kartu, tombol } from "@/components/primitif";
 import { tanggalKapital, tanggalPanjang } from "@/lib/tanggal";
 
 /** Judul section dengan garis atap joglo + hairline, opsional tautan kanan. */
@@ -21,10 +22,7 @@ export function JudulSection({
       {sisipan}
       <span className="h-px flex-1 bg-garis" />
       {tautan && (
-        <Link
-          href={tautan.href}
-          className="flex-none text-[13.5px] font-semibold text-daun hover:text-hutan"
-        >
+        <Link href={tautan.href} className={`${tombol("teks")} flex-none text-[13.5px]`}>
           {tautan.label} →
         </Link>
       )}
@@ -104,7 +102,7 @@ function warnaLencana(kategori: KategoriBerita) {
     case "Pembangunan":
       return "bg-daun-muda text-daun";
     case "Pengumuman":
-      return "bg-[#E0DBC6] text-hutan";
+      return "bg-abu-lencana text-hutan";
   }
 }
 
@@ -141,7 +139,7 @@ export function KartuAlbum({ b }: { b: Berita }) {
     <Link
       href={`/berita/${b.slug}`}
       data-reveal
-      className="block overflow-hidden rounded-2xl border border-garis bg-kertas transition hover:-translate-y-[3px] hover:shadow-[0_10px_24px_rgba(33,50,40,.13)]"
+      className={`${kartu(true)} block overflow-hidden`}
     >
       <div className="relative px-2.5 pt-2.5">
         <Foto
@@ -172,16 +170,6 @@ export function KartuAlbum({ b }: { b: Berita }) {
           {b.judul}
         </h3>
         <p className="text-[13px] leading-relaxed text-teks">{b.ringkasan}</p>
-        <div className="mt-3.5 flex items-center gap-3 border-t border-dashed border-garis pt-3">
-          <span className="inline-flex items-center gap-[7px] rounded-full border border-emas-garis bg-emas-muda px-3.5 py-[7px] text-xs font-extrabold text-emas-tua">
-            <Ikon nama="hati" ukuran={14} />
-            {b.suka} warga suka
-          </span>
-          <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-redup">
-            <Ikon nama="balon" ukuran={14} />
-            {b.tanggapan} tanggapan
-          </span>
-        </div>
       </div>
     </Link>
   );
@@ -193,7 +181,7 @@ export function KartuRingkas({ b }: { b: Berita }) {
     <Link
       href={`/berita/${b.slug}`}
       data-reveal
-      className="flex gap-3 overflow-hidden rounded-xl border border-garis bg-kertas p-3 transition hover:border-daun md:block md:p-0 md:hover:-translate-y-[3px] md:hover:shadow-[0_8px_20px_rgba(33,50,40,.12)]"
+      className={`${kartu(true)} flex gap-3 overflow-hidden p-3 md:block md:p-0`}
     >
       <Foto
         src={b.foto}

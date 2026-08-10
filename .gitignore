@@ -8,3 +8,7 @@ next-env.d.ts
 .vercel
 .DS_Store
 TESTCASE.md
+.codex/
+.playwright-mcp/
+testsprite_tests/tmp/
+testsprite_tests/tmp/config.json

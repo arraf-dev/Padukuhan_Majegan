@@ -2,8 +2,10 @@
 
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { periksaBerkas } from "@/lib/berkas";
 import { db } from "@/lib/db";
 import { NAMA_JEBAKAN, bolehKirim, buatKodeTiket, periksaPengaduan } from "@/lib/pengaduan";
+import { unggahBerkas } from "@/lib/unggah";
 
 // Penulisan ke DB ditaruh di sini, bukan di `lib/pengaduan.ts` — berkas itu
 // harus tetap bebas impor Prisma supaya `npm test` (node --test) bisa
@@ -21,8 +23,15 @@ export async function kirimPengaduan(data: FormData) {
   // jangan simpan, dan jangan beri tahu botnya bahwa dia tertangkap.
   if (teks(data, NAMA_JEBAKAN)) redirect(`/pengaduan/terkirim?kode=${buatKodeTiket()}`);
 
+  const lampiran = data.get("lampiranBerkas");
+  if (lampiran instanceof File && lampiran.size > 0 && periksaBerkas(lampiran, "gambar")) {
+    redirect("/pengaduan?galat=lampiran");
+  }
+
   const ip = (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim() || "lokal";
   if (!bolehKirim(ip)) redirect("/pengaduan?galat=jeda");
+
+  const unggahan = await unggahBerkas(data, "lampiranBerkas", "pengaduan", "gambar");
 
   const anonim = data.get("anonim") !== null;
 
@@ -36,6 +45,7 @@ export async function kirimPengaduan(data: FormData) {
           kategori: teks(data, "kategori"),
           lokasi: atauNull(teks(data, "lokasi")),
           isi: teks(data, "isi"),
+          lampiranUrl: unggahan.url,
           isAnonim: anonim,
           // Anonim = identitasnya tidak pernah masuk DB, bukan cuma disembunyikan
           // saat ditampilkan.

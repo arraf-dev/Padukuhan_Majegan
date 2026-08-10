@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { wajibSuperadmin } from "@/lib/sesi";
+import { unggahBerkas } from "@/lib/unggah";
 
 const teks = (fd: FormData, nama: string) => String(fd.get(nama) ?? "").trim();
 
@@ -47,13 +48,16 @@ export async function simpanPerangkat(data: FormData) {
   const id = teks(data, "id");
   const nama = teks(data, "nama");
   const jabatan = teks(data, "jabatan");
-  const fotoUrl = teks(data, "fotoUrl") || null;
+
+  if (!nama || !jabatan) redirect("/admin/profil?galat=perangkat");
+
+  const unggahan = await unggahBerkas(data, "fotoBerkas", "perangkat", "gambar");
+  if (unggahan.galat) redirect("/admin/profil?galat=berkas");
+  const fotoUrl = unggahan.url ?? (teks(data, "fotoUrl") || null);
 
   // Isian angka bisa dikosongkan atau diisi huruf; jangan biarkan NaN masuk DB.
   const angka = Number.parseInt(teks(data, "urutan"), 10);
   const urutan = Number.isFinite(angka) ? angka : 0;
-
-  if (!nama || !jabatan) redirect("/admin/profil?galat=perangkat");
 
   const isi = { nama, jabatan, fotoUrl, urutan };
   if (id) await db.perangkatDesa.update({ where: { id }, data: isi });

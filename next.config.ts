@@ -6,6 +6,10 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: "standalone",
 
+  experimental: {
+    serverActions: { bodySizeLimit: "5mb" },
+  },
+
   images: {
     // Host yang boleh dipakai admin saat menempel tautan gambar di komposer.
     // next/image menolak host di luar daftar ini — sengaja, supaya panel tidak

@@ -22,16 +22,16 @@ export const Logo = ({ ukuran = 42, ...rest }: Props) =>
     { ukuran, ...rest },
     "0 0 42 42",
     <>
-      <rect width="42" height="42" rx="10" fill="#0A2E1E" />
+      <rect width="42" height="42" rx="10" className="fill-hutan-pekat" />
       <path
         d="M8 24 L21 12 L34 24"
         fill="none"
-        stroke="#D6B45C"
+        className="stroke-emas"
         strokeWidth="2.6"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <path d="M13 29 H29" stroke="#D6B45C" strokeWidth="2.6" strokeLinecap="round" />
+      <path d="M13 29 H29" className="stroke-emas" strokeWidth="2.6" strokeLinecap="round" />
     </>,
   );
 
@@ -41,7 +41,7 @@ export const Atap = ({ ukuran = 30, ...rest }: Props) => (
     <path
       d="M2 11 L15 2 L28 11"
       fill="none"
-      stroke="#D6B45C"
+      className="stroke-emas"
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -78,7 +78,7 @@ const gambar: Record<string, { viewBox: string; isi: React.ReactNode }> = {
     isi: (
       <>
         <rect x="4" y="2.5" width="12" height="15" rx="2" fill="none" stroke="currentColor" strokeWidth="1.6" />
-        <path d="M7.5 7 H12.5 M7.5 10.5 H12.5 M7.5 14 H10.5" stroke="#D6B45C" strokeWidth="1.6" strokeLinecap="round" />
+        <path d="M7.5 7 H12.5 M7.5 10.5 H12.5 M7.5 14 H10.5" className="stroke-emas" strokeWidth="1.6" strokeLinecap="round" />
       </>
     ),
   },
@@ -93,7 +93,7 @@ const gambar: Record<string, { viewBox: string; isi: React.ReactNode }> = {
           strokeWidth="1.6"
           strokeLinejoin="round"
         />
-        <circle cx="10" cy="8.2" r="1.4" fill="#D6B45C" />
+        <circle cx="10" cy="8.2" r="1.4" className="fill-emas" />
       </>
     ),
   },
@@ -102,7 +102,7 @@ const gambar: Record<string, { viewBox: string; isi: React.ReactNode }> = {
     isi: (
       <>
         <rect x="3" y="3.5" width="14" height="13" rx="2" fill="none" stroke="currentColor" strokeWidth="1.6" />
-        <path d="M6.5 7.5 H13.5 M6.5 10.5 H13.5 M6.5 13.5 H10" stroke="#D6B45C" strokeWidth="1.6" strokeLinecap="round" />
+        <path d="M6.5 7.5 H13.5 M6.5 10.5 H13.5 M6.5 13.5 H10" className="stroke-emas" strokeWidth="1.6" strokeLinecap="round" />
       </>
     ),
   },
@@ -114,7 +114,7 @@ const gambar: Record<string, { viewBox: string; isi: React.ReactNode }> = {
         <path
           d="M4 17 C5 14 7.3 12.6 10 12.6 C12.7 12.6 15 14 16 17"
           fill="none"
-          stroke="#D6B45C"
+          className="stroke-emas"
           strokeWidth="1.6"
           strokeLinecap="round"
         />
@@ -169,7 +169,7 @@ const gambar: Record<string, { viewBox: string; isi: React.ReactNode }> = {
           stroke="currentColor"
           strokeWidth="1.5"
         />
-        <circle cx="8" cy="6.5" r="1.8" fill="#D6B45C" />
+        <circle cx="8" cy="6.5" r="1.8" className="fill-emas" />
       </>
     ),
   },
@@ -178,8 +178,7 @@ const gambar: Record<string, { viewBox: string; isi: React.ReactNode }> = {
     isi: (
       <path
         d="M12 20.5 C7 16.5 3.5 13.3 3.5 9.6 C3.5 7 5.5 5 8 5 C9.6 5 11.1 5.8 12 7.1 C12.9 5.8 14.4 5 16 5 C18.5 5 20.5 7 20.5 9.6 C20.5 13.3 17 16.5 12 20.5 Z"
-        fill="#B0532E"
-        stroke="#B0532E"
+        className="fill-bata stroke-bata"
         strokeWidth="1.6"
         strokeLinejoin="round"
       />
@@ -232,7 +231,7 @@ const gambar: Record<string, { viewBox: string; isi: React.ReactNode }> = {
     isi: (
       <>
         <rect x="4" y="2.5" width="18" height="21" rx="2.5" fill="none" stroke="currentColor" strokeWidth="1.7" />
-        <path d="M9 8 H17 M9 12 H17 M9 16 H13.5" stroke="#D6B45C" strokeWidth="1.7" strokeLinecap="round" />
+        <path d="M9 8 H17 M9 12 H17 M9 16 H13.5" className="stroke-emas" strokeWidth="1.7" strokeLinecap="round" />
       </>
     ),
   },
@@ -264,11 +263,11 @@ export const CentangKotak = ({ ukuran = 18, ...rest }: Props) =>
     { ukuran, ...rest },
     "0 0 18 18",
     <>
-      <rect x="1.5" y="1.5" width="15" height="15" rx="4" fill="#2A5B3C" />
+      <rect x="1.5" y="1.5" width="15" height="15" rx="4" className="fill-daun" />
       <path
         d="M5 9.2 L7.8 12 L13 6.5"
         fill="none"
-        stroke="#F7F3E8"
+        className="stroke-krem"
         strokeWidth="1.9"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -282,11 +281,11 @@ export const CentangBulat = ({ ukuran = 15, ...rest }: Props) =>
     { ukuran, ...rest },
     "0 0 18 18",
     <>
-      <circle cx="9" cy="9" r="7.5" fill="#2A5B3C" />
+      <circle cx="9" cy="9" r="7.5" className="fill-daun" />
       <path
         d="M5.5 9.3 L8 11.8 L12.5 6.8"
         fill="none"
-        stroke="#F7F3E8"
+        className="stroke-krem"
         strokeWidth="1.8"
         strokeLinecap="round"
         strokeLinejoin="round"

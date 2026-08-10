@@ -1,13 +1,20 @@
 import Link from "next/link";
-import { aksiCepatAdmin } from "@/content/majegan";
 import { Hitung } from "@/components/gerak";
 import { Ikon } from "@/components/ikon";
 import { LencanaStatus } from "@/components/potongan";
+import { KopHalaman, kartu, kartuPutus, tombol } from "@/components/primitif";
 import { db } from "@/lib/db";
 import { tanggalLengkap } from "@/lib/tanggal";
 import { keluar } from "@/app/admin/aksi";
 import { Kerangka } from "@/app/admin/kerangka";
 import { wajibMasuk } from "@/lib/sesi";
+
+const aksiCepatAdmin = [
+  { label: "Perbarui profil padukuhan", href: "/admin/profil" },
+  { label: "Kelola daftar layanan", href: "/admin/layanan" },
+  { label: "Kelola akun admin", href: "/admin/akun" },
+  { label: "Perbarui statistik penduduk", href: "/admin/statistik" },
+];
 
 export default async function Dashboard() {
   const { nama, peran } = await wajibMasuk();
@@ -42,7 +49,7 @@ export default async function Dashboard() {
   return (
     <Kerangka peran={peran} nama={nama}>
       {terbatas && (
-        <p className="mb-5 flex items-center gap-2.5 rounded-[10px] border border-emas-garis bg-emas-muda px-4 py-2.5 text-[12.5px] text-emas-teks">
+        <p className="mb-5 flex items-center gap-2.5 rounded-xl border border-emas-garis bg-emas-muda px-4 py-3 text-[12.5px] text-emas-teks">
           <Ikon nama="gembok" ukuran={14} className="flex-none" />
           <span>
             Anda masuk sebagai <strong>Admin</strong>
@@ -51,34 +58,25 @@ export default async function Dashboard() {
         </p>
       )}
 
-      <div className="mb-5 flex flex-wrap items-center gap-4">
-        <div>
-          <h1 className="font-serif text-xl font-semibold text-hutan md:text-2xl">
-            Selamat datang, {nama}
-          </h1>
-          <p className="mt-1 text-[12.5px] text-samar">
-            {tanggalLengkap(new Date())} ·{" "}
-            {menunggu === 0 ? "tidak ada pengaduan baru" : `${menunggu} pengaduan menunggu tanggapan`}
-          </p>
-        </div>
-        <span className="flex-1" />
-        <Link
-          href="/admin/berita/baru"
-          className="inline-flex min-h-11 items-center gap-2 rounded-[9px] bg-hutan px-4.5 py-2.5 text-[13.5px] font-bold text-krem hover:bg-daun"
-        >
-          <span className="text-base leading-none">+</span> Tulis Berita
-        </Link>
-      </div>
+      <KopHalaman
+        judul={`Selamat datang, ${nama}`}
+        keterangan={`${tanggalLengkap(new Date())} · ${
+          menunggu === 0 ? "tidak ada pengaduan baru" : `${menunggu} pengaduan menunggu tanggapan`
+        }`}
+        aksi={
+          <Link href="/admin/berita/baru" className={tombol("primer")}>
+            <span className="text-base leading-none">+</span> Tulis Berita
+          </Link>
+        }
+      />
 
-      <dl className="mb-5 grid gap-4 md:grid-cols-3">
+      <dl className="mb-5 grid gap-4 md:grid-cols-3 lg:mb-6 lg:gap-5">
         {ringkasan.map((r) => (
           <div
             key={r.label}
             data-reveal
-            className={`rounded-xl bg-kertas px-5 py-4.5 ${
-              r.sorot
-                ? "border-[1.5px] border-emas shadow-[0_3px_10px_rgba(214,180,92,.2)]"
-                : "border border-garis"
+            className={`${kartu()} px-5 py-4.5 lg:px-7 lg:py-6 ${
+              r.sorot ? "border-emas shadow-[0_3px_10px_rgba(214,180,92,.2)]" : ""
             }`}
           >
             <dt
@@ -89,7 +87,7 @@ export default async function Dashboard() {
               {r.label}
             </dt>
             <dd
-              className={`mt-1.5 font-serif text-[32px] font-bold ${r.bata ? "text-bata" : "text-hutan"}`}
+              className={`mt-1.5 font-serif text-[32px] font-bold lg:text-[38px] ${r.bata ? "text-bata" : "text-hutan"}`}
             >
               <Hitung ke={r.angka} />
             </dd>
@@ -98,36 +96,37 @@ export default async function Dashboard() {
         ))}
       </dl>
 
-      <div className={`grid gap-4 ${terbatas ? "" : "md:grid-cols-[1.5fr_1fr]"}`}>
-        <section data-reveal className="rounded-xl border border-garis bg-kertas px-5.5 py-5">
+      <div
+        className={`grid gap-4 lg:gap-6 ${
+          terbatas ? "" : "md:grid-cols-[1.5fr_1fr] lg:grid-cols-[1.6fr_1fr]"
+        }`}
+      >
+        <section data-reveal className={`${kartu()} px-6 py-5 lg:px-8 lg:py-7`}>
           <div className="mb-1.5 flex items-baseline justify-between">
-            <h2 className="font-serif text-base font-semibold text-hutan">Pengaduan terbaru</h2>
-            <Link
-              href="/admin/pengaduan"
-              className="text-[12.5px] font-semibold text-daun hover:text-hutan"
-            >
+            <h2 className="font-serif text-base font-semibold text-hutan lg:text-[19px]">Pengaduan terbaru</h2>
+            <Link href="/admin/pengaduan" className={`${tombol("teks")} text-[12.5px]`}>
               semua →
             </Link>
           </div>
 
           {terbaru.length === 0 ? (
-            <p className="py-6 text-center text-[13px] text-redup">Belum ada pengaduan masuk.</p>
+            <p className={`${kartuPutus} mt-2`}>Belum ada pengaduan masuk.</p>
           ) : (
             <ul className="flex flex-col">
               {terbaru.map((p, i) => (
                 <li
                   key={p.id}
-                  className={`flex flex-wrap items-center gap-x-3.5 gap-y-1.5 py-3.5 ${
+                  className={`flex flex-wrap items-center gap-x-3.5 gap-y-1.5 py-3.5 lg:py-4 ${
                     i < terbaru.length - 1 ? "border-b border-dashed border-garis" : ""
                   }`}
                 >
                   <Link
                     href={`/admin/pengaduan/${p.id}`}
-                    className="flex-none font-mono text-[13px] font-bold text-hutan hover:underline"
+                    className="flex-none font-mono text-[13px] font-bold text-hutan transition-colors duration-200 ease-out hover:text-daun hover:underline"
                   >
                     {p.kodeTiket}
                   </Link>
-                  <span className="min-w-40 flex-1 truncate text-[13px] text-teks">{p.isi}</span>
+                  <span className="min-w-40 flex-1 truncate text-[13px] text-teks lg:text-sm">{p.isi}</span>
                   <LencanaStatus status={p.status} />
                 </li>
               ))}
@@ -136,28 +135,27 @@ export default async function Dashboard() {
         </section>
 
         {!terbatas && (
-          <section data-reveal className="rounded-xl border border-garis bg-kertas px-5.5 py-5">
-            <h2 className="mb-3 font-serif text-base font-semibold text-hutan">Aksi cepat</h2>
-            <div className="flex flex-col gap-2.5">
+          <section data-reveal className={`${kartu()} px-6 py-5 lg:px-8 lg:py-7`}>
+            <h2 className="mb-3 font-serif text-base font-semibold text-hutan lg:mb-4 lg:text-[19px]">Aksi cepat</h2>
+            <div className="flex flex-col gap-2.5 lg:gap-3">
               {aksiCepatAdmin.map((a) => (
-                // ponytail: modul tujuan belum dibangun — tautan menunggu Minggu 2–4.
-                <span
-                  key={a}
-                  className="flex items-center justify-between rounded-[9px] border border-garis px-4 py-3 text-[13.5px] font-semibold text-tinta"
+                <Link
+                  key={a.href}
+                  href={a.href}
+                  className="flex items-center justify-between rounded-[10px] border border-garis px-4 py-3 text-[13.5px] font-semibold text-tinta transition-colors hover:border-daun hover:bg-emas-lembut lg:px-5 lg:py-3.5 lg:text-sm"
                 >
-                  {a} <span className="text-emas-tua">→</span>
-                </span>
+                  {a.label} <span className="text-emas-tua">→</span>
+                </Link>
               ))}
             </div>
           </section>
         )}
       </div>
 
-      <form action={keluar} className="mt-6">
-        <button
-          type="submit"
-          className="min-h-11 rounded-[9px] border border-garis px-4 py-2.5 text-[13px] font-semibold text-tinta hover:border-bata hover:text-bata"
-        >
+      {/* Di desktop tombol keluar sudah ada di sidebar (tersedia dari semua halaman);
+          di layar kecil sidebar disembunyikan, jadi tombol ini tetap dipertahankan. */}
+      <form action={keluar} className="mt-6 md:hidden">
+        <button type="submit" className={`${tombol("hapus", "besar")} w-full`}>
           Keluar dari panel
         </button>
       </form>

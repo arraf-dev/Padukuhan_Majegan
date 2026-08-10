@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { KopHalaman, isian, kartu, kartuPutus, label, tombol } from "@/components/primitif";
 import { Kerangka } from "@/app/admin/kerangka";
 import { hapusStatistik, simpanStatistik } from "@/app/admin/statistik/aksi";
 import { wajibSuperadmin } from "@/lib/sesi";
@@ -15,10 +16,6 @@ const kabar: Record<string, string> = {
   "galat-persen": "Persentase kelompok usia harus antara 0 dan 100.",
   "galat-negatif": "Nilai tidak boleh negatif.",
 };
-
-const isian =
-  "w-full rounded-[9px] border border-garis bg-krem px-3.5 py-2.5 text-[13.5px] text-tinta placeholder:text-samar focus:border-daun focus:outline-none";
-const label = "mb-1.5 block text-[11px] font-bold tracking-[.08em] text-samar";
 
 /**
  * ponytail: hanya `ringkasan` & `usia` yang dilayani form ini. Enum
@@ -65,39 +62,43 @@ export default async function KelolaStatistik({
 
   return (
     <Kerangka peran={peran} nama={nama}>
-      <div className="mb-5 flex flex-wrap items-center gap-4">
-        <div>
-          <h1 className="font-serif text-xl font-semibold text-hutan md:text-2xl">
-            Statistik Penduduk
-          </h1>
-          <p className="mt-1 text-[12.5px] text-samar">
+      <KopHalaman
+        judul="Statistik Penduduk"
+        keterangan={
+          <>
             Data tahun {tahun} · tampil di beranda dan{" "}
-            <Link href="/statistik" className="font-semibold text-daun underline">
+            <Link
+              href="/statistik"
+              className="font-semibold text-daun underline-offset-2 transition-colors duration-200 ease-out hover:text-hutan hover:underline"
+            >
               /statistik
             </Link>
-          </p>
-        </div>
-        <span className="flex-1" />
-        <div className="flex flex-wrap items-center gap-2">
-          {tahunAda.map((t) => (
-            <Link
-              key={t}
-              href={`/admin/statistik?tahun=${t}`}
-              aria-current={t === tahun ? "page" : undefined}
-              className={`min-h-11 rounded-[9px] px-4 py-2.5 text-[13px] font-bold ${
-                t === tahun ? "bg-hutan text-krem" : "border border-garis text-tinta hover:border-daun"
-              }`}
-            >
-              {t}
-            </Link>
-          ))}
-        </div>
-      </div>
+          </>
+        }
+        aksi={
+          <div className="flex flex-wrap items-center gap-2">
+            {tahunAda.map((t) => (
+              <Link
+                key={t}
+                href={`/admin/statistik?tahun=${t}`}
+                aria-current={t === tahun ? "page" : undefined}
+                className={`min-h-11 rounded-[10px] px-4 py-2.5 text-[13px] font-bold transition-colors duration-200 ease-out ${
+                  t === tahun
+                    ? "bg-hutan text-krem"
+                    : "border border-garis text-tinta hover:border-daun hover:bg-emas-lembut"
+                }`}
+              >
+                {t}
+              </Link>
+            ))}
+          </div>
+        }
+      />
 
       {pesan && (
         <p
           role="status"
-          className={`mb-4 rounded-[10px] px-4 py-3 text-[13px] font-semibold ${
+          className={`mb-4 rounded-xl px-4 py-3 text-[13px] font-semibold ${
             q.galat
               ? "border border-bata/35 bg-bata/10 text-bata"
               : "border border-emas-garis bg-emas-muda text-emas-teks"
@@ -111,15 +112,22 @@ export default async function KelolaStatistik({
         const isi = baris.filter((b) => b.kategori === k.nilai);
 
         return (
-          <section key={k.nilai} className="mb-9">
-            <h2 className="font-serif text-[17px] font-semibold text-hutan">{k.judul}</h2>
-            <p className="mt-0.5 mb-3 text-[12.5px] text-samar">{k.keterangan}</p>
+          <section key={k.nilai} className="mb-9 lg:mb-12">
+            <h2 className="font-serif text-base font-semibold text-hutan lg:text-[19px]">{k.judul}</h2>
+            <p className="mt-0.5 mb-3 text-[12.5px] text-samar lg:mb-4 lg:text-[13.5px]">{k.keterangan}</p>
 
-            <div className="flex flex-col gap-2.5">
+            {/* Tanpa cabang ini, kategori kosong hanya menyisakan borang tambah tanpa keterangan. */}
+            {isi.length === 0 && (
+              <p className={kartuPutus}>
+                Belum ada angka untuk {k.judul.toLowerCase()} tahun {tahun}. Isi borang di bawah.
+              </p>
+            )}
+
+            <div className="flex flex-col gap-2.5 lg:gap-3">
               {isi.map((b) => (
                 <div
                   key={b.id}
-                  className="flex flex-wrap items-end gap-3 rounded-xl border border-garis bg-kertas px-4 py-3.5 md:px-5"
+                  className={`${kartu()} flex flex-wrap items-end gap-3 px-4 py-3.5 md:px-5 lg:gap-4 lg:px-6 lg:py-4`}
                 >
                   {/* Label jadi bagian kunci unik, jadi disunting = baris baru.
                       Ditampilkan mati supaya tidak ada duplikat tak disengaja. */}
@@ -159,7 +167,7 @@ export default async function KelolaStatistik({
                     </div>
                     <button
                       type="submit"
-                      className="min-h-11 rounded-lg border-[1.5px] border-daun px-3.5 py-2.5 text-xs font-bold text-hutan hover:bg-[#EFE9D6]"
+                      className={`${tombol("sekunder", "kecil")} min-h-11 border-daun`}
                     >
                       Simpan
                     </button>
@@ -170,7 +178,7 @@ export default async function KelolaStatistik({
                     <input type="hidden" name="tahun" value={tahun} />
                     <button
                       type="submit"
-                      className="min-h-11 rounded-lg px-3 py-2.5 text-xs font-semibold text-redup hover:text-bata"
+                      className="min-h-11 rounded-[10px] px-3 py-2.5 text-xs font-semibold text-redup transition-colors duration-200 ease-out hover:text-bata"
                     >
                       Hapus
                     </button>
@@ -181,7 +189,7 @@ export default async function KelolaStatistik({
 
             <form
               action={simpanStatistik}
-              className="mt-4 flex flex-wrap items-end gap-3 rounded-xl border-[1.5px] border-dashed border-garis-tebal bg-panel px-4 py-4 md:px-5"
+              className="mt-4 flex flex-wrap items-end gap-3 rounded-xl border border-dashed border-garis-tebal bg-panel px-4 py-4 md:px-5 lg:mt-5 lg:gap-4 lg:rounded-2xl lg:px-6 lg:py-5"
             >
               <input type="hidden" name="tahun" value={tahun} />
               <input type="hidden" name="kategori" value={k.nilai} />
@@ -221,10 +229,7 @@ export default async function KelolaStatistik({
                   className={isian}
                 />
               </div>
-              <button
-                type="submit"
-                className="inline-flex min-h-11 items-center gap-2 rounded-[9px] bg-hutan px-4.5 py-2.5 text-[13.5px] font-bold text-krem hover:bg-daun"
-              >
+              <button type="submit" className={`${tombol("primer")} min-h-11`}>
                 <span className="text-base leading-none">+</span> Tambah
               </button>
             </form>

@@ -24,6 +24,8 @@
   --color-garis-tebal: #cbc3a8;
   --color-foto: #efe9d8;
   --color-bata: #b0532e;
+  --color-emas-lembut: #efe9d6;
+  --color-abu-lencana: #e0dbc6;
 
   --font-serif: var(--font-lora), Georgia, serif;
   --font-sans: var(--font-jakarta), "Segoe UI", sans-serif;
@@ -42,6 +44,44 @@
 }
 
 @layer components {
+  /**
+   * Batas lebar baca. Dipasang pada elemen yang sudah memegang `px-12`, jadi
+   * 1336 = 1240 isi + 2×48 padding. Tanpa ini konten meregang sampai tepi
+   * monitor 1920px sementara kolom samping tetap 320px — rasionya jadi timpang.
+   */
+  .wadah {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 1336px;
+  }
+  /* Monitor sangat lebar (≥1536px) boleh sedikit lebih lega — di bawah itu
+     1336px tetap batas baca yang nyaman. */
+  @media (min-width: 1536px) {
+    .wadah {
+      max-width: 1440px;
+    }
+  }
+
+  /**
+   * Judul halaman — satu sumber untuk semua H1 publik.
+   *
+   * Sebelumnya tiap halaman menulis sendiri `text-2xl md:text-[32px]`, dan
+   * Pengaduan menyimpang di 27px. Ukuran mobile (24px) sama persis dengan
+   * `text-2xl` yang digantikan, jadi tampilan HP tidak bergeser.
+   */
+  .judul-halaman {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--color-hutan);
+  }
+  @media (min-width: 768px) {
+    .judul-halaman {
+      font-size: clamp(2rem, 2.6vw, 2.75rem);
+    }
+  }
+
   /* Strip garis atap joglo — pembatas emas di bawah header & footer. */
   .joglo {
     height: 9px;
@@ -73,16 +113,17 @@
     color: var(--color-samar);
   }
 
-  /* Tombol ajakan utama — emas, terangkat sedikit saat disentuh kursor. */
-  .tombol-utama {
-    background: var(--color-emas);
-    color: var(--color-hutan);
+  /* Dua resep bayangan bersama — menggantikan 7 varian rgba ad hoc per halaman. */
+  .bayang-kartu {
     transition:
       transform 0.2s ease,
-      box-shadow 0.2s ease;
+      box-shadow 0.2s ease,
+      border-color 0.2s ease;
   }
-  .tombol-utama:hover {
-    transform: translateY(-2px);
+  .bayang-kartu:hover {
+    box-shadow: 0 10px 24px rgb(33 50 40 / 0.13);
+  }
+  .bayang-tombol-emas:hover {
     box-shadow: 0 6px 16px rgb(138 109 43 / 0.35);
   }
 }

@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Ikon } from "@/components/ikon";
+import { KopHalaman, tombol } from "@/components/primitif";
 import { Kerangka } from "@/app/admin/kerangka";
 import { BorangLayanan } from "@/app/admin/layanan/borang";
 import { layananUntukForm } from "@/lib/layanan";
@@ -24,9 +27,11 @@ export default async function SuntingLayanan({
 
   return (
     <Kerangka peran={peran} nama={nama}>
-      <h1 className="mb-5 font-serif text-xl font-semibold text-hutan md:text-2xl">
-        Sunting Layanan
-      </h1>
+      <Link href="/admin/layanan" className={`${tombol("teks")} mb-3 text-[13px]`}>
+        <Ikon nama="kembali" ukuran={15} />
+        Kembali ke daftar layanan
+      </Link>
+      <KopHalaman judul="Sunting Layanan" keterangan={awal.nama} />
       <BorangLayanan awal={awal} galat={galat} />
     </Kerangka>
   );

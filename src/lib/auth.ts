@@ -46,6 +46,8 @@ export function periksaSandiBaru(sandi: string): string | null {
   return null;
 }
 
+export const emailSah = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
 /* ---------- Token sesi ---------- */
 
 export type IsiSesi = { id: string; nama: string; peran: Peran; exp: number };
