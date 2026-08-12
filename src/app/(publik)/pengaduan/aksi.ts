@@ -31,7 +31,9 @@ export async function kirimPengaduan(data: FormData) {
   const ip = (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim() || "lokal";
   if (!bolehKirim(ip)) redirect("/pengaduan?galat=jeda");
 
-  const unggahan = await unggahBerkas(data, "lampiranBerkas", "pengaduan", "gambar");
+  // Lampiran dapat memuat foto rumah, lokasi, atau warga. Simpan privat dan
+  // sajikan hanya lewat route panel admin yang memeriksa sesi.
+  const unggahan = await unggahBerkas(data, "lampiranBerkas", "pengaduan", "gambar", "private");
 
   const anonim = data.get("anonim") !== null;
 

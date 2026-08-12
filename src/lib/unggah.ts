@@ -1,11 +1,14 @@
 import { put } from "@vercel/blob";
 import { periksaBerkas, type JenisBerkas } from "./berkas";
 
+type AksesBlob = "public" | "private";
+
 export async function unggahBerkas(
   data: FormData,
   nama: string,
   folder: string,
   jenis: JenisBerkas,
+  akses: AksesBlob = "public",
 ): Promise<{ url: string | null; galat: string | null }> {
   const berkas = data.get(nama);
   if (!(berkas instanceof File) || berkas.size === 0) return { url: null, galat: null };
@@ -14,7 +17,7 @@ export async function unggahBerkas(
   if (galat) return { url: null, galat };
 
   const hasil = await put(`${folder}/${berkas.name}`, berkas, {
-    access: "public",
+    access: akses,
     addRandomSuffix: true,
     contentType: berkas.type,
   });

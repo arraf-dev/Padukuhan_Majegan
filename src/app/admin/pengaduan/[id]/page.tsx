@@ -83,7 +83,7 @@ export default async function DetailPengaduan({
               <dd className={baris}>
                 {p.lampiranUrl ? (
                   <a
-                    href={p.lampiranUrl}
+                    href={`/api/admin/pengaduan/${p.id}/lampiran`}
                     target="_blank"
                     rel="noreferrer"
                     className="font-semibold text-daun underline-offset-2 transition-colors duration-200 ease-out hover:text-hutan hover:underline"

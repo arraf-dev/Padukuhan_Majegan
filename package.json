@@ -10,7 +10,9 @@
     "build": "prisma generate && prisma migrate deploy && next build",
     "start": "next start",
     "postinstall": "prisma generate",
-    "test": "node --test src/lib/*.test.ts"
+    "test": "node --test src/lib/*.test.ts",
+    "typecheck": "tsc --noEmit",
+    "test:smoke": "node scripts/smoke-production.mjs"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.9.0",

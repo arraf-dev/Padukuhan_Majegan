@@ -1,10 +1,10 @@
 # Catatan Progres Website Padukuhan Majegan
 
-Terakhir diperbarui: 10 Agustus 2026
+Terakhir diperbarui: 12 Agustus 2026
 
 ## Status Saat Ini
 
-Sebagian besar fitur utama website sudah selesai. Hasil audit kode menunjukkan bahwa autentikasi, database, halaman publik, dan modul admin sudah tersedia. Pekerjaan terakhir berfokus pada penyelesaian fitur unggah gambar/berkas (ADM-5) dan perapian dashboard admin.
+Sebagian besar fitur utama website sudah selesai. Hasil audit kode menunjukkan bahwa autentikasi, database, halaman publik, dan modul admin sudah tersedia. Pekerjaan terakhir menambahkan pagar kesiapan production: validasi environment, mode data demo, health check, dan smoke test deployment.
 
 ## Yang Sudah Selesai
 
@@ -15,6 +15,10 @@ Sebagian besar fitur utama website sudah selesai. Hasil audit kode menunjukkan b
 - Login, sesi cookie, logout, dan proteksi `/admin` sudah tersedia.
 - Pembagian hak akses Admin dan SuperAdmin sudah diterapkan.
 - Form pengaduan menyimpan data ke database, menghasilkan kode tiket, dapat dilacak, dan memiliki anti-spam sederhana.
+- Production memvalidasi `DATABASE_URL`, `RAHASIA_SESI`, `NEXT_PUBLIC_URL`, dan `BLOB_READ_WRITE_TOKEN` tanpa membocorkan nilainya.
+- Mode `DATA_MODE=demo|official` tersedia; mode demo menampilkan penanda bahwa informasi publik masih berupa data contoh.
+- Endpoint `GET /api/health` memeriksa koneksi aplikasi dan database tanpa menampilkan secret.
+- Lampiran pengaduan baru disimpan sebagai Blob privat dan hanya dapat dibuka melalui panel admin yang sudah masuk.
 
 ### Halaman publik
 
@@ -66,12 +70,13 @@ File utama yang ditambahkan:
 
 ## Hasil Verifikasi Terakhir
 
-- `npm test`: **27 dari 27 test lulus**.
-- `npx tsc --noEmit`: lulus.
-- Build Next.js: lulus.
 - `git diff --check`: lulus.
 - Form unggah berita, profil, layanan, dan pengaduan sudah diperiksa melalui browser.
 - Proteksi halaman admin dan tautan Aksi cepat sudah diperiksa melalui browser.
+- `npm test`: **31 dari 31 test lulus** (termasuk validasi environment).
+- `npm run typecheck`: lulus.
+- Build Next.js production dengan environment contoh: lulus.
+- `npm run test:smoke` tersedia untuk memeriksa rute publik, sitemap, robots, dan health check pada URL HTTPS deployment.
 
 ## Yang Masih Perlu Dikerjakan
 
@@ -89,7 +94,7 @@ File utama yang ditambahkan:
    - unggah foto perangkat lalu cek halaman profil;
    - kirim pengaduan dengan lampiran lalu cek panel admin;
    - unggah templat layanan lalu coba tombol Unduh.
-4. Periksa dan tangani laporan `npm audit` jika relevan (terakhir: 1 moderat dan 8 tinggi).
+4. Tangani laporan `npm audit`: saat ini ditemukan 1 moderat dan 8 tinggi pada dependency transitif Next.js/Prisma. Simulasi `npm audit fix` belum dapat berjalan di lingkungan ini karena npm menolak pengambilan paket remote (`EALLOWREMOTE`); ulangi dari lingkungan npm yang mengizinkan unduhan, lalu jalankan test, typecheck, dan build kembali.
 5. Isi data asli dari perangkat padukuhan: nomor WhatsApp, sejarah, foto perangkat, layanan, dan statistik.
 6. Putuskan domain dan akun resmi pemilik Vercel/Neon.
 7. Deploy ke Vercel, lakukan uji pengguna, pelatihan admin, dan serah terima.
@@ -97,5 +102,8 @@ File utama yang ditambahkan:
 ## Catatan Penting
 
 - Tanpa `BLOB_READ_WRITE_TOKEN`, pemilih berkas tetap terlihat tetapi unggahan ke Vercel Blob belum bisa digunakan.
+- Lampiran pengaduan yang pernah diunggah sebagai Blob publik sebelum perubahan ini perlu diunggah ulang bila masih diperlukan; endpoint panel tidak meneruskan URL publik lama.
+- Tanpa seluruh environment variable wajib, build production sekarang sengaja dihentikan dengan pesan konfigurasi yang jelas.
+- Gunakan `DATA_MODE="demo"` selama data resmi belum lengkap; ubah menjadi `official` hanya setelah konten diverifikasi.
 - `TASKS.md` di working tree belum sepenuhnya mencerminkan kondisi kode aktual; jadikan audit kode dan catatan ini sebagai acuan sementara.
 - Perubahan saat ini masih berada di working tree dan belum di-commit.
