@@ -22,7 +22,7 @@ export function Kerangka({
   return (
     <div className="md:grid md:min-h-screen md:grid-cols-[230px_1fr] md:items-start lg:grid-cols-[256px_1fr]">
       <Sidebar peran={peran} nama={nama} />
-      <MenuAtas peran={peran} />
+      <MenuAtas peran={peran} nama={nama} />
       {/* max-w di sini, bukan `wadah`: kolom isi sudah diimbangi sidebar,
           jadi batasnya lebih sempit agar baris tabel tidak meregang di 1920px. */}
       <div className="mx-auto w-full max-w-[1180px] px-4 py-6 md:min-w-0 md:px-8 md:pt-8 md:pb-10 lg:max-w-[1320px] lg:px-10 lg:pt-10 lg:pb-14 xl:max-w-[1440px]">

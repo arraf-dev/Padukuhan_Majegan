@@ -5,7 +5,6 @@ import { LencanaStatus } from "@/components/potongan";
 import { KopHalaman, kartu, kartuPutus, tombol } from "@/components/primitif";
 import { db } from "@/lib/db";
 import { tanggalLengkap } from "@/lib/tanggal";
-import { keluar } from "@/app/admin/aksi";
 import { Kerangka } from "@/app/admin/kerangka";
 import { wajibMasuk } from "@/lib/sesi";
 
@@ -152,13 +151,6 @@ export default async function Dashboard() {
         )}
       </div>
 
-      {/* Di desktop tombol keluar sudah ada di sidebar (tersedia dari semua halaman);
-          di layar kecil sidebar disembunyikan, jadi tombol ini tetap dipertahankan. */}
-      <form action={keluar} className="mt-6 md:hidden">
-        <button type="submit" className={`${tombol("hapus", "besar")} w-full`}>
-          Keluar dari panel
-        </button>
-      </form>
     </Kerangka>
   );
 }

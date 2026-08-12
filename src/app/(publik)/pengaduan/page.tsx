@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { alurPengaduan, kategoriPengaduan } from "@/content/majegan";
 import { Identitas } from "@/components/identitas";
 import { Ikon } from "@/components/ikon";
@@ -18,7 +17,7 @@ const pesanGalat: Record<string, string> = {
   kategori: "Pilih salah satu kategori terlebih dahulu.",
   identitas: "Nama dan kontak wajib diisi, kecuali laporan dikirim anonim.",
   lampiran: "Lampiran harus berformat JPG, PNG, atau WEBP dengan ukuran maksimal 4 MB.",
-  jeda: "Laporan sebelumnya baru saja terkirim. Tunggu sebentar sebelum mengirim lagi — cek dulu kode tiket Anda lewat halaman Lacak.",
+  jeda: "Laporan sebelumnya baru saja terkirim. Tunggu sebentar sebelum mengirim laporan berikutnya.",
 };
 
 export default async function Pengaduan({
@@ -153,14 +152,6 @@ export default async function Pengaduan({
             })}
           </ol>
         </div>
-
-        <Link
-          href="/pengaduan/lacak"
-          className={`${kartu(true)} flex items-center gap-2.5 px-5 py-4 text-[13.5px] font-semibold text-hutan`}
-        >
-          <Ikon nama="cari" ukuran={16} className="flex-none text-daun" />
-          Sudah pernah lapor? Lacak dengan kode tiket
-        </Link>
 
         <div className="rounded-xl border border-emas-garis bg-emas-muda px-5 py-4.5">
           <div className="mb-2 flex items-center gap-2.5">

@@ -7,8 +7,8 @@ import { Ikon, Logo } from "@/components/ikon";
 import { keluar } from "@/app/admin/aksi";
 
 /**
- * Sidebar panel admin. Peran `admin` hanya melihat Dashboard, Berita, dan
- * Pengaduan — menu lain tampil terkunci, sesuai matriks peran pada mockup.
+ * Sidebar panel admin. Peran `admin` hanya melihat Dashboard, Berita,
+ * Pengaduan, dan Akun Saya — menu pengelolaan padukuhan tetap terkunci.
  */
 export function Sidebar({ peran, nama }: { peran: Peran; nama: string }) {
   const path = usePathname();
@@ -34,7 +34,7 @@ export function Sidebar({ peran, nama }: { peran: Peran; nama: string }) {
         {menuAdmin.map((m, i) => {
           const kunci = terbatas && m.superadmin;
           const pertamaKunci = kunci && !menuAdmin[i - 1]?.superadmin;
-          const aktif = !kunci && path === m.href;
+          const aktif = !kunci && (path === m.href || (m.href !== "/admin" && path.startsWith(`${m.href}/`)));
 
           if (kunci) {
             return (
@@ -71,8 +71,8 @@ export function Sidebar({ peran, nama }: { peran: Peran; nama: string }) {
                   : "font-medium text-krem/85 hover:bg-krem/10 hover:text-krem"
               }`}
             >
-              <Ikon nama={m.ikon} ukuran={17} />
-              <span className="flex-1">{m.label}</span>
+                <Ikon nama={m.ikon} ukuran={17} />
+                <span className="flex-1">{terbatas && m.href === "/admin/akun" ? "Akun Saya" : m.label}</span>
             </Link>
           );
         })}
@@ -100,25 +100,50 @@ export function Sidebar({ peran, nama }: { peran: Peran; nama: string }) {
 }
 
 /** Pengganti sidebar di layar kecil. */
-export function MenuAtas({ peran }: { peran: Peran }) {
+export function MenuAtas({ peran, nama }: { peran: Peran; nama: string }) {
   const path = usePathname();
   const terbatas = peran === "admin";
 
   return (
-    <div className="flex gap-1.5 overflow-x-auto border-b border-krem/15 bg-hutan px-4 py-2.5 md:hidden">
-      {menuAdmin
-        .filter((m) => !(terbatas && m.superadmin))
-        .map((m) => (
-          <Link
-            key={m.href}
-            href={m.href}
-            className={`rounded-full px-3 py-1.5 text-xs whitespace-nowrap ${
-              path === m.href ? "bg-emas font-bold text-hutan" : "font-medium text-krem/80"
-            }`}
-          >
-            {m.label}
+    <details className="group border-b border-krem/15 bg-hutan text-krem md:hidden">
+      <summary className="flex min-h-14 cursor-pointer list-none items-center gap-3 px-4 marker:content-none">
+        <Logo ukuran={30} />
+        <span className="min-w-0 flex-1 truncate font-serif text-sm font-semibold">Majegan Admin</span>
+        <span className="rounded-[10px] border border-krem/25 px-3 py-2 text-xs font-bold group-open:bg-emas group-open:text-hutan">
+          Menu
+        </span>
+      </summary>
+      <nav className="border-t border-krem/15 px-3 py-3">
+        {menuAdmin
+          .filter((m) => !(terbatas && m.superadmin))
+          .map((m) => {
+            const aktif = path === m.href || (m.href !== "/admin" && path.startsWith(`${m.href}/`));
+            return (
+              <Link
+                key={m.href}
+                href={m.href}
+                aria-current={aktif ? "page" : undefined}
+                className={`flex min-h-11 items-center gap-3 rounded-[10px] px-3 py-2.5 text-sm ${
+                  aktif ? "bg-emas font-bold text-hutan" : "font-medium text-krem/85"
+                }`}
+              >
+                <Ikon nama={m.ikon} ukuran={17} />
+                {terbatas && m.href === "/admin/akun" ? "Akun Saya" : m.label}
+              </Link>
+            );
+          })}
+        <div className="mt-3 flex items-center gap-3 border-t border-krem/15 px-3 pt-3">
+          <div className="foto size-8 rounded-full border border-emas" />
+          <Link href="/admin/akun" className="min-w-0 flex-1 truncate text-xs font-bold hover:text-emas">
+            {nama} · Akun
           </Link>
-        ))}
-    </div>
+          <form action={keluar}>
+            <button type="submit" className="min-h-10 rounded-[10px] px-3 text-xs font-bold text-krem/80 hover:bg-krem/10 hover:text-emas">
+              Keluar
+            </button>
+          </form>
+        </div>
+      </nav>
+    </details>
   );
 }

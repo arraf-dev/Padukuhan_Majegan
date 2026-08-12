@@ -17,8 +17,8 @@ export async function tanggapiPengaduan(data: FormData) {
 
   if (!id || !status) redirect("/admin/pengaduan");
 
-  // Laporan tidak boleh ditutup tanpa penjelasan — tanggapan inilah satu-satunya
-  // yang dilihat warga di halaman Lacak.
+  // Laporan tidak boleh ditutup tanpa penjelasan agar arsip tindak lanjut
+  // perangkat dusun tetap lengkap.
   if (status === "SELESAI" && !tanggapan) redirect(`/admin/pengaduan/${id}?galat=tanggapan`);
 
   await db.pengaduan.update({

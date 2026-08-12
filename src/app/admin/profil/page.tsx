@@ -62,6 +62,11 @@ export default async function KelolaProfil({
         }
       />
 
+      <nav aria-label="Bagian profil" className="mb-5 flex gap-2 overflow-x-auto pb-1 lg:mb-7">
+        <a href="#naskah" className="min-h-11 rounded-full border border-garis bg-kertas px-4 py-2.5 text-[13px] font-bold text-hutan hover:border-daun hover:bg-emas-lembut">Profil Padukuhan</a>
+        <a href="#struktur" className="min-h-11 rounded-full border border-garis bg-kertas px-4 py-2.5 text-[13px] font-bold text-hutan hover:border-daun hover:bg-emas-lembut">Struktur Perangkat</a>
+      </nav>
+
       {pesan && (
         <p
           role="status"
@@ -76,7 +81,7 @@ export default async function KelolaProfil({
       )}
 
       {/* ---------- Naskah ---------- */}
-      <section className="mb-9 lg:mb-12">
+      <section id="naskah" className="mb-9 scroll-mt-20 lg:mb-12">
         <h2 className="mb-3 font-serif text-base font-semibold text-hutan lg:mb-4 lg:text-[19px]">Naskah</h2>
         {/* Dua naskah berdampingan mulai xl — keduanya blok teks pendek,
             bertumpuk di layar lebar hanya memaksa gulir tanpa alasan. */}
@@ -131,7 +136,7 @@ export default async function KelolaProfil({
       </section>
 
       {/* ---------- Struktur organisasi ---------- */}
-      <section>
+      <section id="struktur" className="scroll-mt-20">
         <h2 className="mb-1 font-serif text-base font-semibold text-hutan lg:text-[19px]">Struktur Organisasi</h2>
         <p className="mb-3 text-[12.5px] text-samar lg:mb-4 lg:text-[13.5px]">
           {perangkat.length} orang · urutan terkecil tampil sebagai Dukuh di kartu paling atas
@@ -144,13 +149,17 @@ export default async function KelolaProfil({
           </p>
         )}
 
-        <div className="flex flex-col gap-2.5 lg:gap-3">
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3 lg:gap-4">
           {perangkat.map((p, i) => {
             const mintaHapus = konfirmasi === p.id;
 
             return (
-              <div key={p.id} className={`${kartu()} px-4 py-3.5 md:px-5 lg:px-6 lg:py-4`}>
-                <form action={simpanPerangkat} className="flex flex-wrap items-end gap-3 lg:gap-4">
+              <div key={p.id} className={`${kartu()} px-4 py-4 md:px-5 lg:px-5 lg:py-5`}>
+                <div className="mb-3 flex items-center gap-3">
+                  <div className="foto size-10 rounded-full border border-emas" />
+                  <div className="min-w-0"><div className="truncate text-[13.5px] font-bold text-tinta">{p.nama}</div><div className="truncate text-[11.5px] text-emas-tua">{p.jabatan}</div></div>
+                </div>
+                <form action={simpanPerangkat} className="flex flex-wrap items-end gap-3">
                   <input type="hidden" name="id" value={p.id} />
 
                   <div className="min-w-40 flex-1">

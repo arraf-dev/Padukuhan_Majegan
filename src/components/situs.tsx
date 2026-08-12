@@ -150,12 +150,6 @@ export function Footer() {
                 {t}
               </span>
             ))}
-            <Link
-              href="/pengaduan/lacak"
-              className="mt-1.5 block py-1 transition-colors duration-200 ease-out hover:text-emas"
-            >
-              Lacak Pengaduan
-            </Link>
             {/* Untuk perangkat dusun, bukan warga — sengaja dibuat tidak menonjol.
                 Opasitas ditahan di 70%: di bawah itu kontrasnya jatuh di bawah AA. */}
             <Link

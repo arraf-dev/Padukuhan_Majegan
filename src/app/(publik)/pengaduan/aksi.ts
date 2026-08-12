@@ -19,9 +19,9 @@ export async function kirimPengaduan(data: FormData) {
   const galat = periksaPengaduan(data);
   if (galat) redirect(`/pengaduan?galat=${galat}`);
 
-  // Bot yang mengisi kolom jebakan dibalas "berhasil" dengan kode palsu —
-  // jangan simpan, dan jangan beri tahu botnya bahwa dia tertangkap.
-  if (teks(data, NAMA_JEBAKAN)) redirect(`/pengaduan/terkirim?kode=${buatKodeTiket()}`);
+  // Bot yang mengisi kolom jebakan dibalas "berhasil" — jangan simpan, dan
+  // jangan beri tahu botnya bahwa dia tertangkap.
+  if (teks(data, NAMA_JEBAKAN)) redirect("/pengaduan/terkirim");
 
   const lampiran = data.get("lampiranBerkas");
   if (lampiran instanceof File && lampiran.size > 0 && periksaBerkas(lampiran, "gambar")) {
@@ -65,5 +65,5 @@ export async function kirimPengaduan(data: FormData) {
 
   if (kode === null) throw new Error("Gagal membuat kode tiket unik setelah 3 percobaan");
 
-  redirect(`/pengaduan/terkirim?kode=${kode}`);
+  redirect("/pengaduan/terkirim");
 }

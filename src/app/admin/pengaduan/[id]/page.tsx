@@ -60,7 +60,7 @@ export default async function DetailPengaduan({
           role="status"
           className="mb-4 rounded-xl border border-emas-garis bg-emas-muda px-4 py-3 text-[13px] font-semibold text-emas-teks"
         >
-          Tindak lanjut tersimpan — warga bisa melihatnya lewat kode tiket di halaman Lacak.
+          Tindak lanjut tersimpan untuk arsip dan koordinasi internal perangkat dusun.
         </p>
       )}
 
@@ -104,7 +104,7 @@ export default async function DetailPengaduan({
             <p className="mt-2 flex items-start gap-2.5 rounded-[10px] border border-garis bg-krem px-3.5 py-3 text-[12.5px] leading-relaxed text-redup">
               <Ikon nama="gembok" ukuran={14} className="mt-0.5 flex-none" />
               Dikirim anonim — nama & kontak tidak pernah disimpan, jadi pelapor tidak bisa
-              dihubungi. Tanggapan hanya terbaca lewat kode tiket.
+              dihubungi. Tanggapan dipakai untuk catatan tindak lanjut internal.
             </p>
           ) : (
             <dl className="mt-2 grid gap-2">
@@ -179,7 +179,7 @@ export default async function DetailPengaduan({
             Simpan Tindak Lanjut
           </button>
           <span className="text-xs text-samar">
-            Tanggapan langsung terlihat warga lewat kode tiket.
+            Tanggapan tersimpan sebagai catatan tindak lanjut perangkat dusun.
           </span>
         </div>
       </form>

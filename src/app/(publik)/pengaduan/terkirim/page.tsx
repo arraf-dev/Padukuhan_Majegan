@@ -4,13 +4,7 @@ import { tombol } from "@/components/primitif";
 
 export const metadata: Metadata = { title: "Laporan Terkirim" };
 
-export default async function Terkirim({
-  searchParams,
-}: {
-  searchParams: Promise<{ kode?: string }>;
-}) {
-  const { kode } = await searchParams;
-
+export default function Terkirim() {
   return (
     <div className="mx-auto max-w-lg px-4 py-8 md:py-14">
       <div data-reveal className="rounded-2xl bg-hutan px-5 py-6 text-center text-krem md:px-8 md:py-8">
@@ -35,23 +29,13 @@ export default async function Terkirim({
           Anda lewat kontak yang dicantumkan bila diperlukan.
         </p>
 
-        {kode && (
-          <p className="mt-3.5 rounded-[10px] border border-krem/20 bg-krem/10 px-4 py-3 text-[12.5px] text-krem/85">
-            Simpan kode tiket ini untuk menanyakan perkembangan laporan:
-            <br />
-            <strong className="font-mono text-base tracking-wide text-emas">{kode}</strong>
-          </p>
-        )}
-
-        <Link
-          href={kode ? `/pengaduan/lacak?kode=${kode}` : "/pengaduan/lacak"}
-          className={`${tombol("primer", "besar")} mt-4 w-full`}
-        >
-          Lacak Perkembangan Laporan
-        </Link>
+        <p className="mt-3.5 rounded-[10px] border border-krem/20 bg-krem/10 px-4 py-3 text-[12.5px] leading-relaxed text-krem/85">
+          Perangkat dusun akan meninjau laporan Anda. Bila diperlukan, kami akan menghubungi
+          Anda melalui kontak yang dicantumkan.
+        </p>
         <Link
           href="/"
-          className="mt-2.5 block py-2 text-[12.5px] font-semibold text-krem/80 transition-colors duration-200 ease-out hover:text-emas"
+          className={`${tombol("primer", "besar")} mt-4 w-full`}
         >
           Kembali ke Beranda
         </Link>

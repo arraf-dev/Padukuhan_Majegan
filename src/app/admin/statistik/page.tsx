@@ -18,10 +18,8 @@ const kabar: Record<string, string> = {
 };
 
 /**
- * ponytail: hanya `ringkasan` & `usia` yang dilayani form ini. Enum
- * `KategoriStatistik` juga punya jenis_kelamin/pekerjaan/pendidikan, tapi tidak
- * satu pun ditampilkan di halaman publik — isian untuk data yang tidak pernah
- * tampil hanya membuang waktu admin.
+ * Seluruh kategori dalam skema ditampilkan karena halaman publik sekarang
+ * memakai data jenis kelamin, pekerjaan, dan pendidikan juga.
  */
 const KATEGORI = [
   {
@@ -37,6 +35,27 @@ const KATEGORI = [
     keterangan: "Tinggi batang grafik. Isi persentase 0–100, bukan jumlah jiwa.",
     satuan: "persen (0–100)",
     contohLabel: "0–14",
+  },
+  {
+    nilai: "jenis_kelamin" as const,
+    judul: "Jenis Kelamin",
+    keterangan: "Komposisi penduduk, misalnya Laki-laki dan Perempuan.",
+    satuan: "jiwa",
+    contohLabel: "Perempuan",
+  },
+  {
+    nilai: "pendidikan" as const,
+    judul: "Pendidikan",
+    keterangan: "Jumlah penduduk berdasarkan pendidikan terakhir.",
+    satuan: "jiwa",
+    contohLabel: "SMA/sederajat",
+  },
+  {
+    nilai: "pekerjaan" as const,
+    judul: "Pekerjaan",
+    keterangan: "Jumlah penduduk berdasarkan pekerjaan utama.",
+    satuan: "jiwa",
+    contohLabel: "Petani",
   },
 ];
 

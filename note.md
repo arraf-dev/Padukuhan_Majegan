@@ -4,7 +4,28 @@ Terakhir diperbarui: 12 Agustus 2026
 
 ## Status Saat Ini
 
-Sebagian besar fitur utama website sudah selesai. Hasil audit kode menunjukkan bahwa autentikasi, database, halaman publik, dan modul admin sudah tersedia. Pekerjaan terakhir menambahkan pagar kesiapan production: validasi environment, mode data demo, health check, dan smoke test deployment.
+Sebagian besar fitur utama website sudah selesai. Hasil audit kode menunjukkan bahwa autentikasi, database, halaman publik, dan modul admin sudah tersedia. Pekerjaan terbaru mengimplementasikan revisi Pak Dukuh pada pengalaman panel admin, alur pengaduan publik, layanan, profil, dan statistik; perubahan ini masih menunggu pengecekan tampilan bersama Pak Dukuh sebelum dirilis.
+
+## Revisi Pak Dukuh — Status Implementasi
+
+### Sudah diimplementasikan
+
+- [x] Pelacakan pengaduan publik dihapus: route, tautan footer, CTA pada formulir, CTA halaman sukses, dan sitemap sudah tidak menyertakan `/pengaduan/lacak`.
+- [x] Pengaduan tetap masuk ke database dan dikelola panel admin; kode tiket tetap menjadi ID internal, bukan informasi untuk warga.
+- [x] Halaman sukses pengaduan memberi konfirmasi serta informasi bahwa perangkat akan menghubungi pelapor bila diperlukan.
+- [x] Navigasi admin mobile diubah dari deretan tab horizontal menjadi menu yang dapat dibuka/tutup, dengan penanda halaman aktif.
+- [x] Tombol **Keluar** selalu tersedia pada sidebar desktop dan menu mobile.
+- [x] Menu/form ganti sandi disatukan ke `/admin/akun`; halaman `/admin/sandi` sekarang mengarahkan ke sana untuk menjaga bookmark lama.
+- [x] Admin biasa dapat membuka Akun Saya dan mengganti sandi sendiri; pengelolaan pengguna tetap khusus SuperAdmin.
+- [x] Halaman Profil & Struktur memiliki pintasan bagian dan perangkat tampil sebagai kartu.
+- [x] Kelola Layanan memiliki pencarian, keterangan templat, dan form yang dibagi menjadi Informasi Dasar, Persyaratan, Alur, serta Dokumen Templat.
+- [x] Statistik mendukung jenis kelamin, pendidikan, dan pekerjaan selain ringkasan serta kelompok usia; halaman publik menampilkan grafik/tabel responsif beserta kondisi data kosong.
+
+### Perlu disetujui melalui pengecekan tampilan
+
+- [-] Uji pengalaman admin pada ponsel nyata (minimal lebar 320 px dan 375 px).
+- [-] Konfirmasi desain menu mobile, kartu Struktur Perangkat, serta visual statistik bersama Pak Dukuh.
+- [-] Isi data statistik resmi untuk kategori jenis kelamin, pendidikan, dan pekerjaan agar grafik publik terisi.
 
 ## Yang Sudah Selesai
 
@@ -14,7 +35,7 @@ Sebagian besar fitur utama website sudah selesai. Hasil audit kode menunjukkan b
 - Database dan seed data sudah tersedia.
 - Login, sesi cookie, logout, dan proteksi `/admin` sudah tersedia.
 - Pembagian hak akses Admin dan SuperAdmin sudah diterapkan.
-- Form pengaduan menyimpan data ke database, menghasilkan kode tiket, dapat dilacak, dan memiliki anti-spam sederhana.
+- Form pengaduan menyimpan data ke database, memiliki ID internal untuk administrasi, dan memiliki anti-spam sederhana. Warga tidak lagi melacak status secara publik.
 - Production memvalidasi `DATABASE_URL`, `RAHASIA_SESI`, `NEXT_PUBLIC_URL`, dan `BLOB_READ_WRITE_TOKEN` tanpa membocorkan nilainya.
 - Mode `DATA_MODE=demo|official` tersedia; mode demo menampilkan penanda bahwa informasi publik masih berupa data contoh.
 - Endpoint `GET /api/health` memeriksa koneksi aplikasi dan database tanpa menampilkan secret.
@@ -27,7 +48,7 @@ Sebagian besar fitur utama website sudah selesai. Hasil audit kode menunjukkan b
 - Profil dan struktur perangkat membaca data dari database.
 - Informasi layanan membaca data dari database.
 - Statistik membaca data dari database.
-- Pengaduan dapat dikirim dan dilacak oleh warga.
+- Pengaduan dapat dikirim warga dan ditindaklanjuti oleh perangkat melalui panel admin; pelacakan status publik tidak tersedia.
 
 ### Panel admin
 
@@ -539,7 +560,7 @@ Tidak ada komponen aplikasi yang perlu dihapus pada fase awal.
 - [ ] Ambil backup final dan catat commit/image yang akan dirilis.
 - [ ] Jalankan smoke test staging dan minta sign-off.
 - [ ] Ubah DNS atau promosikan deployment Coolify.
-- [ ] Uji beranda, berita, profil, layanan, statistik, login admin, CRUD, pengaduan, pelacakan, upload publik, dan lampiran privat.
+- [ ] Uji beranda, berita, profil, layanan, statistik, login admin, CRUD, pengaduan, upload publik, dan lampiran privat.
 - [ ] Amati error, resource, database, dan log selama periode stabilisasi.
 - Risiko: regresi aplikasi atau dependency eksternal setelah cutover.
 - Validasi: seluruh alur kritis lulus melalui domain production dan tidak ada lonjakan error.

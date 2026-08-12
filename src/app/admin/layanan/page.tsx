@@ -19,19 +19,21 @@ const kabar: Record<string, string> = {
 export default async function KelolaLayanan({
   searchParams,
 }: {
-  searchParams: Promise<{ tersimpan?: string; terhapus?: string; konfirmasi?: string }>;
+  searchParams: Promise<{ tersimpan?: string; terhapus?: string; konfirmasi?: string; q?: string }>;
 }) {
   const { nama, peran } = await wajibSuperadmin();
-  const { tersimpan, terhapus, konfirmasi } = await searchParams;
+  const { tersimpan, terhapus, konfirmasi, q } = await searchParams;
 
-  const daftar = await daftarLayananAdmin();
+  const semua = await daftarLayananAdmin();
+  const cari = q?.trim().toLowerCase() ?? "";
+  const daftar = cari ? semua.filter((l) => `${l.namaLayanan} ${l.deskripsi}`.toLowerCase().includes(cari)) : semua;
   const pesan = terhapus ? kabar.hapus : tersimpan ? kabar[tersimpan] : undefined;
 
   return (
     <Kerangka peran={peran} nama={nama}>
       <KopHalaman
         judul="Kelola Layanan"
-        keterangan={`${daftar.length} layanan · urutan menentukan susunan di halaman publik`}
+        keterangan={`${semua.length} layanan · urutan menentukan susunan di halaman publik`}
         aksi={
           <Link href="/admin/layanan/baru" className={tombol("primer")}>
             <span className="text-base leading-none">+</span> Layanan Baru
@@ -48,9 +50,15 @@ export default async function KelolaLayanan({
         </p>
       )}
 
+      <form className="mb-4 flex gap-2.5 lg:mb-5">
+        <label htmlFor="cari" className="sr-only">Cari layanan</label>
+        <input id="cari" name="q" defaultValue={q} placeholder="Cari layanan…" className="min-h-11 flex-1 rounded-[10px] border border-garis bg-kertas px-3.5 text-[13.5px] text-tinta focus:border-daun focus:outline-none" />
+        <button type="submit" className={tombol("sekunder")}>Cari</button>
+      </form>
+
       {daftar.length === 0 ? (
         <p className={kartuPutus}>
-          Belum ada layanan. Mulai dari tombol <strong>Layanan Baru</strong> di atas.
+          {cari ? <>Layanan dengan kata kunci <strong>“{q}”</strong> tidak ditemukan.</> : <>Belum ada layanan. Mulai dari tombol <strong>Layanan Baru</strong> di atas.</>}
         </p>
       ) : (
         // Dua kolom mulai xl — sama alasannya dengan daftar berita.
@@ -69,6 +77,7 @@ export default async function KelolaLayanan({
                     <div className="text-[14px] font-semibold text-tinta">{l.namaLayanan}</div>
                     <div className="mt-0.5 text-[11.5px] text-samar">
                       {l.persyaratan.length} syarat · {l.estimasiWaktu} · {l.biaya}
+                      {l.fileTemplat && " · templat tersedia"}
                     </div>
                   </div>
 

@@ -645,11 +645,8 @@ export const menuAdmin = [
   { href: "/admin", label: "Dashboard", ikon: "kisi" as const },
   { href: "/admin/berita", label: "Berita", ikon: "berita" as const },
   { href: "/admin/pengaduan", label: "Pengaduan", ikon: "obrolan" as const },
-  // Terbuka untuk kedua peran: AUTH-4 berlaku juga bagi Admin, dan tanpa entri
-  // ini peran Admin tidak punya jalan ke sana — /admin/akun terkunci baginya.
-  { href: "/admin/sandi", label: "Ganti Sandi", ikon: "gembok" as const },
+  { href: "/admin/akun", label: "Akun & Pengguna", ikon: "warga" as const },
   { href: "/admin/profil", label: "Profil & Struktur", ikon: "warga" as const, superadmin: true },
   { href: "/admin/layanan", label: "Layanan", ikon: "surat" as const, superadmin: true },
   { href: "/admin/statistik", label: "Statistik", ikon: "batang" as const, superadmin: true },
-  { href: "/admin/akun", label: "Akun & Pengguna", ikon: "warga" as const, superadmin: true },
 ];
