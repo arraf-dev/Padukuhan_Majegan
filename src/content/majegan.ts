@@ -510,7 +510,7 @@ export const peranPengguna = [
     sorot: false,
     hak: [
       { teks: "Melihat semua halaman publik", bisa: true },
-      { teks: "Mengirim pengaduan (boleh anonim)", bisa: true },
+      { teks: "Mengirim pengaduan dengan identitas", bisa: true },
       { teks: "Tidak bisa masuk panel admin", bisa: false },
     ],
   },
@@ -557,85 +557,6 @@ export const ringkasanAdmin: Record<Peran, { label: string; angka: number; catat
     { label: "BELUM DITANGGAPI", angka: 5, catatan: "tertua: 4 hari", bata: true },
   ],
 };
-
-export type StatusPengaduan = "TERKIRIM" | "DIPROSES" | "SELESAI";
-
-export type Pengaduan = {
-  kode: string;
-  isi: string;
-  status: StatusPengaduan;
-  tanggal: string;
-  tanggapan?: string;
-};
-
-export const pengaduanTerbaru: Pengaduan[] = [
-  {
-    kode: "MJG-2607-4X9K",
-    isi: "Lampu jalan RT 03 mati sejak tiga hari lalu…",
-    status: "TERKIRIM",
-    tanggal: "2026-07-22",
-  },
-  {
-    kode: "MJG-2607-7B2M",
-    isi: "Sampah menumpuk di tepi kali dekat jembatan…",
-    status: "DIPROSES",
-    tanggal: "2026-07-19",
-    tanggapan: "Sudah dikoordinasikan dengan Karang Taruna, pengangkutan dijadwalkan akhir pekan ini.",
-  },
-  {
-    kode: "MJG-2606-9C1D",
-    isi: "Usulan perbaikan saluran irigasi sawah blok timur…",
-    status: "SELESAI",
-    tanggal: "2026-06-28",
-    tanggapan: "Perbaikan selesai dikerjakan bersama kelompok tani pada 8 Juli 2026. Terima kasih atas usulannya.",
-  },
-  {
-    kode: "MJG-2607-2H8L",
-    isi: "Jalan setapak menuju makam licin dan berlumut, sudah ada warga yang terpeleset saat hujan.",
-    status: "DIPROSES",
-    tanggal: "2026-07-23",
-    tanggapan: "Sudah ditinjau bersama Ketua RT 04. Pembersihan lumut dijadwalkan pekan depan.",
-  },
-  {
-    kode: "MJG-2607-5N3P",
-    isi: "Mohon penambahan tempat sampah di sekitar balai dusun, terutama saat ada kegiatan.",
-    status: "TERKIRIM",
-    tanggal: "2026-07-21",
-  },
-  {
-    kode: "MJG-2607-8R4T",
-    isi: "Air PAM sering mati pada jam sibuk pagi di wilayah RT 06 dan RT 07.",
-    status: "DIPROSES",
-    tanggal: "2026-07-20",
-  },
-  {
-    kode: "MJG-2607-1K6V",
-    isi: "Usul agar jadwal posyandu diumumkan lebih awal supaya ibu bekerja bisa mengatur cuti.",
-    status: "SELESAI",
-    tanggal: "2026-07-14",
-    tanggapan: "Diterima. Mulai Agustus jadwal posyandu diumumkan dua pekan sebelumnya lewat grup RT dan website.",
-  },
-  {
-    kode: "MJG-2607-3W7Y",
-    isi: "Pohon di tepi jalan RT 02 miring dan rantingnya menjulur ke kabel listrik.",
-    status: "SELESAI",
-    tanggal: "2026-07-09",
-    tanggapan: "Pemangkasan sudah dilakukan bersama petugas dari kalurahan pada 12 Juli 2026.",
-  },
-  {
-    kode: "MJG-2606-6Q2Z",
-    isi: "Suara musik dari hajatan sampai lewat tengah malam, mengganggu warga yang bekerja pagi.",
-    status: "SELESAI",
-    tanggal: "2026-06-30",
-    tanggapan: "Sudah disampaikan ke penyelenggara. Kesepakatan warga: pengeras suara dimatikan maksimal pukul 23.00.",
-  },
-  {
-    kode: "MJG-2606-9D5F",
-    isi: "Papan nama gang di RT 08 sudah pudar dan sulit dibaca oleh tamu.",
-    status: "TERKIRIM",
-    tanggal: "2026-06-25",
-  },
-];
 
 /**
  * Menu panel admin.

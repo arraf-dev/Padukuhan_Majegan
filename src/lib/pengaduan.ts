@@ -3,6 +3,7 @@
 import { kategoriPengaduan } from "../content/majegan.ts";
 
 export type GalatPengaduan = "isi" | "kategori" | "identitas";
+export type FilterBaca = "belum" | "sudah";
 
 const teks = (fd: FormData, nama: string) => String(fd.get(nama) ?? "").trim();
 
@@ -16,12 +17,21 @@ export function periksaPengaduan(fd: FormData): GalatPengaduan | null {
 
   if (!teks(fd, "isi")) return "isi";
 
-  // Anonim membebaskan identitas; selain itu nama & kontak wajib.
-  if (fd.get("anonim") === null && (!teks(fd, "nama") || !teks(fd, "kontak"))) {
-    return "identitas";
-  }
+  if (!teks(fd, "nama") || !teks(fd, "kontak")) return "identitas";
 
   return null;
+}
+
+/** Hanya menerima dua nilai filter resmi; nilai URL lain kembali ke Semua. */
+export function pilihFilterBaca(nilai?: string): FilterBaca | undefined {
+  return nilai === "belum" || nilai === "sudah" ? nilai : undefined;
+}
+
+/** Logika filter murni untuk memastikan arti Dibaca/Belum Dibaca tidak terbalik. */
+export function cocokFilterBaca(dibacaPada: Date | null, filter?: FilterBaca): boolean {
+  if (filter === "belum") return dibacaPada === null;
+  if (filter === "sudah") return dibacaPada !== null;
+  return true;
 }
 
 /**
@@ -51,19 +61,4 @@ export function bolehKirim(ip: string, kini = Date.now()): boolean {
   for (const [k, t] of kirimTerakhir) if (kini - t >= JEDA_KIRIM_MS) kirimTerakhir.delete(k);
   kirimTerakhir.set(ip, kini);
   return true;
-}
-
-/** Kode tiket seperti pada mockup: MJG-2607-4X9K (MJG-YYMM-acak). */
-export function buatKodeTiket(kini = new Date()): string {
-  const yy = String(kini.getFullYear()).slice(-2);
-  const mm = String(kini.getMonth() + 1).padStart(2, "0");
-
-  // Tanpa huruf/angka yang mudah tertukar saat dibacakan lewat telepon.
-  const abjad = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  const acak = Array.from(
-    crypto.getRandomValues(new Uint8Array(4)),
-    (b) => abjad[b % abjad.length],
-  ).join("");
-
-  return `MJG-${yy}${mm}-${acak}`;
 }

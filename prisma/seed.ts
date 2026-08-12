@@ -16,7 +16,6 @@ import {
   kategoriBerita,
   kelompokUsia,
   layanan,
-  pengaduanTerbaru,
   profil,
   statistik,
 } from "../src/content/majegan.ts";
@@ -150,34 +149,47 @@ async function main() {
   }
 
   /* ---------- Pengaduan contoh ---------- */
-  // Selang-seling anonim & berindentitas: panel admin perlu menampilkan kedua
-  // bentuk, termasuk penjelasan bahwa kontak pelapor anonim memang tak disimpan.
-  const pelapor = [
-    { nama: "Suryanto", kontak: "0812-2700-1121", kategori: "Infrastruktur" },
-    { nama: "Ngatinem", kontak: "0857-4412-8890", kategori: "Kebersihan" },
-    { nama: "Yuli Astuti", kontak: "yuli.astuti@gmail.com", kategori: "Layanan Publik" },
-    { nama: "Purwadi", kontak: "0813-9087-2245", kategori: "Keamanan" },
-  ];
-
-  for (const [i, p] of pengaduanTerbaru.entries()) {
-    const anonim = i % 3 === 0;
-    const orang = pelapor[i % pelapor.length];
-    const isi = {
-      kategori: anonim ? "Lainnya" : orang.kategori,
-      isi: p.isi,
-      status: p.status,
-      tanggapan: p.tanggapan ?? null,
-      isAnonim: anonim,
-      namaPelapor: anonim ? null : orang.nama,
-      kontak: anonim ? null : orang.kontak,
-      dibuatPada: new Date(p.tanggal),
-    };
-    await db.pengaduan.upsert({
-      where: { kodeTiket: p.kode },
-      update: isi,
-      create: { ...isi, kodeTiket: p.kode },
-    });
-  }
+  // Seluruh data masih demo, jadi daftar diganti utuh agar seed tetap idempoten
+  // meskipun pengaduan tidak memiliki kunci bisnis/nomor tiket lagi.
+  await db.pengaduan.deleteMany();
+  await db.pengaduan.createMany({
+    data: [
+      {
+        namaPelapor: "Suryanto",
+        kontak: "0812-2700-1121",
+        kategori: "Infrastruktur",
+        lokasi: "RT 03",
+        isi: "Lampu jalan RT 03 mati sejak tiga hari lalu.",
+        dibuatPada: new Date("2026-08-11T19:20:00+07:00"),
+      },
+      {
+        namaPelapor: "Ngatinem",
+        kontak: "0857-4412-8890",
+        kategori: "Kebersihan",
+        lokasi: "Jembatan sisi timur",
+        isi: "Sampah menumpuk di tepi kali dekat jembatan dan mulai menimbulkan bau.",
+        dibuatPada: new Date("2026-08-10T08:30:00+07:00"),
+      },
+      {
+        namaPelapor: "Yuli Astuti",
+        kontak: "yuli.astuti@gmail.com",
+        kategori: "Layanan Publik",
+        lokasi: "RT 05",
+        isi: "Mohon jadwal posyandu diumumkan lebih awal agar warga dapat menyesuaikan waktu.",
+        dibacaPada: new Date("2026-08-10T10:15:00+07:00"),
+        dibuatPada: new Date("2026-08-09T15:10:00+07:00"),
+      },
+      {
+        namaPelapor: "Purwadi",
+        kontak: "0813-9087-2245",
+        kategori: "Keamanan",
+        lokasi: "RT 02",
+        isi: "Pohon di tepi jalan miring dan rantingnya menjulur ke kabel listrik.",
+        dibacaPada: new Date("2026-08-08T09:00:00+07:00"),
+        dibuatPada: new Date("2026-08-07T20:40:00+07:00"),
+      },
+    ],
+  });
 
   console.log(
     `Selesai: ${await db.berita.count()} berita, ${await db.layanan.count()} layanan, ` +

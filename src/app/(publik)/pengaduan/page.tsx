@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 const pesanGalat: Record<string, string> = {
   isi: "Isi laporan wajib diisi.",
   kategori: "Pilih salah satu kategori terlebih dahulu.",
-  identitas: "Nama dan kontak wajib diisi, kecuali laporan dikirim anonim.",
+  identitas: "Nama lengkap dan nomor HP/WhatsApp wajib diisi.",
   lampiran: "Lampiran harus berformat JPG, PNG, atau WEBP dengan ukuran maksimal 4 MB.",
   jeda: "Laporan sebelumnya baru saja terkirim. Tunggu sebentar sebelum mengirim laporan berikutnya.",
 };
@@ -159,8 +159,8 @@ export default async function Pengaduan({
             <strong className="text-[13.5px] text-emas-teks">Privasi pelapor</strong>
           </div>
           <p className="text-[12.5px] leading-relaxed text-emas-teks">
-            Identitas &amp; kontak hanya dilihat perangkat dusun untuk keperluan tindak lanjut —
-            tidak pernah tampil ke publik.
+            Identitas tidak pernah tampil ke publik. Hanya SuperAdmin yang dapat melihat nama dan
+            kontak; Admin tetap dapat membaca isi laporan dan lampirannya.
           </p>
         </div>
       </aside>

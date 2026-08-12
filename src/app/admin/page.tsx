@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Hitung } from "@/components/gerak";
 import { Ikon } from "@/components/ikon";
-import { LencanaStatus } from "@/components/potongan";
+import { LencanaBaca } from "@/components/potongan";
 import { KopHalaman, kartu, kartuPutus, tombol } from "@/components/primitif";
 import { db } from "@/lib/db";
 import { tanggalLengkap } from "@/lib/tanggal";
@@ -21,15 +21,15 @@ export default async function Dashboard() {
 
   // ADM-8 — semua angka di bawah ini dihitung dari DB, bukan lagi dari
   // `ringkasanAdmin` di majegan.ts.
-  const [terbit, draf, menunggu, diproses, terbaru] = await Promise.all([
+  const [terbit, draf, belumDibaca, sudahDibaca, terbaru] = await Promise.all([
     db.berita.count({ where: { status: "terbit" } }),
     db.berita.count({ where: { status: "draft" } }),
-    db.pengaduan.count({ where: { status: "TERKIRIM" } }),
-    db.pengaduan.count({ where: { status: "DIPROSES" } }),
+    db.pengaduan.count({ where: { dibacaPada: null } }),
+    db.pengaduan.count({ where: { dibacaPada: { not: null } } }),
     db.pengaduan.findMany({
       orderBy: { dibuatPada: "desc" },
       take: 5,
-      select: { id: true, kodeTiket: true, isi: true, status: true },
+      select: { id: true, kategori: true, isi: true, dibacaPada: true },
     }),
   ]);
 
@@ -38,10 +38,10 @@ export default async function Dashboard() {
     { label: "DRAF BERITA", angka: draf, catatan: "belum ditayangkan" },
     {
       label: "PENGADUAN BARU",
-      angka: menunggu,
-      catatan: diproses > 0 ? `${diproses} sedang diproses` : "belum ditinjau",
+      angka: belumDibaca,
+      catatan: `${sudahDibaca} sudah dibaca`,
       sorot: true,
-      bata: menunggu > 0,
+      bata: belumDibaca > 0,
     },
   ];
 
@@ -60,7 +60,7 @@ export default async function Dashboard() {
       <KopHalaman
         judul={`Selamat datang, ${nama}`}
         keterangan={`${tanggalLengkap(new Date())} · ${
-          menunggu === 0 ? "tidak ada pengaduan baru" : `${menunggu} pengaduan menunggu tanggapan`
+          belumDibaca === 0 ? "semua pengaduan sudah dibaca" : `${belumDibaca} pengaduan belum dibaca`
         }`}
         aksi={
           <Link href="/admin/berita/baru" className={tombol("primer")}>
@@ -123,10 +123,10 @@ export default async function Dashboard() {
                     href={`/admin/pengaduan/${p.id}`}
                     className="flex-none font-mono text-[13px] font-bold text-hutan transition-colors duration-200 ease-out hover:text-daun hover:underline"
                   >
-                    {p.kodeTiket}
+                    {p.kategori}
                   </Link>
                   <span className="min-w-40 flex-1 truncate text-[13px] text-teks lg:text-sm">{p.isi}</span>
-                  <LencanaStatus status={p.status} />
+                  <LencanaBaca dibaca={p.dibacaPada !== null} />
                 </li>
               ))}
             </ul>

@@ -11,7 +11,11 @@ Sebagian besar fitur utama website sudah selesai. Hasil audit kode menunjukkan b
 ### Sudah diimplementasikan
 
 - [x] Pelacakan pengaduan publik dihapus: route, tautan footer, CTA pada formulir, CTA halaman sukses, dan sitemap sudah tidak menyertakan `/pengaduan/lacak`.
-- [x] Pengaduan tetap masuk ke database dan dikelola panel admin; kode tiket tetap menjadi ID internal, bukan informasi untuk warga.
+- [x] Kode tiket, status proses, tanggapan, dan mode anonim dihapus sepenuhnya dari model pengaduan.
+- [x] Panel pengaduan hanya memiliki filter Semua, Belum Dibaca, dan Dibaca; laporan yang sudah dibaca ditandai hijau.
+- [x] Identitas wajib diisi warga; hanya SuperAdmin yang mengambil dan melihat nama/kontak, sedangkan Admin tetap dapat membuka isi dan lampiran.
+- [x] Kartu pengaduan diperbarui dengan metadata yang mudah dipindai, aksen baca, dan animasi hover yang menghormati reduced motion.
+- [x] Migration `20260812230000_sederhanakan_pengaduan` siap menghapus data demo dan kolom lama, lalu menambahkan `dibaca_pada`.
 - [x] Halaman sukses pengaduan memberi konfirmasi serta informasi bahwa perangkat akan menghubungi pelapor bila diperlukan.
 - [x] Navigasi admin mobile diubah dari deretan tab horizontal menjadi menu yang dapat dibuka/tutup, dengan penanda halaman aktif.
 - [x] Tombol **Keluar** selalu tersedia pada sidebar desktop dan menu mobile.
@@ -23,6 +27,7 @@ Sebagian besar fitur utama website sudah selesai. Hasil audit kode menunjukkan b
 
 ### Perlu disetujui melalui pengecekan tampilan
 
+- [-] Terapkan migration bersamaan dengan deployment kode baru; jangan jalankan terpisah saat versi lama masih aktif karena kolom lama langsung dihapus.
 - [-] Uji pengalaman admin pada ponsel nyata (minimal lebar 320 px dan 375 px).
 - [-] Konfirmasi desain menu mobile, kartu Struktur Perangkat, serta visual statistik bersama Pak Dukuh.
 - [-] Isi data statistik resmi untuk kategori jenis kelamin, pendidikan, dan pekerjaan agar grafik publik terisi.
@@ -35,7 +40,7 @@ Sebagian besar fitur utama website sudah selesai. Hasil audit kode menunjukkan b
 - Database dan seed data sudah tersedia.
 - Login, sesi cookie, logout, dan proteksi `/admin` sudah tersedia.
 - Pembagian hak akses Admin dan SuperAdmin sudah diterapkan.
-- Form pengaduan menyimpan data ke database, memiliki ID internal untuk administrasi, dan memiliki anti-spam sederhana. Warga tidak lagi melacak status secara publik.
+- Form pengaduan menyimpan identitas wajib dan isi laporan ke database serta memiliki anti-spam sederhana. Tidak ada tiket atau pelacakan status publik.
 - Production memvalidasi `DATABASE_URL`, `RAHASIA_SESI`, `NEXT_PUBLIC_URL`, dan `BLOB_READ_WRITE_TOKEN` tanpa membocorkan nilainya.
 - Mode `DATA_MODE=demo|official` tersedia; mode demo menampilkan penanda bahwa informasi publik masih berupa data contoh.
 - Endpoint `GET /api/health` memeriksa koneksi aplikasi dan database tanpa menampilkan secret.
@@ -55,7 +60,7 @@ Sebagian besar fitur utama website sudah selesai. Hasil audit kode menunjukkan b
 - CRUD berita dan status Draft/Terbit.
 - Kelola profil, sejarah, visi-misi, dan struktur perangkat.
 - Kelola layanan dan persyaratannya.
-- Tindak lanjut pengaduan dan perubahan status.
+- Kelola pengaduan berdasarkan status baca, dengan identitas khusus SuperAdmin dan lampiran yang dapat dibuka kedua peran.
 - Kelola statistik penduduk.
 - Kelola akun pengguna dan ganti kata sandi.
 - Dashboard menggunakan hitungan aktual dari database.

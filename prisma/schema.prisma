@@ -23,12 +23,6 @@ enum StatusBerita {
   terbit
 }
 
-enum StatusPengaduan {
-  TERKIRIM
-  DIPROSES
-  SELESAI
-}
-
 enum JenisAnggaran {
   pendapatan
   belanja
@@ -60,12 +54,12 @@ model Pengguna {
 
 /// Konten statis profil desa: sejarah, visi-misi, dsb.
 model HalamanProfil {
-  id           String   @id @default(cuid())
-  slug         String   @unique
-  judul        String
-  konten       String
+  id             String   @id @default(cuid())
+  slug           String   @unique
+  judul          String
+  konten         String
   /// Ditandai draft selama rumusannya belum disepakati musyawarah dusun.
-  draft        Boolean  @default(false)
+  draft          Boolean  @default(false)
   diperbaruiPada DateTime @updatedAt @map("updated_at")
 
   @@map("halaman_profil")
@@ -131,19 +125,17 @@ model Layanan {
 }
 
 model Pengaduan {
-  id          String          @id @default(cuid())
-  kodeTiket   String          @unique @map("kode_tiket")
-  namaPelapor String?         @map("nama_pelapor")
-  kontak      String?
-  isAnonim    Boolean         @default(false) @map("is_anonim")
+  id          String    @id @default(cuid())
+  namaPelapor String    @map("nama_pelapor")
+  kontak      String
   kategori    String
   lokasi      String?
   isi         String
-  lampiranUrl String?         @map("lampiran_url")
-  status      StatusPengaduan @default(TERKIRIM)
-  tanggapan   String?
-  dibuatPada  DateTime        @default(now()) @map("created_at")
+  lampiranUrl String?   @map("lampiran_url")
+  dibacaPada  DateTime? @map("dibaca_pada")
+  dibuatPada  DateTime  @default(now()) @map("created_at")
 
+  @@index([dibacaPada])
   @@map("pengaduan")
 }
 

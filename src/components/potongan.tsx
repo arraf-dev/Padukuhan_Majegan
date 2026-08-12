@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { Berita, KategoriBerita, StatusPengaduan } from "@/content/majegan";
+import type { Berita, KategoriBerita } from "@/content/majegan";
 import { Atap, Ikon } from "@/components/ikon";
 import { kartu, tombol } from "@/components/primitif";
 import { tanggalKapital, tanggalPanjang } from "@/lib/tanggal";
@@ -72,25 +72,24 @@ export function Foto({
   );
 }
 
-const warnaStatus: Record<StatusPengaduan, string> = {
-  TERKIRIM: "border-[1.5px] border-garis-tebal text-teks",
-  DIPROSES: "bg-emas text-hutan",
-  SELESAI: "bg-daun text-krem",
-};
-
-/** Lencana status pengaduan — dipakai dashboard, daftar admin, & detailnya. */
-export function LencanaStatus({
-  status,
+/** Lencana baca pengaduan — hijau berarti laporan sudah dibaca perangkat. */
+export function LencanaBaca({
+  dibaca,
   className = "",
 }: {
-  status: StatusPengaduan;
+  dibaca: boolean;
   className?: string;
 }) {
   return (
     <span
-      className={`flex-none rounded-full px-2.5 py-1 text-[11px] font-extrabold ${warnaStatus[status]} ${className}`}
+      className={`inline-flex flex-none items-center gap-1.5 rounded-full px-3 py-1.5 text-[10.5px] font-extrabold tracking-[.05em] ${
+        dibaca
+          ? "border border-daun/25 bg-daun-muda text-daun"
+          : "border border-emas-garis bg-emas-muda text-emas-tua"
+      } ${className}`}
     >
-      {status}
+      <span className={`size-1.5 rounded-full ${dibaca ? "bg-daun" : "bg-emas-tua"}`} />
+      {dibaca ? "SUDAH DIBACA" : "BELUM DIBACA"}
     </span>
   );
 }

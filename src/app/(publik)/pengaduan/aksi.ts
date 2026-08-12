@@ -4,7 +4,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { periksaBerkas } from "@/lib/berkas";
 import { db } from "@/lib/db";
-import { NAMA_JEBAKAN, bolehKirim, buatKodeTiket, periksaPengaduan } from "@/lib/pengaduan";
+import { NAMA_JEBAKAN, bolehKirim, periksaPengaduan } from "@/lib/pengaduan";
 import { unggahBerkas } from "@/lib/unggah";
 
 // Penulisan ke DB ditaruh di sini, bukan di `lib/pengaduan.ts` — berkas itu
@@ -35,35 +35,16 @@ export async function kirimPengaduan(data: FormData) {
   // sajikan hanya lewat route panel admin yang memeriksa sesi.
   const unggahan = await unggahBerkas(data, "lampiranBerkas", "pengaduan", "gambar", "private");
 
-  const anonim = data.get("anonim") !== null;
-
-  let kode: string | null = null;
-  for (let coba = 0; coba < 3 && kode === null; coba++) {
-    const kodeTiket = buatKodeTiket();
-    try {
-      await db.pengaduan.create({
-        data: {
-          kodeTiket,
-          kategori: teks(data, "kategori"),
-          lokasi: atauNull(teks(data, "lokasi")),
-          isi: teks(data, "isi"),
-          lampiranUrl: unggahan.url,
-          isAnonim: anonim,
-          // Anonim = identitasnya tidak pernah masuk DB, bukan cuma disembunyikan
-          // saat ditampilkan.
-          namaPelapor: anonim ? null : atauNull(teks(data, "nama")),
-          kontak: anonim ? null : atauNull(teks(data, "kontak")),
-        },
-      });
-      kode = kodeTiket;
-    } catch (e) {
-      // P2002 = kode tiket kembar. Peluangnya kecil (32^4 kombinasi per bulan)
-      // tapi bukan nol, dan warga tidak boleh kena galat karenanya.
-      if ((e as { code?: string }).code !== "P2002") throw e;
-    }
-  }
-
-  if (kode === null) throw new Error("Gagal membuat kode tiket unik setelah 3 percobaan");
+  await db.pengaduan.create({
+    data: {
+      kategori: teks(data, "kategori"),
+      lokasi: atauNull(teks(data, "lokasi")),
+      isi: teks(data, "isi"),
+      lampiranUrl: unggahan.url,
+      namaPelapor: teks(data, "nama"),
+      kontak: teks(data, "kontak"),
+    },
+  });
 
   redirect("/pengaduan/terkirim");
 }

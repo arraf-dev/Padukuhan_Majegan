@@ -5,6 +5,7 @@ const panjang = fmt({ day: "numeric", month: "long", year: "numeric" });
 const pendek = fmt({ day: "2-digit", month: "short" });
 const pendekTahun = fmt({ day: "2-digit", month: "short", year: "numeric" });
 const lengkapHari = fmt({ weekday: "long", day: "numeric", month: "long", year: "numeric" });
+const waktuPendek = fmt({ day: "2-digit", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
 
 /** "17 Juli 2026" */
 export const tanggalPanjang = (iso: string) => panjang.format(new Date(iso));
@@ -21,3 +22,6 @@ export const tanggalPendekTahun = (iso: string) =>
 
 /** "Jumat, 24 Juli 2026" */
 export const tanggalLengkap = (tgl: Date) => lengkapHari.format(tgl);
+
+/** "12 AGU 2026, 09.30" — metadata ringkas pada kartu admin. */
+export const tanggalWaktuPendek = (iso: string) => waktuPendek.format(new Date(iso)).toUpperCase();

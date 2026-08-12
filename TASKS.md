@@ -17,7 +17,7 @@
 - [ ] Deploy awal ke Vercel (Hobby)
 
 **Non-teknis / koordinasi ke kalurahan**
-- [ ] MoM resmi dengan pemerintah desa — jawab TBD Bab 12 (nama resmi, kebijakan anonim, admin/super admin, target rilis)
+- [ ] MoM resmi dengan pemerintah desa — jawab TBD Bab 12 (nama resmi, pembatasan identitas pelapor, admin/super admin, target rilis)
 - [ ] Minta konten: naskah sejarah desa, foto perangkat, daftar layanan resmi
 - [ ] Minta izin publikasi data APBDes & statistik penduduk (blocker paling umum — kejar dari sekarang)
 
@@ -48,14 +48,14 @@
 - [ ] Publik: Informasi Layanan Administrasi (LYN-1/2/3, wireframe 2b)
 - [ ] Admin: kelola layanan (ADM-3)
 - [ ] Publik: Formulir Pengaduan (LPR-1/2/4, wireframe 2c)
-- [ ] Publik: Lacak Pengaduan via kode tiket (LPR-3, wireframe 2d)
-- [ ] Admin: tindak lanjut pengaduan — ubah status, tulis tanggapan (ADM-4, wireframe 2j)
+- [x] Publik: pengaduan selesai setelah dikirim; pelacakan publik dihapus sesuai revisi Pak Dukuh
+- [x] Admin: filter Semua/Dibaca/Belum Dibaca dan pembatasan identitas berdasarkan peran
 - [ ] Tautan WhatsApp (wa.me) di titik kontak
 
 **Non-teknis**
 - [ ] Validasi ulang syarat & alur tiap layanan bersama perangkat desa berwenang
 
-**Target minggu ini:** Flow 7.1 (kirim & lacak pengaduan) dan 7.2 (cari info layanan) jalan penuh dari sisi warga maupun admin.
+**Target minggu ini:** Flow kirim pengaduan dan pengelolaan baca di admin, serta pencarian info layanan berjalan penuh.
 
 ---
 
@@ -129,14 +129,14 @@ Urut sesuai ketergantungan — kerjakan dari atas.
 | 10 | Prisma + Neon Postgres: skema Bab 8 + migrasi + seed dari `majegan.ts` | BE | `prisma/schema.prisma` | ⬜ | — |
 | 11 | Auth admin: hash password, sesi cookie, `signIn`/`signOut` (AUTH-1) | BE | `lib/auth.ts` | ⬜ | 10 |
 | 12 | Proteksi route `/admin` + redirect ke `/admin/masuk` (AUTH-2) | BE | `middleware.ts` | ⬜ | 11 |
-| 13 | Server action simpan pengaduan → DB, pakai `periksaPengaduan` + `buatKodeTiket` | BE | `lib/pengaduan.ts` | ⬜ | 10 |
-| 14 | Query lacak pengaduan by kode tiket (LPR-3) | BE | `app/(publik)/pengaduan/lacak` | ⬜ | 13 |
+| 13 | Server action simpan pengaduan beridentitas → DB, pakai `periksaPengaduan` | BE | `lib/pengaduan.ts` | ✅ | 10 |
+| 14 | Hapus pelacakan publik dan kode tiket sesuai revisi Pak Dukuh | BE | `app/(publik)/pengaduan` | ✅ | 13 |
 | 15 | Rate limit + honeypot form pengaduan (anti-spam) | BE | `lib/pengaduan.ts` | ⬜ | 13 |
 | 16 | Admin CRUD berita + status Draft/Terbit (ADM-1) | BE | `app/admin/berita/**` | ⬜ | 10, 12 |
 | 17 | Upload gambar via Vercel Blob (ADM-5) | BE | `lib/unggah.ts` | ⬜ | 12 |
 | 18 | Admin kelola profil & struktur organisasi (ADM-2) | BE | `app/admin/profil` | ⬜ | 16, 17 |
 | 19 | Admin kelola layanan (ADM-3) | BE | `app/admin/layanan` | ⬜ | 16 |
-| 20 | Admin tindak lanjut pengaduan: ubah status + tanggapan (ADM-4) | BE | `app/admin/pengaduan` | ⬜ | 13, 16 |
+| 20 | Admin filter baca, detail, lampiran, dan pembatasan identitas pelapor | BE | `app/admin/pengaduan` | ✅ | 13, 16 |
 | 21 | Admin kelola anggaran (ADM-6) & statistik (ADM-7) | BE | `app/admin/anggaran`, `/statistik` | ⬜ | 16 |
 | 22 | Dashboard admin: hitungan nyata dari DB (ADM-8) | BE | `app/admin/page.tsx` | ⬜ | 16, 20 |
 | 23 | Super admin kelola akun (AUTH-3) + ganti password (AUTH-4) | BE | `app/admin/pengguna` | ⬜ | 11 |

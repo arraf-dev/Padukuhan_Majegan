@@ -9,14 +9,14 @@ Website informasi dan layanan digital Padukuhan Majegan, Kalurahan Pandowoharjo.
 - Profil padukuhan dan struktur perangkat
 - Berita dan pengumuman
 - Informasi persyaratan serta alur layanan administrasi
-- Pengaduan warga dengan kode pelacakan
+- Pengaduan warga dengan identitas wajib dan lampiran privat
 - Statistik penduduk dalam bentuk agregat
 
 ### Panel admin
 
 - Autentikasi berbasis peran
 - Pengelolaan berita, profil, layanan, statistik, dan akun
-- Pemantauan serta tindak lanjut pengaduan
+- Pengelolaan pengaduan berdasarkan sudah/belum dibaca
 - Dashboard ringkasan data
 
 ## Teknologi
@@ -91,7 +91,7 @@ DATA_MODE="demo"
 
 Selama informasi resmi belum lengkap, gunakan `DATA_MODE="demo"`; situs akan menampilkan penanda data contoh. Ubah menjadi `official` setelah konten diverifikasi. Production akan gagal dibangun bila variabel wajib belum lengkap atau URL kanonik belum menggunakan HTTPS.
 
-Sebelum merilis, jalankan `npm test`, `npm run typecheck`, `npm run build`, lalu smoke test terhadap URL deployment. Lanjutkan dengan pemeriksaan manual untuk login, peran Admin/SuperAdmin, unggahan seluruh jenis berkas, pengaduan, dan pelacakan tiket.
+Sebelum merilis, jalankan `npm test`, `npm run typecheck`, `npm run build`, lalu smoke test terhadap URL deployment. Lanjutkan dengan pemeriksaan manual untuk login, peran Admin/SuperAdmin, unggahan seluruh jenis berkas, pengaduan, filter baca, dan pembatasan identitas pelapor.
 
 ## Struktur proyek
 
