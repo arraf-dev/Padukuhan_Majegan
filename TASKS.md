@@ -19,6 +19,8 @@
 - [ ] Minta persetujuan Pak Dukuh untuk menu mobile, kartu Struktur Perangkat, dan visual statistik.
 - [ ] Masukkan serta verifikasi data resmi, lalu ubah `DATA_MODE` menjadi `official`.
 - [x] Siapkan fallback URL kanonik Vercel dan mode aman saat token Blob belum tersedia.
+- [x] Deploy commit rilis ke Vercel; build production selesai.
+- [ ] Nonaktifkan Vercel Authentication pada environment Production agar website dapat diakses publik.
 - [ ] Lengkapi environment Blob agar seluruh fitur unggah aktif.
 - [ ] Jalankan smoke test pada deployment HTTPS terbaru.
 

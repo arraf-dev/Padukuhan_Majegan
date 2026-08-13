@@ -4,7 +4,7 @@ Terakhir diperbarui: 13 Agustus 2026
 
 ## Status Saat Ini
 
-Sebagian besar fitur utama website sudah selesai. Revisi Pak Dukuh pada panel admin, alur pengaduan, layanan, profil, dan statistik sudah berada di branch `main`. Audit prioritas dekat tanggal 13 Agustus memperbaiki hydration warning, filter pengaduan mobile, favicon, serta konfigurasi build Vercel dan memverifikasi tampilan melalui browser. Pekerjaan yang tersisa memerlukan uji perangkat fisik, persetujuan Pak Dukuh, data resmi, dan token Vercel Blob agar seluruh fitur unggah aktif.
+Sebagian besar fitur utama website sudah selesai. Revisi Pak Dukuh pada panel admin, alur pengaduan, layanan, profil, dan statistik sudah berada di branch `main`. Audit prioritas dekat tanggal 13 Agustus memperbaiki hydration warning, filter pengaduan mobile, favicon, serta konfigurasi build Vercel dan memverifikasi tampilan melalui browser. Deployment production untuk commit `a8af8e2` selesai, tetapi akses publik masih dialihkan ke Vercel Authentication. Pekerjaan yang tersisa memerlukan pembukaan akses production, uji perangkat fisik, persetujuan Pak Dukuh, data resmi, dan token Vercel Blob agar seluruh fitur unggah aktif.
 
 ## Revisi Pak Dukuh — Status Implementasi
 
@@ -34,13 +34,15 @@ Sebagian besar fitur utama website sudah selesai. Revisi Pak Dukuh pada panel ad
 - [x] Halaman publik utama diuji pada 390 px, 768 px, dan 1366 px; screenshot tersimpan lokal di `output/playwright/`.
 - [x] Prisma validate, 32 test, typecheck, production build, dan `git diff --check` lulus.
 - [x] URL kanonik dapat memakai `VERCEL_PROJECT_PRODUCTION_URL` ketika `NEXT_PUBLIC_URL` masih localhost; token Blob yang belum tersedia tidak lagi menggagalkan seluruh build.
+- [x] Commit `a8af8e2` berhasil dideploy oleh Vercel; status integrasi GitHub melaporkan deployment selesai.
 
 ### Perlu disetujui melalui pengecekan tampilan
 
 - [-] Uji pengalaman admin pada ponsel nyata (minimal lebar 320 px dan 375 px).
 - [-] Konfirmasi desain menu mobile, kartu Struktur Perangkat, serta visual statistik bersama Pak Dukuh.
 - [-] Isi data statistik resmi untuk kategori jenis kelamin, pendidikan, dan pekerjaan agar grafik publik terisi.
-- [-] Jalankan smoke test pada URL deployment terbaru; pengujian unggah penuh tetap menunggu token Vercel Blob.
+- [-] Nonaktifkan Vercel Authentication untuk environment Production. Saat ini seluruh URL publik mendapat redirect `302` menuju login Vercel.
+- [-] Jalankan ulang smoke test setelah akses production dibuka; pengujian unggah penuh tetap menunggu token Vercel Blob.
 
 ## Yang Sudah Selesai
 
@@ -136,11 +138,12 @@ File utama yang ditambahkan:
 4. Tangani laporan `npm audit`: saat ini ditemukan 1 moderat dan 8 tinggi pada dependency transitif Next.js/Prisma. Simulasi `npm audit fix` belum dapat berjalan di lingkungan ini karena npm menolak pengambilan paket remote (`EALLOWREMOTE`); ulangi dari lingkungan npm yang mengizinkan unduhan, lalu jalankan test, typecheck, dan build kembali.
 5. Isi data asli dari perangkat padukuhan: nomor WhatsApp, sejarah, foto perangkat, layanan, dan statistik.
 6. Putuskan domain dan akun resmi pemilik Vercel/Neon.
-7. Deploy ke Vercel, lakukan uji pengguna, pelatihan admin, dan serah terima.
+7. Buka akses publik pada environment Production Vercel, jalankan smoke test, lalu lakukan uji pengguna, pelatihan admin, dan serah terima.
 
 ## Catatan Penting
 
 - Tanpa `BLOB_READ_WRITE_TOKEN`, pemilih berkas tetap terlihat tetapi unggahan ke Vercel Blob belum bisa digunakan. Situs dan formulir tanpa berkas tetap berjalan; percobaan unggah ditolak dengan pesan yang aman.
+- Deployment Vercel sudah berhasil dibangun, tetapi Vercel Authentication masih melindungi domain production. Smoke test aplikasi tidak dapat dinyatakan lulus sampai proteksi production dinonaktifkan atau bypass resmi tersedia.
 - Lampiran pengaduan yang pernah diunggah sebagai Blob publik sebelum perubahan ini perlu diunggah ulang bila masih diperlukan; endpoint panel tidak meneruskan URL publik lama.
 - Tanpa `DATABASE_URL`, `RAHASIA_SESI`, atau URL HTTPS kanonik, build production sengaja dihentikan dengan pesan konfigurasi yang jelas. Token Blob divalidasi saat operasi unggah agar kekurangan token tidak mematikan seluruh situs.
 - Gunakan `DATA_MODE="demo"` selama data resmi belum lengkap; ubah menjadi `official` hanya setelah konten diverifikasi.

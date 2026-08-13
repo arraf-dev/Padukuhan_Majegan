@@ -18,25 +18,27 @@ if (asal.protocol !== "https:") {
   process.exit(1);
 }
 
-const rute = [
-  "/",
-  "/profil",
-  "/berita",
-  "/layanan",
-  "/statistik",
-  "/pengaduan",
-  "/pengaduan/lacak",
-  "/robots.txt",
-  "/sitemap.xml",
-  "/api/health",
+const pemeriksaan = [
+  { path: "/", status: [200] },
+  { path: "/profil", status: [200] },
+  { path: "/berita", status: [200] },
+  { path: "/layanan", status: [200] },
+  { path: "/statistik", status: [200] },
+  { path: "/pengaduan", status: [200] },
+  { path: "/pengaduan/terkirim", status: [200] },
+  { path: "/pengaduan/lacak", status: [404] },
+  { path: "/admin", status: [302, 303, 307, 308] },
+  { path: "/robots.txt", status: [200] },
+  { path: "/sitemap.xml", status: [200] },
+  { path: "/api/health", status: [200] },
 ];
 
 let gagal = false;
-for (const path of rute) {
+for (const { path, status } of pemeriksaan) {
   const url = new URL(path, asal).toString();
   try {
     const respons = await fetch(url, { redirect: "manual", signal: AbortSignal.timeout(10_000) });
-    const sehat = respons.ok;
+    const sehat = status.includes(respons.status);
     console.log(`${sehat ? "OK" : "GAGAL"} ${respons.status} ${url}`);
     if (!sehat) gagal = true;
   } catch (galat) {
