@@ -6,50 +6,39 @@ import { Foto } from "@/components/potongan";
 import { kartu, tombol } from "@/components/primitif";
 import type { Ringkasan } from "@/lib/statistik";
 
-/**
- * Hero beranda — satu blok untuk semua lebar layar.
- *
- * Sebelumnya sambutan mobile dan hero desktop ditulis terpisah, dan yang
- * mobile tidak punya judul maupun tombol ajakan sama sekali. Padahal warga
- * paling sering membuka dari HP. Sekarang keduanya satu susunan yang melebar
- * dari satu kolom menjadi dua di `md:`.
- *
- * Gerak masuk memakai `data-reveal` yang sudah dipantau `<Reveal>` di root
- * layout — `data-jeda` menunda tiap baris supaya muncul berurutan. Semuanya
- * berhenti sendiri saat pengguna meminta gerak dikurangi (lihat globals.css).
- */
-export function Sambutan({ ringkasan }: { ringkasan: Ringkasan[] }) {
+/** Ringkasan Majegan setelah hero sinematik; mempertahankan data dan akses cepat lama. */
+export function TentangMajegan({ ringkasan }: { ringkasan: Ringkasan[] }) {
   return (
-    <section className="wadah grid items-start gap-6 px-4 pt-6 pb-8 md:grid-cols-[1.35fr_.9fr] md:items-stretch md:gap-10 md:px-12 md:pt-10 md:pb-10 lg:grid-cols-[1.25fr_1fr] lg:gap-14 lg:px-16 lg:pt-14 lg:pb-14">
+    <section
+      id="tentang-majegan"
+      aria-labelledby="judul-tentang-majegan"
+      className="wadah scroll-mt-20 grid items-start gap-8 px-4 pt-14 pb-10 md:grid-cols-[1.35fr_.9fr] md:items-stretch md:gap-10 md:px-12 md:pt-18 md:pb-14 lg:grid-cols-[1.25fr_1fr] lg:gap-14 lg:px-16 lg:pt-24 lg:pb-20"
+    >
       <div>
         <p
           data-reveal
           className="text-[11.5px] font-bold tracking-[.14em] text-emas-tua uppercase md:text-xs lg:text-[13px]"
         >
-          Website Resmi Pemerintah Padukuhan
+          Tentang Majegan
         </p>
 
-        {/**
-         * Judul ikut lebar layar. Dua clamp, bukan satu: yang mobile mentok di
-         * 44px pada ~733px — habis sebelum `md:` sempat aktif, sehingga monitor
-         * 1440px dapat judul seukuran tablet. Clamp kedua melanjutkan dari
-         * 44px yang sama (jadi tidak ada lompatan di 768px) sampai 56px.
-         */}
-        <h1
+        <h2
+          id="judul-tentang-majegan"
           data-reveal
           data-jeda="1"
           className="mt-2.5 mb-3 font-serif text-[clamp(1.75rem,6vw,2.75rem)] leading-[1.18] font-semibold text-balance text-hutan md:mt-3 md:mb-3.5 md:text-[clamp(2.75rem,3.6vw,3.5rem)] lg:mb-5"
         >
-          Selamat Datang di {desa.nama}
-        </h1>
+          Ruang hidup yang tumbuh bersama.
+        </h2>
 
         <p
           data-reveal
           data-jeda="2"
           className="mb-5 max-w-[52ch] text-base leading-[1.7] text-pretty text-teks md:mb-[22px] md:text-[17px] lg:mb-7 lg:text-[19px] lg:leading-[1.75]"
         >
-          Kanal informasi dan layanan resmi warga Majegan — urus surat pengantar, sampaikan aduan,
-          dan ikuti kabar terbaru padukuhan.
+          {desa.nama} tumbuh dari kehidupan agraris, semangat gotong royong, dan hubungan erat
+          antarwarga. Website ini menjadi ruang bersama untuk mengenal Majegan, mengakses layanan,
+          menyampaikan pengaduan, dan mengikuti kabar terbaru padukuhan.
         </p>
 
         <div data-reveal data-jeda="3" className="flex flex-wrap gap-3">
@@ -92,7 +81,7 @@ export function Sambutan({ ringkasan }: { ringkasan: Ringkasan[] }) {
           keterangan="Gapura masuk Padukuhan Majegan"
           prioritas
           sizes="(min-width: 1024px) 42vw, (min-width: 768px) 33vw, 100vw"
-          className="paralaks aspect-[16/10] rounded-xl border border-garis md:aspect-auto md:min-h-[150px] md:flex-1 lg:min-h-[340px] lg:rounded-2xl"
+          className="aspect-[16/10] rounded-xl border border-garis md:aspect-auto md:min-h-[150px] md:flex-1 lg:min-h-[340px] lg:rounded-2xl"
         />
 
         <div

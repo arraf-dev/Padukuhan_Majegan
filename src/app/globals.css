@@ -32,6 +32,9 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     background: var(--color-krem);
     color: var(--color-tinta);
@@ -157,33 +160,10 @@
 /* Reveal saat scroll dijalankan lewat Web Animations API. Elemen tetap terlihat
  * bila JavaScript tidak aktif; ini juga menghindari mutasi class saat hydration. */
 
-/**
- * Parallax gambar hero — digerakkan posisi gulir, bukan JavaScript.
- *
- * Yang bergerak gambar di dalam bingkai, bukan bingkainya, supaya garis tepi
- * kartu tetap diam. `scale(1.08)` memberi kelebihan 4% di tiap sisi sehingga
- * pergeseran 2.2% tidak pernah menyingkap celah kosong.
- *
- * ponytail: `@supports` menjaga peramban lama — tanpa penjaga itu animasi
- * tetap dipasang dengan durasi 0s dan gambarnya menetap di posisi akhir.
- */
-@supports (animation-timeline: view()) {
-  .paralaks > img {
-    animation: geserParalaks linear both;
-    animation-timeline: view();
-    animation-range: cover 0% cover 100%;
-  }
-  @keyframes geserParalaks {
-    from {
-      transform: scale(1.08) translateY(-2.2%);
-    }
-    to {
-      transform: scale(1.08) translateY(2.2%);
-    }
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   *,
   *::before,
   *::after {
@@ -191,8 +171,5 @@
     transition: none !important;
     transition-delay: 0s !important;
     animation-timeline: none !important;
-  }
-  .paralaks > img {
-    transform: none !important;
   }
 }

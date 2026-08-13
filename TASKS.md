@@ -7,7 +7,7 @@
 
 ---
 
-## Prioritas Dekat — Audit 13 Agustus 2026
+## Prioritas Dekat — Diperbarui 14 Agustus 2026
 
 - [x] Hilangkan hydration warning pada animasi reveal.
 - [x] Rapikan filter pengaduan agar ketiga kategori terlihat pada mobile.
@@ -20,20 +20,26 @@
 - [ ] Masukkan serta verifikasi data resmi, lalu ubah `DATA_MODE` menjadi `official`.
 - [x] Siapkan fallback URL kanonik Vercel dan mode aman saat token Blob belum tersedia.
 - [x] Deploy commit rilis ke Vercel; build production selesai.
-- [ ] Nonaktifkan Vercel Authentication pada environment Production agar website dapat diakses publik.
+- [x] Nonaktifkan Vercel Authentication pada environment Production agar website dapat diakses publik.
 - [ ] Lengkapi environment Blob agar seluruh fitur unggah aktif.
-- [ ] Jalankan smoke test pada deployment HTTPS terbaru.
+- [x] Jalankan smoke test pada deployment HTTPS terbaru: rute publik `200`, `/admin` redirect `307`, `/pengaduan/lacak` `404`, dan `/api/health` `200`.
+- [x] Rebuild landing page dengan video hero Majegan fullscreen, header adaptif, fallback poster, dan reduced-motion yang aman.
+- [x] Verifikasi landing page pada 320 px, 375 px, dan 1366 px; CTA, header scroll, halaman publik lain, dan redirect admin lulus regresi browser.
+- [ ] Validasi tampilan video hero pada ponsel fisik dan minta persetujuan crop Joglo serta komposisi hero kepada Pak Dukuh.
+- [ ] Uji upload end-to-end untuk sampul berita, foto perangkat, lampiran pengaduan privat, dan templat layanan.
+- [ ] Uji login dan seluruh CRUD production dengan akun Admin dan SuperAdmin.
+- [ ] Tangani temuan `npm audit` secara terkontrol, lalu ulangi seluruh quality gate.
 
 ---
 
 ## Minggu 1 (23–29 Jul) — Fondasi & Koordinasi Awal
 
 **Teknis**
-- [ ] Setup Next.js (App Router) + TypeScript + Tailwind, inisialisasi repo Git
-- [ ] Setup Prisma + Neon Postgres, migrasi skema inti Bab 8 (`pengguna`, `halaman_profil`, `perangkat_desa`, `berita`, `kategori_berita`, `layanan`, `pengaduan`)
-- [ ] Autentikasi admin dasar (AUTH-1, AUTH-2) — login + proteksi route `/admin`
-- [ ] Struktur folder: route group publik vs admin, layout dasar mobile-first (wireframe 1a–1e)
-- [ ] Deploy awal ke Vercel (Hobby)
+- [x] Setup Next.js (App Router) + TypeScript + Tailwind, inisialisasi repo Git
+- [x] Setup Prisma + Neon Postgres, migrasi skema inti Bab 8 (`pengguna`, `halaman_profil`, `perangkat_desa`, `berita`, `kategori_berita`, `layanan`, `pengaduan`)
+- [x] Autentikasi admin dasar (AUTH-1, AUTH-2) — login + proteksi route `/admin`
+- [x] Struktur folder: route group publik vs admin, layout dasar mobile-first (wireframe 1a–1e)
+- [x] Deploy awal ke Vercel (Hobby)
 
 **Non-teknis / koordinasi ke kalurahan**
 - [ ] MoM resmi dengan pemerintah desa — jawab TBD Bab 12 (nama resmi, pembatasan identitas pelapor, admin/super admin, target rilis)
@@ -47,12 +53,12 @@
 ## Minggu 2 (30 Jul–5 Ags) — Profil Desa & Berita
 
 **Teknis**
-- [ ] Beranda publik (pilih varian wireframe 1a/1b/1c, atau gabungkan)
-- [ ] Profil Desa publik: sejarah, visi-misi, struktur organisasi, kontak & peta (PRF-2/3/4, wireframe 1d/1e)
-- [ ] Admin: CRUD Berita + status Draft/Terbit (ADM-1)
-- [ ] Publik: daftar & detail berita (BRT-1/2/3/4, wireframe 2a)
-- [ ] Admin: kelola profil desa & struktur organisasi (ADM-2)
-- [ ] Upload gambar (ADM-5) — setup Vercel Blob / Cloudinary
+- [x] Beranda publik (pilih varian wireframe 1a/1b/1c, atau gabungkan)
+- [x] Profil Desa publik: sejarah, visi-misi, struktur organisasi, kontak & peta (PRF-2/3/4, wireframe 1d/1e)
+- [x] Admin: CRUD Berita + status Draft/Terbit (ADM-1)
+- [x] Publik: daftar & detail berita (BRT-1/2/3/4, wireframe 2a)
+- [x] Admin: kelola profil desa & struktur organisasi (ADM-2)
+- [-] Upload gambar (ADM-5) — integrasi kode Vercel Blob selesai; Store, token, dan uji end-to-end masih tertunda
 
 **Non-teknis**
 - [ ] Input konten asli begitu data dari kalurahan masuk
@@ -64,12 +70,12 @@
 ## Minggu 3 (6–12 Ags) — Layanan Administrasi & Pengaduan
 
 **Teknis**
-- [ ] Publik: Informasi Layanan Administrasi (LYN-1/2/3, wireframe 2b)
-- [ ] Admin: kelola layanan (ADM-3)
-- [ ] Publik: Formulir Pengaduan (LPR-1/2/4, wireframe 2c)
+- [x] Publik: Informasi Layanan Administrasi (LYN-1/2/3, wireframe 2b)
+- [x] Admin: kelola layanan (ADM-3)
+- [x] Publik: Formulir Pengaduan (LPR-1/2/4, wireframe 2c)
 - [x] Publik: pengaduan selesai setelah dikirim; pelacakan publik dihapus sesuai revisi Pak Dukuh
 - [x] Admin: filter Semua/Dibaca/Belum Dibaca dan pembatasan identitas berdasarkan peran
-- [ ] Tautan WhatsApp (wa.me) di titik kontak
+- [x] Tautan WhatsApp (wa.me) di titik kontak; nomor resmi masih perlu menggantikan data contoh
 
 **Non-teknis**
 - [ ] Validasi ulang syarat & alur tiap layanan bersama perangkat desa berwenang
@@ -82,11 +88,11 @@
 
 **Teknis**
 - [ ] Publik: Transparansi Anggaran (APB-1/2/3, wireframe 2e)
-- [ ] Publik: Statistik Penduduk (STA-1/2, wireframe 2f)
+- [x] Publik: Statistik Penduduk (STA-1/2, wireframe 2f)
 - [ ] Admin: kelola anggaran per tahun (ADM-6)
-- [ ] Admin: kelola statistik penduduk (ADM-7) — belum ada di wireframe admin, cukup form input sederhana
-- [ ] Dashboard admin ringkas (ADM-8, wireframe 2h)
-- [ ] AUTH-3 (super admin kelola akun admin) & AUTH-4 (ganti password)
+- [x] Admin: kelola statistik penduduk (ADM-7)
+- [x] Dashboard admin ringkas (ADM-8, wireframe 2h)
+- [x] AUTH-3 (super admin kelola akun admin) & AUTH-4 (ganti password)
 
 **Non-teknis**
 - [ ] Kejar izin publikasi data APBDes & statistik kalau minggu 1 belum turun
@@ -98,9 +104,9 @@
 ## Minggu 5 (20–26 Ags) — Polish, Responsif, Performa, Testing
 
 **Teknis**
-- [ ] Review responsif mobile-first semua halaman vs wireframe mobile
+- [-] Review responsif mobile-first: audit browser otomatis lulus; uji ponsel fisik masih tertunda
 - [ ] Terapkan ISR/static generation untuk halaman publik
-- [ ] Metadata & sitemap dasar (SEO)
+- [x] Metadata & sitemap dasar (SEO)
 - [ ] Cek validasi input & proteksi dasar (XSS/injeksi) di semua form
 - [ ] Testing manual menyeluruh: semua user flow Bab 7, semua role
 - [ ] Perbaikan bug dari hasil testing
@@ -131,38 +137,38 @@
 
 ## Papan Task Frontend → Backend
 
-Status: ✅ selesai · 🟡 UI jalan, data masih dummy dari `src/content/majegan.ts` · ⬜ belum ada.
-Urut sesuai ketergantungan — kerjakan dari atas.
+Status: ✅ selesai di kode · 🟡 selesai sebagian atau menunggu konfigurasi/verifikasi eksternal · ⬜ belum dikerjakan/dikeluarkan dari lingkup.
+Status ini mencerminkan audit repository dan production per 14 Agustus 2026.
 
 | #  | Task | Lapisan | Berkas utama | Status | Butuh |
 |----|------|---------|--------------|--------|-------|
 | 1  | Shell situs: header, footer, layout publik & admin | FE | `components/situs.tsx`, `app/layout.tsx` | ✅ | — |
-| 2  | Beranda (1a–1c) | FE | `app/(publik)/page.tsx` | 🟡 | 10 |
-| 3  | Profil desa (PRF-2/3/4) | FE | `app/(publik)/profil/page.tsx` | 🟡 | 10 |
-| 4  | Berita: daftar + detail (BRT-1..4) | FE | `app/(publik)/berita/**` | 🟡 | 10 |
-| 5  | Layanan (LYN-1/2/3) | FE | `app/(publik)/layanan/[[...slug]]/page.tsx` | 🟡 | 10 |
-| 6  | Anggaran (APB-1/2/3) & Statistik (STA-1/2) | FE | `app/(publik)/anggaran`, `/statistik` | 🟡 | 10 |
-| 7  | Pengaduan: form, terkirim, lacak (LPR-1..4) | FE | `app/(publik)/pengaduan/**` | 🟡 | 13, 14 |
-| 8  | Panel admin: login, dashboard, form berita | FE | `app/admin/**` | 🟡 | 11, 12 |
+| 2  | Beranda video sinematik, section Tentang Majegan, dan konten informasi | FE | `app/(publik)/page.tsx`, `components/ui/majegan-video-hero.tsx` | ✅ | 10 |
+| 3  | Profil desa (PRF-2/3/4) | FE | `app/(publik)/profil/page.tsx` | ✅ | 10 |
+| 4  | Berita: daftar + detail (BRT-1..4) | FE | `app/(publik)/berita/**` | ✅ | 10 |
+| 5  | Layanan (LYN-1/2/3) | FE | `app/(publik)/layanan/[[...slug]]/page.tsx` | ✅ | 10 |
+| 6  | Statistik penduduk (STA-1/2); Anggaran dikeluarkan dari lingkup | FE | `app/(publik)/statistik` | ✅ | 10 |
+| 7  | Pengaduan: form dan halaman terkirim; pelacakan publik dihapus | FE | `app/(publik)/pengaduan/**` | ✅ | 13, 14 |
+| 8  | Panel admin: login, dashboard, dan pengelolaan modul | FE | `app/admin/**` | ✅ | 11, 12 |
 | 9  | `error.tsx`, `not-found.tsx`, `robots.ts`, `sitemap.ts`, metadata | FE | `app/*` | ✅ | — |
-| 10 | Prisma + Neon Postgres: skema Bab 8 + migrasi + seed dari `majegan.ts` | BE | `prisma/schema.prisma` | ⬜ | — |
-| 11 | Auth admin: hash password, sesi cookie, `signIn`/`signOut` (AUTH-1) | BE | `lib/auth.ts` | ⬜ | 10 |
-| 12 | Proteksi route `/admin` + redirect ke `/admin/masuk` (AUTH-2) | BE | `middleware.ts` | ⬜ | 11 |
+| 10 | Prisma + Neon Postgres: skema Bab 8 + migrasi + seed dari `majegan.ts` | BE | `prisma/schema.prisma` | ✅ | — |
+| 11 | Auth admin: hash password, sesi cookie, masuk/keluar (AUTH-1) | BE | `lib/auth.ts`, `lib/sesi.ts` | ✅ | 10 |
+| 12 | Proteksi route `/admin` + redirect ke `/admin/masuk` (AUTH-2) | BE | `proxy.ts`, `lib/sesi.ts` | ✅ | 11 |
 | 13 | Server action simpan pengaduan beridentitas → DB, pakai `periksaPengaduan` | BE | `lib/pengaduan.ts` | ✅ | 10 |
 | 14 | Hapus pelacakan publik dan kode tiket sesuai revisi Pak Dukuh | BE | `app/(publik)/pengaduan` | ✅ | 13 |
-| 15 | Rate limit + honeypot form pengaduan (anti-spam) | BE | `lib/pengaduan.ts` | ⬜ | 13 |
-| 16 | Admin CRUD berita + status Draft/Terbit (ADM-1) | BE | `app/admin/berita/**` | ⬜ | 10, 12 |
-| 17 | Upload gambar via Vercel Blob (ADM-5) | BE | `lib/unggah.ts` | ⬜ | 12 |
-| 18 | Admin kelola profil & struktur organisasi (ADM-2) | BE | `app/admin/profil` | ⬜ | 16, 17 |
-| 19 | Admin kelola layanan (ADM-3) | BE | `app/admin/layanan` | ⬜ | 16 |
+| 15 | Rate limit + honeypot form pengaduan (anti-spam) | BE | `lib/pengaduan.ts` | ✅ | 13 |
+| 16 | Admin CRUD berita + status Draft/Terbit (ADM-1) | BE | `app/admin/berita/**` | ✅ | 10, 12 |
+| 17 | Upload via Vercel Blob (ADM-5) | BE | `lib/unggah.ts` | 🟡 Store/token dan uji E2E tertunda | 12 |
+| 18 | Admin kelola profil & struktur organisasi (ADM-2) | BE | `app/admin/profil` | ✅ | 16, 17 |
+| 19 | Admin kelola layanan (ADM-3) | BE | `app/admin/layanan` | ✅ | 16 |
 | 20 | Admin filter baca, detail, lampiran, dan pembatasan identitas pelapor | BE | `app/admin/pengaduan` | ✅ | 13, 16 |
-| 21 | Admin kelola anggaran (ADM-6) & statistik (ADM-7) | BE | `app/admin/anggaran`, `/statistik` | ⬜ | 16 |
-| 22 | Dashboard admin: hitungan nyata dari DB (ADM-8) | BE | `app/admin/page.tsx` | ⬜ | 16, 20 |
-| 23 | Super admin kelola akun (AUTH-3) + ganti password (AUTH-4) | BE | `app/admin/pengguna` | ⬜ | 11 |
-| 24 | Ganti sumber data halaman publik: `majegan.ts` → query DB, pasang `revalidate` | FE+BE | `app/(publik)/**` | ⬜ | 16–21 |
-| 25 | Deploy Vercel + env (`DATABASE_URL`, secret sesi, token Blob) | Infra | — | ⬜ | 10, 11 |
+| 21 | Admin kelola statistik (ADM-7); Anggaran dikeluarkan dari lingkup | BE | `app/admin/statistik` | ✅ | 16 |
+| 22 | Dashboard admin: hitungan nyata dari DB (ADM-8) | BE | `app/admin/page.tsx` | ✅ | 16, 20 |
+| 23 | SuperAdmin kelola akun (AUTH-3) + ganti password (AUTH-4) | BE | `app/admin/akun` | ✅ | 11 |
+| 24 | Ganti sumber data halaman publik dari data contoh ke query DB | FE+BE | `app/(publik)/**`, `lib/*.ts` | ✅ | 16–21 |
+| 25 | Deploy Vercel + environment production | Infra | — | 🟡 Blob Store/token dan uji upload tertunda | 10, 11 |
 
-Jalur kritis: **10 → 11 → 12 → 16** membuka hampir semua sisa task admin. Task 13–15 bisa jalan paralel setelah 10.
+Jalur kritis implementasi **10 → 11 → 12 → 16** sudah selesai. Blocker teknis aktif sekarang adalah Blob Store/token untuk memverifikasi seluruh alur upload.
 
 ---
 

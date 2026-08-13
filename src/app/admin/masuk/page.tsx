@@ -5,6 +5,7 @@ import { CentangBulat, Ikon, Logo } from "@/components/ikon";
 import { isianTebal, labelBorang } from "@/components/primitif";
 import { masuk } from "@/app/admin/aksi";
 import { sesiSaatIni } from "@/lib/sesi";
+import { Footer } from "@/components/ui/footer-section";
 
 export const metadata: Metadata = { title: "Masuk" };
 
@@ -17,14 +18,15 @@ export default async function Masuk({
   const { galat } = await searchParams;
 
   return (
-    <div className="wadah flex flex-wrap items-start justify-center gap-9 px-4 py-8 md:px-12 md:py-12 lg:gap-12 lg:px-16 lg:py-16">
-      <div className="w-full max-w-[430px] overflow-hidden rounded-xl border border-garis-tebal bg-krem shadow-[0_2px_14px_rgba(33,50,40,.10)] lg:max-w-[480px] lg:rounded-2xl">
-        <div className="flex flex-col items-center px-6 py-8 md:px-8 lg:px-10 lg:py-10">
-          <Logo ukuran={52} />
-          <h1 className="mt-3.5 mb-1 font-serif text-xl font-semibold text-hutan md:text-2xl lg:text-[28px]">
-            Masuk Panel Padukuhan
-          </h1>
-          <p className="mb-5 text-[12.5px] text-samar">Khusus SuperAdmin &amp; Admin</p>
+    <div className="flex min-h-screen flex-col">
+      <main className="wadah flex flex-1 flex-wrap items-start justify-center gap-9 px-4 py-8 md:px-12 md:py-12 lg:gap-12 lg:px-16 lg:py-16">
+        <div className="w-full max-w-[430px] overflow-hidden rounded-xl border border-garis-tebal bg-krem shadow-[0_2px_14px_rgba(33,50,40,.10)] lg:max-w-[480px] lg:rounded-2xl">
+          <div className="flex flex-col items-center px-6 py-8 md:px-8 lg:px-10 lg:py-10">
+            <Logo ukuran={52} />
+            <h1 className="mt-3.5 mb-1 font-serif text-xl font-semibold text-hutan md:text-2xl lg:text-[28px]">
+              Masuk Panel Padukuhan
+            </h1>
+            <p className="mb-5 text-[12.5px] text-samar">Khusus SuperAdmin &amp; Admin</p>
 
           {galat && (
             <p
@@ -74,8 +76,8 @@ export default async function Masuk({
             Warga <strong>tidak memerlukan akun</strong> — semua halaman publik terbuka dan
             pengaduan bisa dikirim tanpa login.
           </p>
+          </div>
         </div>
-      </div>
 
       <section className="w-full max-w-[800px] rounded-xl border border-garis-tebal bg-kertas px-6 py-6 shadow-[0_2px_14px_rgba(33,50,40,.10)] md:px-8 lg:rounded-2xl lg:px-10 lg:py-9">
         <h2 className="mb-1 font-serif text-xl font-semibold text-hutan lg:text-[24px]">3 Peran Pengguna</h2>
@@ -127,6 +129,8 @@ export default async function Masuk({
           ))}
         </div>
       </section>
+      </main>
+      <Footer tahun={new Date().getFullYear()} varian="admin" />
     </div>
   );
 }

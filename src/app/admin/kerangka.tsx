@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Peran } from "@/content/majegan";
 import { Ikon } from "@/components/ikon";
 import { MenuAtas, Sidebar } from "@/components/panel";
+import { Footer } from "@/components/ui/footer-section";
 
 /**
  * Bingkai halaman panel: sidebar + menu atas + kolom isi.
@@ -20,14 +21,40 @@ export function Kerangka({
   children: React.ReactNode;
 }) {
   return (
-    <div className="md:grid md:min-h-screen md:grid-cols-[230px_1fr] md:items-start lg:grid-cols-[256px_1fr]">
+    <div className="min-h-screen md:grid md:grid-cols-[230px_1fr] md:items-start lg:grid-cols-[256px_1fr]">
       <Sidebar peran={peran} nama={nama} />
-      <MenuAtas peran={peran} nama={nama} />
-      {/* max-w di sini, bukan `wadah`: kolom isi sudah diimbangi sidebar,
-          jadi batasnya lebih sempit agar baris tabel tidak meregang di 1920px. */}
-      <div className="mx-auto w-full max-w-[1180px] px-4 py-6 md:min-w-0 md:px-8 md:pt-8 md:pb-10 lg:max-w-[1320px] lg:px-10 lg:pt-10 lg:pb-14 xl:max-w-[1440px]">
-        {children}
+      <div className="flex min-h-screen min-w-0 flex-col">
+        <MenuAtas peran={peran} nama={nama} />
+        {/* max-w di sini, bukan `wadah`: kolom isi sudah diimbangi sidebar,
+            jadi batasnya lebih sempit agar baris tabel tidak meregang di 1920px. */}
+        <main className="mx-auto w-full max-w-[1180px] flex-1 px-4 py-6 md:min-w-0 md:px-8 md:pt-8 md:pb-10 lg:max-w-[1320px] lg:px-10 lg:pt-10 lg:pb-14 xl:max-w-[1440px]">
+          {children}
+        </main>
+        <Footer tahun={new Date().getFullYear()} varian="admin" peran={peran} />
       </div>
+    </div>
+  );
+}
+
+/** Shell halaman komposer yang tidak memakai sidebar, tetapi tetap memiliki footer panel. */
+export function KerangkaKomposer({
+  judul,
+  kembali,
+  nama,
+  peran,
+  children,
+}: {
+  judul: string;
+  kembali: string;
+  nama: string;
+  peran: Peran;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex min-h-screen flex-col">
+      <BilahKomposer judul={judul} kembali={kembali} nama={nama} peran={peran} />
+      <main className="flex-1">{children}</main>
+      <Footer tahun={new Date().getFullYear()} varian="admin" peran={peran} />
     </div>
   );
 }

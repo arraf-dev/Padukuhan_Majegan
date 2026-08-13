@@ -2,8 +2,9 @@ import Link from "next/link";
 import { pengumuman } from "@/content/majegan";
 import { Hitung } from "@/components/gerak";
 import { JudulSection, KartuRingkas } from "@/components/potongan";
-import { Sambutan } from "@/components/sambutan";
+import { TentangMajegan } from "@/components/sambutan";
 import { kartu, tombol } from "@/components/primitif";
+import { MajeganVideoHero } from "@/components/ui/majegan-video-hero";
 import { beritaTerbit } from "@/lib/berita";
 import { type KelompokUsia, statistikPenduduk } from "@/lib/statistik";
 import { tanggalPendek } from "@/lib/tanggal";
@@ -16,7 +17,8 @@ export default async function Beranda() {
 
   return (
     <>
-      <Sambutan ringkasan={ringkasan} />
+      <MajeganVideoHero />
+      <TentangMajegan ringkasan={ringkasan} />
 
       {/* Pengumuman berjalan — berhenti bila pengguna minta gerak dikurangi.
           Hanya di mobile; layar lebar memakai kartu "Pengumuman Terbaru" di bawah. */}

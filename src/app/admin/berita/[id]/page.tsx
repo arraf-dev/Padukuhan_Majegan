@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { Komposer } from "@/components/komposer";
 import { db } from "@/lib/db";
 import { wajibMasuk } from "@/lib/sesi";
-import { BilahKomposer } from "@/app/admin/kerangka";
+import { KerangkaKomposer } from "@/app/admin/kerangka";
 import { simpanBerita } from "@/app/admin/berita/aksi";
 
 export const metadata: Metadata = { title: "Sunting Berita" };
@@ -35,8 +35,7 @@ export default async function SuntingBerita({
   if (!b) notFound();
 
   return (
-    <>
-      <BilahKomposer judul="Sunting Berita" kembali="/admin/berita" nama={nama} peran={peran} />
+    <KerangkaKomposer judul="Sunting Berita" kembali="/admin/berita" nama={nama} peran={peran}>
       <Komposer
         aksi={simpanBerita}
         galat={galat}
@@ -50,6 +49,6 @@ export default async function SuntingBerita({
           tanggal: (b.terbitPada ?? b.dibuatPada).toISOString(),
         }}
       />
-    </>
+    </KerangkaKomposer>
   );
 }

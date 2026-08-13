@@ -1,10 +1,10 @@
 # Catatan Progres Website Padukuhan Majegan
 
-Terakhir diperbarui: 13 Agustus 2026
+Terakhir diperbarui: 14 Agustus 2026
 
 ## Status Saat Ini
 
-Sebagian besar fitur utama website sudah selesai. Revisi Pak Dukuh pada panel admin, alur pengaduan, layanan, profil, dan statistik sudah berada di branch `main`. Audit prioritas dekat tanggal 13 Agustus memperbaiki hydration warning, filter pengaduan mobile, favicon, serta konfigurasi build Vercel dan memverifikasi tampilan melalui browser. Deployment production untuk commit `a8af8e2` selesai, tetapi akses publik masih dialihkan ke Vercel Authentication. Pekerjaan yang tersisa memerlukan pembukaan akses production, uji perangkat fisik, persetujuan Pak Dukuh, data resmi, dan token Vercel Blob agar seluruh fitur unggah aktif.
+Sebagian besar fitur utama website sudah selesai. Revisi Pak Dukuh pada panel admin, alur pengaduan, layanan, profil, dan statistik sudah berada di branch `main`. Sebelum pembaruan dokumen ini, working tree bersih dan HEAD lokal sinkron dengan `origin/main` pada commit `8e5ad86`. Deployment production berhasil, Vercel Authentication sudah dinonaktifkan, website dapat diakses publik, dan smoke test production sudah lulus. Pekerjaan utama yang tersisa adalah mengaktifkan Vercel Blob, menguji upload serta seluruh CRUD production dengan kedua peran, menguji ponsel fisik, memperoleh persetujuan Pak Dukuh, memasukkan data resmi, dan menyiapkan serah terima.
 
 ## Revisi Pak Dukuh — Status Implementasi
 
@@ -34,15 +34,31 @@ Sebagian besar fitur utama website sudah selesai. Revisi Pak Dukuh pada panel ad
 - [x] Halaman publik utama diuji pada 390 px, 768 px, dan 1366 px; screenshot tersimpan lokal di `output/playwright/`.
 - [x] Prisma validate, 32 test, typecheck, production build, dan `git diff --check` lulus.
 - [x] URL kanonik dapat memakai `VERCEL_PROJECT_PRODUCTION_URL` ketika `NEXT_PUBLIC_URL` masih localhost; token Blob yang belum tersedia tidak lagi menggagalkan seluruh build.
-- [x] Commit `a8af8e2` berhasil dideploy oleh Vercel; status integrasi GitHub melaporkan deployment selesai.
+- [x] Commit rilis dilanjutkan hingga `8e5ad86`; branch `main` sinkron dengan `origin/main` dan deployment production Vercel berhasil.
+
+### Verifikasi production — 14 Agustus 2026
+
+- [x] Vercel Authentication untuk environment Production sudah dinonaktifkan dan website dapat diakses publik.
+- [x] Smoke test production lulus: halaman publik merespons `200`, `/admin` mengarahkan `307` ke login, `/pengaduan/lacak` merespons `404`, dan `/api/health` merespons `200`.
+- [x] Website dan formulir tanpa lampiran tetap dapat digunakan saat token Blob belum tersedia.
+
+### Rebuild landing page — 14 Agustus 2026
+
+- [x] Beranda menggunakan video Majegan sebagai hero fullscreen dengan judul di kiri dan Joglo tetap menjadi focal point di kanan.
+- [x] Video sumber dioptimalkan menjadi H.264 1280×720 tanpa trek audio, berdurasi 8 detik dan berukuran sekitar 2,57 MB; poster dibuat dari frame asli.
+- [x] Header khusus beranda transparan di atas hero dan berubah menjadi hijau transparan ketika halaman digulir; halaman publik lain mempertahankan header solid lama.
+- [x] Konten sambutan lama dipertahankan sebagai section `#tentang-majegan`, termasuk ringkasan penduduk dan akses cepat.
+- [x] Mode demo tidak lagi mendorong hero keluar dari tinggi viewport; penanda tampil ringkas di bagian atas header beranda.
+- [x] Video memiliki fallback poster, transisi loading, crop responsif, dan arsitektur sumber video mobile opsional.
+- [x] Reduced-motion menonaktifkan video dan menampilkan poster tanpa hydration mismatch.
+- [x] Browser desktop 1366 px serta mobile 320/375 px tidak mengalami overflow; video autoplay aktif, CTA smooth-scroll bekerja, dan header scroll berubah sesuai rancangan.
+- [x] Regresi `/profil` dan `/admin` lulus: profil tetap menggunakan header solid dan admin tetap diarahkan ke halaman masuk tanpa overflow pada 320 px.
 
 ### Perlu disetujui melalui pengecekan tampilan
 
 - [-] Uji pengalaman admin pada ponsel nyata (minimal lebar 320 px dan 375 px).
 - [-] Konfirmasi desain menu mobile, kartu Struktur Perangkat, serta visual statistik bersama Pak Dukuh.
 - [-] Isi data statistik resmi untuk kategori jenis kelamin, pendidikan, dan pekerjaan agar grafik publik terisi.
-- [-] Nonaktifkan Vercel Authentication untuk environment Production. Saat ini seluruh URL publik mendapat redirect `302` menuju login Vercel.
-- [-] Jalankan ulang smoke test setelah akses production dibuka; pengujian unggah penuh tetap menunggu token Vercel Blob.
 
 ## Yang Sudah Selesai
 
@@ -117,14 +133,17 @@ File utama yang ditambahkan:
 - `npm test`: **32 dari 32 test lulus** (termasuk fallback URL Vercel dan validasi environment).
 - `npm run typecheck`: lulus.
 - Build Next.js production dengan environment contoh: lulus.
-- `npm run test:smoke` tersedia untuk memeriksa rute publik, sitemap, robots, dan health check pada URL HTTPS deployment.
+- Smoke test production pada `https://padukuhan-majegan-abdulrafi393-5137s-projects.vercel.app` lulus: rute publik `200`, `/admin` redirect `307`, `/pengaduan/lacak` `404`, dan `/api/health` `200`.
+- Audit lokal 14 Agustus mengulang `npm test` (**32/32**), `npm run typecheck`, dan `npx prisma validate`; seluruhnya lulus.
+- Rebuild landing page lulus 32 test, typecheck, Prisma validate, production build dengan override URL HTTPS lokal, dan `git diff --check`.
+- Repository belum memiliki konfigurasi lint; percobaan menambah ESLint dibatalkan karena resolusi paket dari registry npm lokal tidak selesai, sehingga tidak ada konfigurasi/lockfile setengah jadi yang dipertahankan.
 
 ## Yang Masih Perlu Dikerjakan
 
 ### Prioritas berikutnya
 
-1. Buat Blob Store di dashboard Vercel.
-2. Isi environment variable berikut di `.env.local` dan Vercel:
+1. Buat atau hubungkan Blob Store di dashboard Vercel.
+2. Isi environment variable berikut di `.env.local` dan Vercel tanpa mencatat nilainya ke repository:
 
    ```env
    BLOB_READ_WRITE_TOKEN="token-dari-vercel"
@@ -135,20 +154,24 @@ File utama yang ditambahkan:
    - unggah foto perangkat lalu cek halaman profil;
    - kirim pengaduan dengan lampiran lalu cek panel admin;
    - unggah templat layanan lalu coba tombol Unduh.
-4. Tangani laporan `npm audit`: saat ini ditemukan 1 moderat dan 8 tinggi pada dependency transitif Next.js/Prisma. Simulasi `npm audit fix` belum dapat berjalan di lingkungan ini karena npm menolak pengambilan paket remote (`EALLOWREMOTE`); ulangi dari lingkungan npm yang mengizinkan unduhan, lalu jalankan test, typecheck, dan build kembali.
-5. Isi data asli dari perangkat padukuhan: nomor WhatsApp, sejarah, foto perangkat, layanan, dan statistik.
-6. Putuskan domain dan akun resmi pemilik Vercel/Neon.
-7. Buka akses publik pada environment Production Vercel, jalankan smoke test, lalu lakukan uji pengguna, pelatihan admin, dan serah terima.
+4. Uji login dan seluruh CRUD di production menggunakan akun Admin dan SuperAdmin.
+5. Uji tampilan serta pengalaman admin pada ponsel fisik 320 px dan 375 px.
+6. Minta persetujuan Pak Dukuh untuk menu mobile, kartu Struktur Perangkat, dan visual statistik.
+   Sertakan persetujuan untuk komposisi video hero, crop Joglo pada mobile, dan keterbacaan teks di ponsel fisik.
+7. Isi serta verifikasi data resmi—nomor WhatsApp, sejarah, foto perangkat, layanan, dan statistik—lalu ubah `DATA_MODE` dari `demo` menjadi `official`.
+8. Tentukan domain serta akun resmi pemilik Vercel dan Neon.
+9. Tangani laporan `npm audit`: saat ini ditemukan 1 moderat dan 8 tinggi pada dependency transitif Next.js/Prisma. Simulasi `npm audit fix` belum dapat berjalan di lingkungan ini karena npm menolak pengambilan paket remote (`EALLOWREMOTE`); ulangi dari lingkungan npm yang mengizinkan unduhan, lalu jalankan test, typecheck, dan build kembali.
+10. Lakukan pelatihan admin, selesaikan dokumentasi penggunaan, dan serah terima.
 
 ## Catatan Penting
 
 - Tanpa `BLOB_READ_WRITE_TOKEN`, pemilih berkas tetap terlihat tetapi unggahan ke Vercel Blob belum bisa digunakan. Situs dan formulir tanpa berkas tetap berjalan; percobaan unggah ditolak dengan pesan yang aman.
-- Deployment Vercel sudah berhasil dibangun, tetapi Vercel Authentication masih melindungi domain production. Smoke test aplikasi tidak dapat dinyatakan lulus sampai proteksi production dinonaktifkan atau bypass resmi tersedia.
+- Deployment production sudah terbuka untuk publik dan smoke test aplikasi lulus; pengujian upload penuh tetap menunggu Blob Store dan `BLOB_READ_WRITE_TOKEN`.
 - Lampiran pengaduan yang pernah diunggah sebagai Blob publik sebelum perubahan ini perlu diunggah ulang bila masih diperlukan; endpoint panel tidak meneruskan URL publik lama.
 - Tanpa `DATABASE_URL`, `RAHASIA_SESI`, atau URL HTTPS kanonik, build production sengaja dihentikan dengan pesan konfigurasi yang jelas. Token Blob divalidasi saat operasi unggah agar kekurangan token tidak mematikan seluruh situs.
 - Gunakan `DATA_MODE="demo"` selama data resmi belum lengkap; ubah menjadi `official` hanya setelah konten diverifikasi.
-- `TASKS.md` di working tree belum sepenuhnya mencerminkan kondisi kode aktual; jadikan audit kode dan catatan ini sebagai acuan sementara.
-- Implementasi pengamanan production dan Vercel Blob sebelumnya sudah di-commit dan di-push ke branch `main` pada commit `715c790`.
+- `TASKS.md` sudah diselaraskan dengan audit kode dan status production per 14 Agustus 2026.
+- Implementasi terbaru sudah di-commit dan di-push ke branch `main`; HEAD lokal dan `origin/main` berada pada commit `8e5ad86`.
 
 ---
 
@@ -222,7 +245,7 @@ Vercel Blob
 | Package manager | npm dengan lockfile |
 | Build saat ini | `prisma generate && prisma migrate deploy && next build` |
 | Start | `next start` |
-| Test | Node test runner; hasil terakhir 31 test lulus |
+| Test | Node test runner; hasil terakhir 32 test lulus |
 | Container output | Next.js `standalone` |
 
 ## 3. Temuan Kritis yang Harus Diselesaikan

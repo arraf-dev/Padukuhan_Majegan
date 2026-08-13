@@ -20,6 +20,12 @@ export const desa = {
   // ponytail: nomor masih placeholder — ganti ke nomor asli, wa.me butuh format 62xxx.
   whatsappUrl: "https://wa.me/6281227000000",
   email: "majegan@pandowoharjo.desa.id",
+  websiteKalurahan: "https://pandowoharjosid.slemankab.go.id/home/",
+  // Situs resmi Kalurahan mencantumkan akun Instagram @pandowoharjo.
+  instagramUrl: "https://www.instagram.com/pandowoharjo/",
+  // Isi setelah akun resmi TikTok dikonfirmasi; footer menampilkan ikon nonaktif
+  // agar warga tidak diarahkan ke akun yang hanya ditebak dari nama.
+  tiktokUrl: "",
   koordinat: [-7.69139, 110.37167] as const,
 };
 

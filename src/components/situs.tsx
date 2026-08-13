@@ -2,14 +2,83 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { desa, navigasi } from "@/content/majegan";
 import { Ikon, Logo, type NamaIkon } from "@/components/ikon";
+import { StatusDataDemo } from "@/components/status-data";
 
 const aktif = (path: string, href: string) =>
   href === "/" ? path === "/" : path.startsWith(href);
 
-export function Header() {
+export function Header({ modeDemo = false }: { modeDemo?: boolean }) {
   const path = usePathname();
+  const beranda = path === "/";
+  const [digulir, setDigulir] = useState(false);
+
+  useEffect(() => {
+    if (!beranda) return;
+
+    const perbarui = () => setDigulir(window.scrollY > 28);
+    perbarui();
+    window.addEventListener("scroll", perbarui, { passive: true });
+    return () => window.removeEventListener("scroll", perbarui);
+  }, [beranda]);
+
+  if (beranda) {
+    return (
+      <header className="fixed inset-x-0 top-0 z-50 text-krem">
+        {modeDemo ? <StatusDataDemo ringkas /> : null}
+        <div
+          className={`border-b transition-[background-color,border-color,box-shadow] duration-400 ease-out ${
+            digulir
+              ? "border-krem/12 bg-hutan/92 shadow-[0_8px_30px_rgba(5,24,16,.16)] backdrop-blur-md"
+              : "border-transparent bg-gradient-to-b from-hutan-pekat/55 to-transparent"
+          }`}
+        >
+          <nav
+            aria-label="Navigasi utama"
+            className="wadah flex min-h-17 items-center justify-between gap-5 px-5 sm:px-8 md:min-h-20 md:px-12 lg:px-16"
+          >
+            <Link
+              href="/"
+              aria-label={`Beranda ${desa.nama}`}
+              aria-current="page"
+              className="flex min-h-11 items-center gap-3"
+            >
+              <Logo ukuran={38} className="drop-shadow-sm" />
+              <span className="leading-tight">
+                <span className="block font-serif text-[17px] font-semibold text-krem md:text-lg">
+                  Majegan
+                </span>
+                <span className="block text-[9px] font-bold tracking-[.16em] text-krem/65 uppercase md:text-[10px]">
+                  Pandowoharjo · Sleman
+                </span>
+              </span>
+            </Link>
+
+            <div className="hidden items-stretch md:flex">
+              {navigasi.slice(1).map((n) => (
+                <Link
+                  key={n.href}
+                  href={n.href}
+                  className="inline-flex min-h-11 items-center border-b-2 border-transparent px-3 text-[13px] font-semibold text-krem/82 transition-colors duration-300 hover:border-emas hover:text-krem lg:px-4 lg:text-sm"
+                >
+                  {n.label}
+                </Link>
+              ))}
+            </div>
+
+            <Link
+              href="/layanan"
+              className="inline-flex min-h-10 items-center rounded-full border border-krem/35 px-4 text-xs font-bold text-krem transition-colors hover:border-krem hover:bg-krem/10 md:hidden"
+            >
+              Layanan
+            </Link>
+          </nav>
+        </div>
+      </header>
+    );
+  }
 
   return (
     <header>
@@ -70,6 +139,7 @@ export function Header() {
           })}
         </nav>
       </div>
+      {modeDemo ? <StatusDataDemo /> : null}
     </header>
   );
 }
@@ -109,65 +179,5 @@ export function NavBawah() {
         );
       })}
     </nav>
-  );
-}
-
-export function Footer() {
-  return (
-    <>
-      <div className="joglo" />
-      <footer className="bg-hutan text-[13px] leading-relaxed text-krem/80">
-        <div className="wadah px-5 pt-8 pb-6 md:px-12 md:pt-[34px] lg:px-16 lg:pt-12 lg:pb-8">
-        <div className="grid gap-8 md:grid-cols-[1.3fr_1fr_1fr] md:gap-9 lg:grid-cols-[1.6fr_1fr_1fr] lg:gap-14">
-          <div>
-            <div className="mb-2.5 flex items-center gap-3">
-              <Logo ukuran={34} />
-              <div className="font-serif text-base font-semibold text-krem">{desa.nama}</div>
-            </div>
-            {desa.alamat.map((baris) => (
-              <div key={baris}>{baris}</div>
-            ))}
-          </div>
-          <div>
-            <div className="mb-2 text-[12.5px] font-bold tracking-[.08em] text-emas">KONTAK</div>
-            {/* py-1: menaikkan tinggi target sentuh tautan footer dari 21px */}
-            <a href={desa.whatsappUrl} className="block py-1 transition-colors duration-200 ease-out hover:text-emas">
-              WhatsApp: {desa.whatsapp}
-            </a>
-            <a
-              href={`mailto:${desa.email}`}
-              className="block break-all py-1 transition-colors duration-200 ease-out hover:text-emas"
-            >
-              Email: {desa.email}
-            </a>
-          </div>
-          <div>
-            <div className="mb-2 text-[12.5px] font-bold tracking-[.08em] text-emas">TAUTAN</div>
-            {/* ponytail: URL tujuan menyusul dari kalurahan — ditulis sebagai teks
-                dulu, bukan tautan mati. Ganti jadi <a href> begitu alamatnya turun. */}
-            {["Kalurahan Pandowoharjo", "Kabupaten Sleman", "Lapor! Sleman"].map((t) => (
-              <span key={t} className="block text-krem/70">
-                {t}
-              </span>
-            ))}
-            {/* Untuk perangkat dusun, bukan warga — sengaja dibuat tidak menonjol.
-                Opasitas ditahan di 70%: di bawah itu kontrasnya jatuh di bawah AA. */}
-            <Link
-              href="/admin/masuk"
-              className="mt-1.5 block py-1 text-krem/70 transition-colors duration-200 ease-out hover:text-emas"
-            >
-              Masuk Panel
-            </Link>
-          </div>
-        </div>
-        <div className="mt-6 flex flex-col gap-1 border-t border-krem/15 pt-4 text-[11.5px] text-krem/70 md:flex-row md:justify-between">
-          <span>
-            Website resmi {desa.nama}, {desa.kalurahan} — dikelola oleh perangkat dusun.
-          </span>
-          <span>Dibangun bersama Tim KKN Majegan UNY 2026</span>
-        </div>
-        </div>
-      </footer>
-    </>
   );
 }
