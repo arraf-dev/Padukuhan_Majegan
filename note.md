@@ -1,10 +1,10 @@
 # Catatan Progres Website Padukuhan Majegan
 
-Terakhir diperbarui: 12 Agustus 2026
+Terakhir diperbarui: 13 Agustus 2026
 
 ## Status Saat Ini
 
-Sebagian besar fitur utama website sudah selesai. Hasil audit kode menunjukkan bahwa autentikasi, database, halaman publik, dan modul admin sudah tersedia. Pekerjaan terbaru mengimplementasikan revisi Pak Dukuh pada pengalaman panel admin, alur pengaduan publik, layanan, profil, dan statistik; perubahan ini masih menunggu pengecekan tampilan bersama Pak Dukuh sebelum dirilis.
+Sebagian besar fitur utama website sudah selesai. Revisi Pak Dukuh pada panel admin, alur pengaduan, layanan, profil, dan statistik sudah berada di branch `main`. Audit prioritas dekat tanggal 13 Agustus memperbaiki hydration warning, filter pengaduan mobile, favicon, serta konfigurasi build Vercel dan memverifikasi tampilan melalui browser. Pekerjaan yang tersisa memerlukan uji perangkat fisik, persetujuan Pak Dukuh, data resmi, dan token Vercel Blob agar seluruh fitur unggah aktif.
 
 ## Revisi Pak Dukuh — Status Implementasi
 
@@ -15,7 +15,7 @@ Sebagian besar fitur utama website sudah selesai. Hasil audit kode menunjukkan b
 - [x] Panel pengaduan hanya memiliki filter Semua, Belum Dibaca, dan Dibaca; laporan yang sudah dibaca ditandai hijau.
 - [x] Identitas wajib diisi warga; hanya SuperAdmin yang mengambil dan melihat nama/kontak, sedangkan Admin tetap dapat membuka isi dan lampiran.
 - [x] Kartu pengaduan diperbarui dengan metadata yang mudah dipindai, aksen baca, dan animasi hover yang menghormati reduced motion.
-- [x] Migration `20260812230000_sederhanakan_pengaduan` siap menghapus data demo dan kolom lama, lalu menambahkan `dibaca_pada`.
+- [x] Migration `20260812230000_sederhanakan_pengaduan` sudah diterapkan; database melaporkan tidak ada migration tertunda.
 - [x] Halaman sukses pengaduan memberi konfirmasi serta informasi bahwa perangkat akan menghubungi pelapor bila diperlukan.
 - [x] Navigasi admin mobile diubah dari deretan tab horizontal menjadi menu yang dapat dibuka/tutup, dengan penanda halaman aktif.
 - [x] Tombol **Keluar** selalu tersedia pada sidebar desktop dan menu mobile.
@@ -25,12 +25,22 @@ Sebagian besar fitur utama website sudah selesai. Hasil audit kode menunjukkan b
 - [x] Kelola Layanan memiliki pencarian, keterangan templat, dan form yang dibagi menjadi Informasi Dasar, Persyaratan, Alur, serta Dokumen Templat.
 - [x] Statistik mendukung jenis kelamin, pendidikan, dan pekerjaan selain ringkasan serta kelompok usia; halaman publik menampilkan grafik/tabel responsif beserta kondisi data kosong.
 
+### Audit prioritas dekat — 13 Agustus 2026
+
+- [x] Hydration warning pada elemen `data-reveal` dihilangkan dengan Web Animations API tanpa mutasi class selama streaming React.
+- [x] Filter Semua, Belum Dibaca, dan Dibaca dibuat menjadi grid tiga kolom agar tidak terpotong pada mobile.
+- [x] Ikon situs ditambahkan; route ikon merespons HTTP 200 dan tidak lagi mengandalkan `/favicon.ico` yang hilang.
+- [x] Seluruh halaman admin diuji otomatis pada 320 px dan 375 px tanpa overflow halaman, error overlay, atau halaman kosong.
+- [x] Halaman publik utama diuji pada 390 px, 768 px, dan 1366 px; screenshot tersimpan lokal di `output/playwright/`.
+- [x] Prisma validate, 32 test, typecheck, production build, dan `git diff --check` lulus.
+- [x] URL kanonik dapat memakai `VERCEL_PROJECT_PRODUCTION_URL` ketika `NEXT_PUBLIC_URL` masih localhost; token Blob yang belum tersedia tidak lagi menggagalkan seluruh build.
+
 ### Perlu disetujui melalui pengecekan tampilan
 
-- [-] Terapkan migration bersamaan dengan deployment kode baru; jangan jalankan terpisah saat versi lama masih aktif karena kolom lama langsung dihapus.
 - [-] Uji pengalaman admin pada ponsel nyata (minimal lebar 320 px dan 375 px).
 - [-] Konfirmasi desain menu mobile, kartu Struktur Perangkat, serta visual statistik bersama Pak Dukuh.
 - [-] Isi data statistik resmi untuk kategori jenis kelamin, pendidikan, dan pekerjaan agar grafik publik terisi.
+- [-] Jalankan smoke test pada URL deployment terbaru; pengujian unggah penuh tetap menunggu token Vercel Blob.
 
 ## Yang Sudah Selesai
 
@@ -41,7 +51,7 @@ Sebagian besar fitur utama website sudah selesai. Hasil audit kode menunjukkan b
 - Login, sesi cookie, logout, dan proteksi `/admin` sudah tersedia.
 - Pembagian hak akses Admin dan SuperAdmin sudah diterapkan.
 - Form pengaduan menyimpan identitas wajib dan isi laporan ke database serta memiliki anti-spam sederhana. Tidak ada tiket atau pelacakan status publik.
-- Production memvalidasi `DATABASE_URL`, `RAHASIA_SESI`, `NEXT_PUBLIC_URL`, dan `BLOB_READ_WRITE_TOKEN` tanpa membocorkan nilainya.
+- Production memvalidasi `DATABASE_URL`, `RAHASIA_SESI`, dan ketersediaan URL HTTPS kanonik tanpa membocorkan nilainya. Pada Vercel, URL sistem menjadi fallback aman ketika `NEXT_PUBLIC_URL` belum siap.
 - Mode `DATA_MODE=demo|official` tersedia; mode demo menampilkan penanda bahwa informasi publik masih berupa data contoh.
 - Endpoint `GET /api/health` memeriksa koneksi aplikasi dan database tanpa menampilkan secret.
 - Lampiran pengaduan baru disimpan sebagai Blob privat dan hanya dapat dibuka melalui panel admin yang sudah masuk.
@@ -92,14 +102,17 @@ File utama yang ditambahkan:
 ### Perapian repository
 
 - Worktree sisa dari percobaan agent yang gagal sudah dihapus.
-- Tidak ada commit atau deployment baru yang dibuat selama pekerjaan terakhir.
+- Konfigurasi MCP dan artefak Playwright lokal sudah diabaikan Git agar tidak ikut ter-push.
 
 ## Hasil Verifikasi Terakhir
 
 - `git diff --check`: lulus.
+- Prisma schema valid dan database tidak memiliki migration tertunda.
 - Form unggah berita, profil, layanan, dan pengaduan sudah diperiksa melalui browser.
 - Proteksi halaman admin dan tautan Aksi cepat sudah diperiksa melalui browser.
-- `npm test`: **31 dari 31 test lulus** (termasuk validasi environment).
+- Seluruh halaman admin lulus audit browser pada 320 px dan 375 px; halaman publik utama lulus pada 390 px, 768 px, dan 1366 px.
+- Hydration warning tidak muncul lagi setelah perbaikan mekanisme reveal.
+- `npm test`: **32 dari 32 test lulus** (termasuk fallback URL Vercel dan validasi environment).
 - `npm run typecheck`: lulus.
 - Build Next.js production dengan environment contoh: lulus.
 - `npm run test:smoke` tersedia untuk memeriksa rute publik, sitemap, robots, dan health check pada URL HTTPS deployment.
@@ -127,9 +140,9 @@ File utama yang ditambahkan:
 
 ## Catatan Penting
 
-- Tanpa `BLOB_READ_WRITE_TOKEN`, pemilih berkas tetap terlihat tetapi unggahan ke Vercel Blob belum bisa digunakan.
+- Tanpa `BLOB_READ_WRITE_TOKEN`, pemilih berkas tetap terlihat tetapi unggahan ke Vercel Blob belum bisa digunakan. Situs dan formulir tanpa berkas tetap berjalan; percobaan unggah ditolak dengan pesan yang aman.
 - Lampiran pengaduan yang pernah diunggah sebagai Blob publik sebelum perubahan ini perlu diunggah ulang bila masih diperlukan; endpoint panel tidak meneruskan URL publik lama.
-- Tanpa seluruh environment variable wajib, build production sekarang sengaja dihentikan dengan pesan konfigurasi yang jelas.
+- Tanpa `DATABASE_URL`, `RAHASIA_SESI`, atau URL HTTPS kanonik, build production sengaja dihentikan dengan pesan konfigurasi yang jelas. Token Blob divalidasi saat operasi unggah agar kekurangan token tidak mematikan seluruh situs.
 - Gunakan `DATA_MODE="demo"` selama data resmi belum lengkap; ubah menjadi `official` hanya setelah konten diverifikasi.
 - `TASKS.md` di working tree belum sepenuhnya mencerminkan kondisi kode aktual; jadikan audit kode dan catatan ini sebagai acuan sementara.
 - Implementasi pengamanan production dan Vercel Blob sebelumnya sudah di-commit dan di-push ke branch `main` pada commit `715c790`.

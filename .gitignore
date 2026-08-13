@@ -9,6 +9,9 @@ next-env.d.ts
 .DS_Store
 TESTCASE.md
 .codex/
+.mcp.json
+.playwright-cli/
 .playwright-mcp/
+output/playwright/
 testsprite_tests/tmp/
 testsprite_tests/tmp/config.json

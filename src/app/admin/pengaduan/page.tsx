@@ -54,7 +54,7 @@ export default async function PengaduanAdmin({
         keterangan={`${belum} belum dibaca · identitas pelapor hanya dapat dilihat SuperAdmin`}
       />
 
-      <nav aria-label="Filter pengaduan" className="mb-5 flex gap-2 overflow-x-auto pb-1">
+      <nav aria-label="Filter pengaduan" className="mb-5 grid grid-cols-3 gap-2">
         {filter.map((f) => {
           const ini = f.nilai === pilihan;
           return (
@@ -62,13 +62,13 @@ export default async function PengaduanAdmin({
               key={f.label}
               href={f.nilai ? `/admin/pengaduan?baca=${f.nilai}` : "/admin/pengaduan"}
               aria-current={ini ? "page" : undefined}
-              className={`inline-flex min-h-11 flex-none items-center gap-2 rounded-full px-4 py-2.5 text-[12.5px] transition-colors ${
+              className={`flex min-h-14 min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-2 py-2 text-center text-[11px] leading-tight transition-colors sm:min-h-11 sm:flex-row sm:gap-2 sm:rounded-full sm:px-4 sm:py-2.5 sm:text-[12.5px] ${
                 ini
                   ? "bg-hutan font-bold text-krem"
                   : "border border-garis-tebal bg-kertas font-semibold text-teks hover:border-daun hover:bg-emas-lembut hover:text-hutan"
               }`}
             >
-              {f.label}
+              <span>{f.label}</span>
               <span className={`rounded-full px-2 py-0.5 text-[10px] ${ini ? "bg-krem/15 text-krem" : "bg-panel text-samar"}`}>
                 {f.jumlah}
               </span>

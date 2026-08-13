@@ -154,35 +154,8 @@
   }
 }
 
-/* Reveal lembut saat scroll — kelas `siap` dipasang IntersectionObserver. */
-[data-reveal] {
-  opacity: 0;
-  transform: translateY(14px);
-  transition:
-    opacity 0.5s ease,
-    transform 0.5s ease;
-}
-[data-reveal].siap {
-  opacity: 1;
-  transform: none;
-}
-
-/* Muncul berurutan, bukan serempak — `data-jeda` menunda tiap elemen ~80ms. */
-[data-reveal][data-jeda="1"] {
-  transition-delay: 0.08s;
-}
-[data-reveal][data-jeda="2"] {
-  transition-delay: 0.16s;
-}
-[data-reveal][data-jeda="3"] {
-  transition-delay: 0.24s;
-}
-[data-reveal][data-jeda="4"] {
-  transition-delay: 0.32s;
-}
-[data-reveal][data-jeda="5"] {
-  transition-delay: 0.4s;
-}
+/* Reveal saat scroll dijalankan lewat Web Animations API. Elemen tetap terlihat
+ * bila JavaScript tidak aktif; ini juga menghindari mutasi class saat hydration. */
 
 /**
  * Parallax gambar hero — digerakkan posisi gulir, bukan JavaScript.
@@ -218,10 +191,6 @@
     transition: none !important;
     transition-delay: 0s !important;
     animation-timeline: none !important;
-  }
-  [data-reveal] {
-    opacity: 1;
-    transform: none;
   }
   .paralaks > img {
     transform: none !important;

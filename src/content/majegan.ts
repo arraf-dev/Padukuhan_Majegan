@@ -7,6 +7,8 @@
  * di bawah sudah mengikuti kolom yang direncanakan supaya migrasinya lurus.
  */
 
+import { urlSitusProduksi } from "../lib/env.ts";
+
 export const desa = {
   nama: "Padukuhan Majegan",
   kalurahan: "Kalurahan Pandowoharjo",
@@ -22,11 +24,7 @@ export const desa = {
 };
 
 /** Alamat kanonik situs — dipakai metadataBase, sitemap, dan robots. */
-const situsDariEnv = process.env.NEXT_PUBLIC_URL?.trim();
-if (!situsDariEnv && process.env.NODE_ENV === "production") {
-  throw new Error("NEXT_PUBLIC_URL belum diset di environment production");
-}
-export const situsUrl = situsDariEnv ?? `https://${desa.domain}`;
+export const situsUrl = urlSitusProduksi(process.env, `https://${desa.domain}`)!;
 
 export const statistik = [
   { angka: 1284, label: "jiwa penduduk" },

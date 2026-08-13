@@ -11,17 +11,20 @@ const diamkanGerak = () =>
  * muncul lembut saat masuk viewport. Tidak perlu membungkus tiap elemen.
  *
  * Elemen yang muncul belakangan (pindah halaman, ganti filter) ikut terpantau
- * lewat MutationObserver — tanpa itu isinya akan menetap tak terlihat.
+ * lewat MutationObserver. Web Animations API dipakai tanpa menambah class ke
+ * elemen, supaya HTML streaming tidak berubah sebelum React selesai hydration.
  */
 export function Reveal() {
   useEffect(() => {
-    const langsung = diamkanGerak();
+    if (diamkanGerak()) return;
+
+    const animasi = new WeakMap<Element, Animation>();
 
     const penglihat = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
           if (!e.isIntersecting) continue;
-          e.target.classList.add("siap");
+          animasi.get(e.target)?.play();
           penglihat.unobserve(e.target);
         }
       },
@@ -30,12 +33,24 @@ export function Reveal() {
 
     const pasang = (akar: Element | Document) => {
       const semua = [
-        ...(akar instanceof Element && akar.matches("[data-reveal]:not(.siap)") ? [akar] : []),
-        ...akar.querySelectorAll("[data-reveal]:not(.siap)"),
+        ...(akar instanceof Element && akar.matches("[data-reveal]") ? [akar] : []),
+        ...akar.querySelectorAll("[data-reveal]"),
       ];
       for (const el of semua) {
-        if (langsung) el.classList.add("siap");
-        else penglihat.observe(el);
+        if (animasi.has(el)) continue;
+
+        const jeda = Number((el as HTMLElement).dataset.jeda ?? 0) * 80;
+        const gerak = el.animate(
+          [
+            { opacity: 0, transform: "translateY(14px)" },
+            { opacity: 1, transform: "none" },
+          ],
+          { duration: 500, delay: jeda, easing: "ease", fill: "both" },
+        );
+        gerak.pause();
+        gerak.currentTime = 0;
+        animasi.set(el, gerak);
+        penglihat.observe(el);
       }
     };
 

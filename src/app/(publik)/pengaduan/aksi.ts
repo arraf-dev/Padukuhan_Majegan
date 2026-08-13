@@ -34,6 +34,7 @@ export async function kirimPengaduan(data: FormData) {
   // Lampiran dapat memuat foto rumah, lokasi, atau warga. Simpan privat dan
   // sajikan hanya lewat route panel admin yang memeriksa sesi.
   const unggahan = await unggahBerkas(data, "lampiranBerkas", "pengaduan", "gambar", "private");
+  if (unggahan.galat) redirect("/pengaduan?galat=penyimpanan");
 
   await db.pengaduan.create({
     data: {

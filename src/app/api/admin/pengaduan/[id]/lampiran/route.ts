@@ -13,6 +13,9 @@ export const dynamic = "force-dynamic";
 export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   const sesi = await sesiSaatIni();
   if (!sesi) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!process.env.BLOB_READ_WRITE_TOKEN?.trim()) {
+    return NextResponse.json({ error: "Penyimpanan lampiran belum dikonfigurasi" }, { status: 503 });
+  }
 
   const { id } = await params;
   const pengaduan = await db.pengaduan.findUnique({

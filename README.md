@@ -87,9 +87,11 @@ NEXT_PUBLIC_URL="https://domain-resmi-anda"
 DATA_MODE="demo"
 ```
 
+`DATABASE_URL` dan `RAHASIA_SESI` wajib tersedia. `NEXT_PUBLIC_URL` dianjurkan untuk domain resmi; ketika belum diisi atau masih menunjuk localhost, deployment Vercel memakai `VERCEL_PROJECT_PRODUCTION_URL` sebagai URL HTTPS kanonik. `BLOB_READ_WRITE_TOKEN` diperlukan untuk fitur unggah, tetapi ketiadaannya tidak lagi menggagalkan seluruh build: formulir tanpa berkas tetap berfungsi dan unggahan menampilkan pesan konfigurasi yang aman.
+
 `SUPERADMIN_EMAIL` dan `SUPERADMIN_SANDI` hanya diperlukan ketika menjalankan seed pertama kali. Jangan jalankan ulang `npx prisma db seed` pada database yang sudah diisi admin karena seed memperbarui konten contoh dan mengganti daftar perangkat.
 
-Selama informasi resmi belum lengkap, gunakan `DATA_MODE="demo"`; situs akan menampilkan penanda data contoh. Ubah menjadi `official` setelah konten diverifikasi. Production akan gagal dibangun bila variabel wajib belum lengkap atau URL kanonik belum menggunakan HTTPS.
+Selama informasi resmi belum lengkap, gunakan `DATA_MODE="demo"`; situs akan menampilkan penanda data contoh. Ubah menjadi `official` setelah konten diverifikasi. Production akan gagal dibangun bila `DATABASE_URL`, `RAHASIA_SESI`, atau URL HTTPS kanonik tidak tersedia.
 
 Sebelum merilis, jalankan `npm test`, `npm run typecheck`, `npm run build`, lalu smoke test terhadap URL deployment. Lanjutkan dengan pemeriksaan manual untuk login, peran Admin/SuperAdmin, unggahan seluruh jenis berkas, pengaduan, filter baca, dan pembatasan identitas pelapor.
 

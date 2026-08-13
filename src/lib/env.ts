@@ -3,9 +3,37 @@ type Lingkungan = Record<string, string | undefined>;
 
 export type ModeData = "demo" | "official";
 
-const WAJIB_PRODUKSI = ["DATABASE_URL", "RAHASIA_SESI", "NEXT_PUBLIC_URL", "BLOB_READ_WRITE_TOKEN"] as const;
+const WAJIB_PRODUKSI = ["DATABASE_URL", "RAHASIA_SESI"] as const;
 
 const terisi = (nilai: string | undefined) => Boolean(nilai?.trim());
+
+const urlHttps = (nilai: string | undefined): string | null => {
+  const mentah = nilai?.trim();
+  if (!mentah) return null;
+
+  try {
+    const url = new URL(mentah.includes("://") ? mentah : `https://${mentah}`);
+    return url.protocol === "https:" ? url.origin : null;
+  } catch {
+    return null;
+  }
+};
+
+/**
+ * Vercel menyediakan URL production secara otomatis. Nilai ini menjadi
+ * fallback aman bila NEXT_PUBLIC_URL belum diubah dari localhost.
+ */
+export function urlSitusProduksi(
+  lingkungan: Lingkungan = process.env,
+  fallback?: string,
+): string | null {
+  return (
+    urlHttps(lingkungan.NEXT_PUBLIC_URL) ??
+    urlHttps(lingkungan.VERCEL_PROJECT_PRODUCTION_URL) ??
+    urlHttps(lingkungan.VERCEL_URL) ??
+    urlHttps(fallback)
+  );
+}
 
 /**
  * Data contoh adalah pilihan paling aman bila variabel belum diisi. Dengan
@@ -24,14 +52,12 @@ export function masalahEnvironmentProduksi(lingkungan: Lingkungan = process.env)
     (nama) => `${nama} belum diisi`,
   );
 
-  const urlSitus = lingkungan.NEXT_PUBLIC_URL?.trim();
-  if (urlSitus) {
-    try {
-      const url = new URL(urlSitus);
-      if (url.protocol !== "https:") masalah.push("NEXT_PUBLIC_URL harus menggunakan HTTPS di production");
-    } catch {
-      masalah.push("NEXT_PUBLIC_URL bukan URL yang sah");
-    }
+  if (!urlSitusProduksi(lingkungan)) {
+    masalah.push(
+      terisi(lingkungan.NEXT_PUBLIC_URL)
+        ? "NEXT_PUBLIC_URL harus menggunakan HTTPS di production"
+        : "URL HTTPS production belum tersedia",
+    );
   }
 
   try {

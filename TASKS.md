@@ -7,6 +7,23 @@
 
 ---
 
+## Prioritas Dekat — Audit 13 Agustus 2026
+
+- [x] Hilangkan hydration warning pada animasi reveal.
+- [x] Rapikan filter pengaduan agar ketiga kategori terlihat pada mobile.
+- [x] Tambahkan favicon/ikon aplikasi.
+- [x] Audit seluruh halaman admin pada viewport 320 px dan 375 px.
+- [x] Audit halaman publik utama pada viewport 390 px, 768 px, dan 1366 px.
+- [x] Jalankan Prisma validate, 32 test, typecheck, production build, dan diff check.
+- [ ] Uji pada ponsel fisik 320/375 px bersama calon admin.
+- [ ] Minta persetujuan Pak Dukuh untuk menu mobile, kartu Struktur Perangkat, dan visual statistik.
+- [ ] Masukkan serta verifikasi data resmi, lalu ubah `DATA_MODE` menjadi `official`.
+- [x] Siapkan fallback URL kanonik Vercel dan mode aman saat token Blob belum tersedia.
+- [ ] Lengkapi environment Blob agar seluruh fitur unggah aktif.
+- [ ] Jalankan smoke test pada deployment HTTPS terbaru.
+
+---
+
 ## Minggu 1 (23–29 Jul) — Fondasi & Koordinasi Awal
 
 **Teknis**

@@ -1,6 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { masalahEnvironmentProduksi, modeData, validasiEnvironmentProduksi } from "./env.ts";
+import {
+  masalahEnvironmentProduksi,
+  modeData,
+  urlSitusProduksi,
+  validasiEnvironmentProduksi,
+} from "./env.ts";
 
 const siap = {
   NODE_ENV: "production",
@@ -33,4 +38,16 @@ test("konfigurasi production menolak variabel wajib yang kosong dan URL non-HTTP
   assert.ok(masalah.includes("DATABASE_URL belum diisi"));
   assert.ok(masalah.includes("NEXT_PUBLIC_URL harus menggunakan HTTPS di production"));
   assert.throws(() => validasiEnvironmentProduksi(lingkungan), /Konfigurasi production belum siap/);
+});
+
+test("URL bawaan Vercel menggantikan NEXT_PUBLIC_URL localhost", () => {
+  const lingkungan = {
+    ...siap,
+    NEXT_PUBLIC_URL: "http://localhost:3000",
+    VERCEL_PROJECT_PRODUCTION_URL: "padukuhan-majegan.vercel.app",
+    BLOB_READ_WRITE_TOKEN: "",
+  };
+
+  assert.equal(urlSitusProduksi(lingkungan), "https://padukuhan-majegan.vercel.app");
+  assert.deepEqual(masalahEnvironmentProduksi(lingkungan), []);
 });
