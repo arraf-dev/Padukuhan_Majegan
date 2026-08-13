@@ -63,14 +63,20 @@ export default async function KelolaLayanan({
             const mintaHapus = konfirmasi === l.id;
 
             return (
-              <li key={l.id} className="rounded-xl border border-garis bg-kertas px-4 py-3.5 md:px-5">
+              <li
+  key={l.id}
+  className="rounded-xl border border-garis bg-kertas px-4 py-3.5 transition hover:-translate-y-[2px] hover:border-daun hover:shadow-md md:px-5"
+>
                 <div className="flex flex-wrap items-center gap-x-3.5 gap-y-2">
                   <span className="flex size-7 flex-none items-center justify-center rounded-full bg-panel text-[11.5px] font-extrabold text-samar">
-                    {l.urutan}
+                    {String(l.urutan).padStart(2, "0")}
                   </span>
 
                   <div className="min-w-48 flex-1">
-                    <div className="text-[14px] font-semibold text-tinta">{l.namaLayanan}</div>
+                    <div className="flex items-center gap-2 text-[14px] font-semibold text-tinta">
+  <Ikon nama="surat" ukuran={16} />
+  <span>{l.namaLayanan}</span>
+</div>
                     <div className="mt-0.5 text-[11.5px] text-samar">
                       {l.persyaratan.length} syarat · {l.estimasiWaktu} · {l.biaya}
                     </div>
@@ -88,14 +94,18 @@ export default async function KelolaLayanan({
                       className="inline-flex items-center gap-1.5 rounded-lg border-[1.5px] border-daun px-3 py-2 text-xs font-bold text-hutan hover:bg-[#EFE9D6]"
                     >
                       <Ikon nama="surat" ukuran={13} />
-                      Sunting
+                      Edit
                     </Link>
                     <Link
-                      href={mintaHapus ? "/admin/layanan" : `/admin/layanan?konfirmasi=${l.id}`}
-                      className="rounded-lg px-3 py-2 text-xs font-semibold text-redup hover:text-bata"
-                    >
-                      {mintaHapus ? "Batal" : "Hapus"}
-                    </Link>
+  href={mintaHapus ? "/admin/layanan" : `/admin/layanan?konfirmasi=${l.id}`}
+  className={`rounded-lg border px-3 py-2 text-xs font-semibold transition ${
+    mintaHapus
+      ? "border-gray-300 bg-gray-50 text-gray-700 hover:bg-gray-100"
+      : "border-red-300 bg-red-50 text-red-600 hover:bg-red-100"
+  }`}
+>
+  {mintaHapus ? "Batal" : "Hapus"}
+</Link>
                   </div>
                 </div>
 

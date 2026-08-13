@@ -10,7 +10,18 @@ import { Kerangka } from "@/app/admin/kerangka";
 export const metadata: Metadata = { title: "Pengaduan Warga" };
 
 const semuaStatus: StatusPengaduan[] = ["TERKIRIM", "DIPROSES", "SELESAI"];
-
+const labelStatus = (status?: StatusPengaduan) => {
+  switch (status) {
+    case "TERKIRIM":
+      return "Belum Terlihat";
+    case "DIPROSES":
+      return "Terlihat";
+    case "SELESAI":
+      return "Selesai";
+    default:
+      return "Semua";
+  }
+};
 export default async function PengaduanAdmin({
   searchParams,
 }: {
@@ -56,7 +67,7 @@ export default async function PengaduanAdmin({
                   : "border border-garis-tebal font-semibold text-teks hover:border-daun hover:text-hutan"
               }`}
             >
-              {s ?? "Semua"}
+              {labelStatus(s)}
             </Link>
           );
         })}
@@ -64,7 +75,9 @@ export default async function PengaduanAdmin({
 
       {daftar.length === 0 ? (
         <p className="rounded-xl border border-dashed border-garis-tebal bg-panel px-5 py-10 text-center text-sm text-redup">
-          {pilihan ? `Tidak ada pengaduan berstatus ${pilihan}.` : "Belum ada pengaduan masuk."}
+          {pilihan
+  ? `Tidak ada pengaduan ${labelStatus(pilihan).toLowerCase()}.`
+  : "Belum ada pengaduan masuk."}
         </p>
       ) : (
         <ul className="flex flex-col gap-2.5">
@@ -75,9 +88,7 @@ export default async function PengaduanAdmin({
                 className="block rounded-xl border border-garis bg-kertas px-4 py-3.5 transition hover:border-daun md:px-5"
               >
                 <div className="flex flex-wrap items-center gap-x-3.5 gap-y-2">
-                  <span className="flex-none font-mono text-[13px] font-bold text-hutan">
-                    {p.kodeTiket}
-                  </span>
+                  
                   <LencanaStatus status={p.status} />
                   <span className="flex-none rounded-full border border-garis px-2.5 py-1 text-[11px] font-semibold text-redup">
                     {p.kategori}

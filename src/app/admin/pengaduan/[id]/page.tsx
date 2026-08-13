@@ -12,11 +12,23 @@ import { tanggapiPengaduan } from "@/app/admin/pengaduan/aksi";
 
 export const metadata: Metadata = { title: "Tindak Lanjut Pengaduan" };
 
-const pilihanStatus: { nilai: StatusPengaduan; keterangan: string }[] = [
-  { nilai: "TERKIRIM", keterangan: "Belum ditinjau" },
-  { nilai: "DIPROSES", keterangan: "Sedang ditindaklanjuti" },
-  { nilai: "SELESAI", keterangan: "Sudah ditangani — wajib menulis tanggapan" },
-];
+const pilihanStatus = [
+  {
+    nilai: "TERKIRIM" as StatusPengaduan,
+    label: "BELUM TERLIHAT",
+    keterangan: "Belum dibuka admin",
+  },
+  {
+    nilai: "DIPROSES" as StatusPengaduan,
+    label: "TERLIHAT",
+    keterangan: "Sedang diproses",
+  },
+  {
+    nilai: "SELESAI" as StatusPengaduan,
+    label: "SELESAI",
+    keterangan: "Pengaduan telah selesai",
+  },
+];  
 
 export default async function DetailPengaduan({
   params,
@@ -44,20 +56,19 @@ export default async function DetailPengaduan({
         Kembali ke daftar pengaduan
       </Link>
 
-      <div className="mt-4 flex flex-wrap items-center gap-3">
-        <h1 className="font-mono text-lg font-bold text-hutan">{p.kodeTiket}</h1>
-        <LencanaStatus status={p.status} />
-        <span className="text-[12.5px] text-samar">
-          masuk {tanggalPanjang(p.dibuatPada.toISOString())}
-        </span>
-      </div>
+<div className="mt-4 flex flex-wrap items-center gap-3">
+  <LencanaStatus status={p.status} />
+  <span className="text-[12.5px] text-samar">
+    masuk {tanggalPanjang(p.dibuatPada.toISOString())}
+  </span>
+</div>
 
       {tersimpan && (
         <p
           role="status"
           className="mt-4 rounded-[10px] border border-emas-garis bg-emas-muda px-4 py-3 text-[13px] font-semibold text-emas-teks"
         >
-          Tindak lanjut tersimpan — warga bisa melihatnya lewat kode tiket di halaman Lacak.
+          Status pengaduan berhasil diperbarui.
         </p>
       )}
 
@@ -83,8 +94,7 @@ export default async function DetailPengaduan({
           {p.isAnonim ? (
             <p className="mt-2 flex items-start gap-2.5 rounded-[10px] border border-garis bg-krem px-3.5 py-3 text-[12.5px] leading-relaxed text-redup">
               <Ikon nama="gembok" ukuran={14} className="mt-0.5 flex-none" />
-              Dikirim anonim — nama & kontak tidak pernah disimpan, jadi pelapor tidak bisa
-              dihubungi. Tanggapan hanya terbaca lewat kode tiket.
+            Pengaduan dikirim secara anonim. Identitas pelapor tidak disimpan sehingga tidak dapat dihubungi.
             </p>
           ) : (
             <dl className="mt-2 grid gap-2">
@@ -135,7 +145,9 @@ export default async function DetailPengaduan({
                   defaultChecked={p.status === s.nilai}
                   className="size-4 flex-none accent-hutan"
                 />
-                <span className="text-[13.5px] font-bold text-tinta">{s.nilai}</span>
+                <span className="text-[13.5px] font-bold text-tinta">
+  {s.label}
+</span>
                 <span className="text-[12px] text-samar">{s.keterangan}</span>
               </label>
             ))}
@@ -159,10 +171,10 @@ export default async function DetailPengaduan({
             type="submit"
             className="min-h-11 rounded-[10px] bg-hutan px-6 py-3 text-sm font-bold text-krem hover:bg-daun"
           >
-            Simpan Tindak Lanjut
+            Simpan Perubahan
           </button>
           <span className="text-xs text-samar">
-            Tanggapan langsung terlihat warga lewat kode tiket.
+            Tanggapan akan langsung ditampilkan kepada pelapor.
           </span>
         </div>
       </form>

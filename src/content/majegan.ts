@@ -66,7 +66,7 @@ export const aksesCepat = [
   { href: "/profil", label: "Profil Padukuhan", ringkas: "sejarah & struktur", ikon: "warga" },
 ] as const;
 
-export const kategoriBerita = ["Pengumuman", "Kegiatan", "Pembangunan"] as const;
+export const kategoriBerita = ["Pengumuman", "Kegiatan", "Pembangunan", "Lainnya"] as const;
 export type KategoriBerita = (typeof kategoriBerita)[number];
 
 export type Berita = {

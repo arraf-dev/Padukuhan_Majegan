@@ -58,9 +58,9 @@ export function Komposer({
 
   return (
     <form
-      action={aksi}
-      className="grid items-start gap-7 px-4 py-6 md:grid-cols-[1fr_460px] md:px-8.5 md:pt-7.5 md:pb-9.5"
-    >
+  action={aksi}
+  className="grid gap-7 px-4 py-6 md:grid-cols-1 md:px-8.5 md:pt-7.5 md:pb-9.5"
+>
       <input type="hidden" name="id" value={awal?.id ?? ""} />
       <input type="hidden" name="kategori" value={kategori ?? ""} />
 
@@ -110,20 +110,28 @@ export function Komposer({
               <img src={gambar} alt="" className="size-full object-cover" />
             </div>
           )}
-          <div className="flex flex-1 flex-col justify-center gap-2 rounded-xl border-[1.5px] border-dashed border-garis-tebal bg-krem px-4 py-5">
-            <div className="flex items-center gap-2 text-[13px] text-samar">
-              <Ikon nama="foto" ukuran={22} className="flex-none" />
-              Tempel tautan foto — unggahan langsung dari HP menyusul (ADM-5).
-            </div>
-            <input
-              id="gambarSampul"
-              name="gambarSampul"
-              value={gambar}
-              onChange={(e) => setGambar(e.target.value)}
-              placeholder="https://…/foto-kegiatan.jpg"
-              className={`${kotak} border-garis-tebal`}
-            />
-          </div>
+<div className="flex flex-1 flex-col justify-center gap-3 rounded-xl border-2 border-dashed border-garis-tebal bg-krem px-5 py-6">
+
+  <label
+    htmlFor="gambarSampul"
+    className="flex cursor-pointer items-center justify-center gap-2 rounded-lg bg-hutan px-4 py-3 text-sm font-semibold text-krem hover:bg-daun transition"
+  >
+    <Ikon nama="foto" ukuran={18} />
+    Choose File
+  </label>
+
+  <input
+    id="gambarSampul"
+    type="file"
+    accept="image/*"
+    className="hidden"
+  />
+
+  <p className="text-center text-xs text-samar">
+    PNG, JPG, JPEG
+  </p>
+
+</div>
         </div>
 
         {/* 2 · tulis */}
@@ -200,7 +208,7 @@ export function Komposer({
             disabled={!siap}
             className="min-h-11 rounded-[10px] bg-emas px-7 py-3.5 text-[15px] font-extrabold text-hutan transition enabled:hover:shadow-[0_6px_16px_rgba(138,109,43,.35)] disabled:cursor-not-allowed disabled:opacity-45"
           >
-            Tayangkan Sekarang
+            Upload
           </button>
           <button
             type="submit"
@@ -211,81 +219,11 @@ export function Komposer({
           >
             Simpan Draf
           </button>
-          <span className="flex-1" />
-          <span className="text-xs text-samar">
-            Draf tidak tampil di halaman publik sampai ditayangkan.
-          </span>
+          
         </div>
       </div>
 
-      {/* ---------- Pratinjau ---------- */}
-      <div className="flex flex-col gap-3.5">
-        <div className="rounded-2xl border border-garis bg-kertas px-5 py-4.5">
-          <h2 className="mb-3 font-serif text-[15px] font-semibold text-hutan">
-            Pratinjau di website
-          </h2>
-          <article className="overflow-hidden rounded-2xl border border-garis bg-kertas">
-            <div className="relative px-2 pt-2">
-              <div className="foto flex aspect-square items-center justify-center overflow-hidden rounded-[9px]">
-                {gambar.trim() ? (
-                  // eslint-disable-next-line @next/next/no-img-element -- URL luar, belum ada Blob
-                  <img src={gambar} alt="" className="size-full object-cover" />
-                ) : (
-                  <span className="foto-cap text-[10px]">Foto belum ada</span>
-                )}
-              </div>
-              {kategori && (
-                <span className="absolute top-4 left-4 rounded-full bg-hutan/90 px-2.5 py-1 text-[9.5px] font-extrabold tracking-[.08em] text-emas">
-                  {kategori.toUpperCase()}
-                </span>
-              )}
-            </div>
-            <div className="px-3 pt-2.5 pb-3.5">
-              <div className="flex items-center gap-1.5">
-                <Atap ukuran={17} className="flex-none" />
-                <span className="font-mono text-[9.5px] font-bold tracking-[.06em] text-emas-tua">
-                  {tanggalKapital(tanggal)}
-                </span>
-                {lokasi.trim() && (
-                  <>
-                    <span className="flex-1" />
-                    <span className="inline-flex items-center gap-1 text-[9.5px] text-samar">
-                      <Ikon nama="pin" ukuran={10} />
-                      {lokasi}
-                    </span>
-                  </>
-                )}
-              </div>
-              <h3 className="mt-1.5 mb-1 font-serif text-[13.5px] leading-snug font-semibold text-tinta">
-                {judul || "Judul berita akan tampil di sini"}
-              </h3>
-              <p className="line-clamp-3 text-[11px] leading-snug text-teks">
-                {caption || "Tulisan Anda akan muncul di bawah judul…"}
-              </p>
-            </div>
-          </article>
-        </div>
-
-        <div className="rounded-2xl border border-garis bg-kertas px-5 py-4.5">
-          <h2 className="mb-2.5 font-serif text-[15px] font-semibold text-hutan">Siap tayang?</h2>
-          <ul className="flex flex-col gap-2 text-[13px] text-teks">
-            {["Foto (opsional)", "Judul & tulisan terisi", "Kategori dipilih"].map((t, i) => (
-              <li key={t} className={`flex items-center gap-2.5 ${selesai[i] ? "" : "text-pucat"}`}>
-                {selesai[i] ? (
-                  <CentangBulat className="flex-none" />
-                ) : (
-                  <span className="size-[15px] flex-none rounded-full border-[1.5px] border-garis-tebal" />
-                )}
-                {t}
-              </li>
-            ))}
-          </ul>
-          <p className="mt-3 rounded-[10px] border border-emas-garis bg-emas-muda px-3.5 py-2.5 text-[11.5px] leading-relaxed text-emas-teks">
-            Setelah &ldquo;Tayangkan&rdquo;, berita langsung muncul di Beranda &amp; halaman Berita —
-            tanpa perlu persetujuan tambahan.
-          </p>
-        </div>
-      </div>
+      
     </form>
   );
 }

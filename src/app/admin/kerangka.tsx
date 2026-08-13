@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Peran } from "@/content/majegan";
 import { Ikon } from "@/components/ikon";
 import { MenuAtas, Sidebar } from "@/components/panel";
+import { keluar } from "@/app/admin/aksi";
 
 /**
  * Bingkai halaman panel: sidebar + menu atas + kolom isi.

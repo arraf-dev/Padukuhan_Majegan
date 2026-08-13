@@ -88,11 +88,18 @@ export function LencanaStatus({
   status: StatusPengaduan;
   className?: string;
 }) {
+const label =
+  status === "TERKIRIM"
+    ? "BELUM TERLIHAT"
+    : status === "DIPROSES"
+    ? "TERLIHAT"
+    : "SELESAI";
+
   return (
     <span
       className={`flex-none rounded-full px-2.5 py-1 text-[11px] font-extrabold ${warnaStatus[status]} ${className}`}
     >
-      {status}
+      {label}
     </span>
   );
 }

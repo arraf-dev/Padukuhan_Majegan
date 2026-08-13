@@ -110,16 +110,21 @@ export default async function KelolaBerita({
                       className="inline-flex items-center gap-1.5 rounded-lg border-[1.5px] border-daun px-3 py-2 text-xs font-bold text-hutan hover:bg-[#EFE9D6]"
                     >
                       <Ikon nama="berita" ukuran={13} />
-                      Sunting
+                      Edit
                     </Link>
                     {/* Hapus dua langkah — tanpa dialog JS, panel konfirmasinya
                         muncul di baris ini juga. */}
                     <Link
-                      href={mintaHapus ? "/admin/berita" : `/admin/berita?konfirmasi=${b.id}`}
-                      className="rounded-lg px-3 py-2 text-xs font-semibold text-redup hover:text-bata"
-                    >
-                      {mintaHapus ? "Batal" : "Hapus"}
-                    </Link>
+  href={mintaHapus ? "/admin/berita" : `/admin/berita?konfirmasi=${b.id}`}
+  className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-bold transition-all duration-200 ${
+    mintaHapus
+      ? "border-gray-300 bg-gray-100 text-gray-700 hover:bg-gray-200"
+      : "border-red-300 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white hover:border-red-600"
+  }`}
+>
+  <span>{mintaHapus ? "↩" : "🗑"}</span>
+  {mintaHapus ? "Batal" : "Hapus"}
+</Link>
                   </div>
                 </div>
 

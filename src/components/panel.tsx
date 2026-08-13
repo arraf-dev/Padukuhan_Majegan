@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { akun, menuAdmin, type Peran } from "@/content/majegan";
@@ -83,25 +84,78 @@ export function Sidebar({ peran, nama }: { peran: Peran; nama: string }) {
 }
 
 /** Pengganti sidebar di layar kecil. */
+/** Menu mobile */
 export function MenuAtas({ peran }: { peran: Peran }) {
   const path = usePathname();
   const terbatas = peran === "admin";
+  const [buka, setBuka] = useState(false);
 
   return (
-    <div className="flex gap-1.5 overflow-x-auto border-b border-krem/15 bg-hutan px-4 py-2.5 md:hidden">
-      {menuAdmin
-        .filter((m) => !(terbatas && m.superadmin))
-        .map((m) => (
-          <Link
-            key={m.href}
-            href={m.href}
-            className={`rounded-full px-3 py-1.5 text-xs whitespace-nowrap ${
-              path === m.href ? "bg-emas font-bold text-hutan" : "font-medium text-krem/80"
-            }`}
+    <>
+      {/* Header Mobile */}
+      <div className="sticky top-0 z-40 flex items-center justify-between border-b border-garis bg-hutan px-4 py-3 md:hidden">
+        <button
+          onClick={() => setBuka(true)}
+          className="rounded-lg p-2 text-krem hover:bg-krem/10"
+        >
+          ☰
+        </button>
+
+        <span className="font-semibold text-krem">Panel Admin</span>
+
+        <div className="w-8" />
+      </div>
+
+      {/* Overlay */}
+      {buka && (
+        <div
+          className="fixed inset-0 z-40 bg-black/40 md:hidden"
+          onClick={() => setBuka(false)}
+        />
+      )}
+
+      {/* Sidebar Mobile */}
+      <aside
+        className={`fixed left-0 top-0 z-50 h-screen w-64 bg-hutan transition-transform duration-300 md:hidden ${
+          buka ? "translate-x-0" : "-translate-x-full"
+        }`}
+      >
+        <div className="flex items-center justify-between border-b border-krem/10 p-4">
+          <div>
+            <div className="font-bold text-krem">Majegan Admin</div>
+            <div className="text-xs text-krem/60">
+              Panel Perangkat Dusun
+            </div>
+          </div>
+
+          <button
+            onClick={() => setBuka(false)}
+            className="text-xl text-krem"
           >
-            {m.label}
-          </Link>
-        ))}
-    </div>
+            ✕
+          </button>
+        </div>
+
+        <nav className="flex flex-col p-3">
+          {menuAdmin
+            .filter((m) => !(terbatas && m.superadmin))
+            .map((m) => (
+              <Link
+                key={m.href}
+                href={m.href}
+                onClick={() => setBuka(false)}
+                className={`mb-2 flex items-center gap-3 rounded-lg px-3 py-3 text-sm transition ${
+                  path === m.href
+                    ? "bg-emas font-bold text-hutan"
+                    : "text-krem hover:bg-krem/10"
+                }`}
+              >
+                <Ikon nama={m.ikon} ukuran={18} />
+                {m.label}
+              </Link>
+            ))}
+        </nav>
+      </aside>
+    </>
   );
 }

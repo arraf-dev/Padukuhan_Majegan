@@ -119,7 +119,7 @@ export default async function KelolaStatistik({
               {isi.map((b) => (
                 <div
                   key={b.id}
-                  className="flex flex-wrap items-end gap-3 rounded-xl border border-garis bg-kertas px-4 py-3.5 md:px-5"
+                  className="flex flex-wrap items-end gap-3 rounded-xl border border-garis bg-kertas px-4 py-3.5 transition hover:border-daun hover:shadow-sm md:px-5"
                 >
                   {/* Label jadi bagian kunci unik, jadi disunting = baris baru.
                       Ditampilkan mati supaya tidak ada duplikat tak disengaja. */}
@@ -158,22 +158,22 @@ export default async function KelolaStatistik({
                       />
                     </div>
                     <button
-                      type="submit"
-                      className="min-h-11 rounded-lg border-[1.5px] border-daun px-3.5 py-2.5 text-xs font-bold text-hutan hover:bg-[#EFE9D6]"
-                    >
-                      Simpan
-                    </button>
+  type="submit"
+  className="min-h-11 rounded-lg border border-daun bg-white px-4 py-2.5 text-xs font-bold text-hutan transition hover:bg-daun hover:text-krem"
+>
+  Simpan
+</button>
                   </form>
 
                   <form action={hapusStatistik}>
                     <input type="hidden" name="id" value={b.id} />
                     <input type="hidden" name="tahun" value={tahun} />
                     <button
-                      type="submit"
-                      className="min-h-11 rounded-lg px-3 py-2.5 text-xs font-semibold text-redup hover:text-bata"
-                    >
-                      Hapus
-                    </button>
+  type="submit"
+  className="min-h-11 rounded-lg border border-red-300 bg-red-50 px-4 py-2.5 text-xs font-bold text-red-600 transition hover:bg-red-600 hover:text-white"
+>
+  Hapus
+</button>
                   </form>
                 </div>
               ))}
@@ -181,7 +181,7 @@ export default async function KelolaStatistik({
 
             <form
               action={simpanStatistik}
-              className="mt-4 flex flex-wrap items-end gap-3 rounded-xl border-[1.5px] border-dashed border-garis-tebal bg-panel px-4 py-4 md:px-5"
+              className="mt-4 flex flex-wrap items-end gap-3 rounded-xl border border-dashed border-daun/30 bg-panel px-5 py-5"
             >
               <input type="hidden" name="tahun" value={tahun} />
               <input type="hidden" name="kategori" value={k.nilai} />
@@ -223,7 +223,7 @@ export default async function KelolaStatistik({
               </div>
               <button
                 type="submit"
-                className="inline-flex min-h-11 items-center gap-2 rounded-[9px] bg-hutan px-4.5 py-2.5 text-[13.5px] font-bold text-krem hover:bg-daun"
+                className="inline-flex min-h-11 items-center gap-2 rounded-[10px] bg-hutan px-5 py-2.5 text-[13.5px] font-bold text-krem transition hover:scale-[1.03] hover:bg-daun"
               >
                 <span className="text-base leading-none">+</span> Tambah
               </button>

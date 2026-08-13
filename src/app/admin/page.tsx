@@ -61,13 +61,7 @@ export default async function Dashboard() {
             {menunggu === 0 ? "tidak ada pengaduan baru" : `${menunggu} pengaduan menunggu tanggapan`}
           </p>
         </div>
-        <span className="flex-1" />
-        <Link
-          href="/admin/berita/baru"
-          className="inline-flex min-h-11 items-center gap-2 rounded-[9px] bg-hutan px-4.5 py-2.5 text-[13.5px] font-bold text-krem hover:bg-daun"
-        >
-          <span className="text-base leading-none">+</span> Tulis Berita
-        </Link>
+        
       </div>
 
       <dl className="mb-5 grid gap-4 md:grid-cols-3">
@@ -98,7 +92,7 @@ export default async function Dashboard() {
         ))}
       </dl>
 
-      <div className={`grid gap-4 ${terbatas ? "" : "md:grid-cols-[1.5fr_1fr]"}`}>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-[1.5fr_1fr]">
         <section data-reveal className="rounded-xl border border-garis bg-kertas px-5.5 py-5">
           <div className="mb-1.5 flex items-baseline justify-between">
             <h2 className="font-serif text-base font-semibold text-hutan">Pengaduan terbaru</h2>
@@ -121,12 +115,7 @@ export default async function Dashboard() {
                     i < terbaru.length - 1 ? "border-b border-dashed border-garis" : ""
                   }`}
                 >
-                  <Link
-                    href={`/admin/pengaduan/${p.id}`}
-                    className="flex-none font-mono text-[13px] font-bold text-hutan hover:underline"
-                  >
-                    {p.kodeTiket}
-                  </Link>
+                  
                   <span className="min-w-40 flex-1 truncate text-[13px] text-teks">{p.isi}</span>
                   <LencanaStatus status={p.status} />
                 </li>
@@ -135,32 +124,20 @@ export default async function Dashboard() {
           )}
         </section>
 
-        {!terbatas && (
-          <section data-reveal className="rounded-xl border border-garis bg-kertas px-5.5 py-5">
-            <h2 className="mb-3 font-serif text-base font-semibold text-hutan">Aksi cepat</h2>
-            <div className="flex flex-col gap-2.5">
-              {aksiCepatAdmin.map((a) => (
-                // ponytail: modul tujuan belum dibangun — tautan menunggu Minggu 2–4.
-                <span
-                  key={a}
-                  className="flex items-center justify-between rounded-[9px] border border-garis px-4 py-3 text-[13.5px] font-semibold text-tinta"
-                >
-                  {a} <span className="text-emas-tua">→</span>
-                </span>
-              ))}
-            </div>
-          </section>
-        )}
+        
       </div>
 
-      <form action={keluar} className="mt-6">
-        <button
-          type="submit"
-          className="min-h-11 rounded-[9px] border border-garis px-4 py-2.5 text-[13px] font-semibold text-tinta hover:border-bata hover:text-bata"
-        >
-          Keluar dari panel
-        </button>
-      </form>
+<form action={keluar} className="mt-8">
+  <button
+    type="submit"
+    className="group inline-flex min-h-11 items-center gap-2 rounded-xl border border-red-200 bg-white px-5 py-3 text-sm font-semibold text-red-600 transition-all duration-300 hover:border-red-500 hover:bg-red-50 hover:shadow-lg"
+  >
+    <span className="transition-transform duration-300 group-hover:-translate-x-1">
+      ↩
+    </span>
+    Logout
+  </button>
+</form>
     </Kerangka>
   );
 }

@@ -90,16 +90,23 @@ export default async function KelolaAkun({
 
           return (
             <div key={p.id} className="rounded-xl border border-garis bg-kertas px-4 py-3.5 md:px-5">
-              <form action={simpanPengguna} className="flex flex-wrap items-end gap-3">
+              <form
+  action={simpanPengguna}
+  className="grid gap-4 lg:grid-cols-[2fr_2fr_180px] items-end"
+>
                 <input type="hidden" name="id" value={p.id} />
 
                 <div className="min-w-44 flex-1">
                   <label className={label}>NAMA</label>
                   <input name="nama" defaultValue={p.nama} className={isian} />
-                  <p className="mt-1 truncate text-[11.5px] text-samar">
-                    {p.email} · bergabung {tanggalPendekTahun(p.dibuatPada.toISOString())}
-                    {p._count.berita > 0 && ` · ${p._count.berita} berita`}
-                  </p>
+                  <div className="mt-2 space-y-1 text-[11.5px] text-samar">
+  <p>{p.email}</p>
+
+  <p>
+    Bergabung {tanggalPendekTahun(p.dibuatPada.toISOString())}
+    {p._count.berita > 0 && ` • ${p._count.berita} berita`}
+  </p>
+</div>
                 </div>
 
                 <div className="min-w-36 flex-1">

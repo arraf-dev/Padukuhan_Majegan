@@ -77,54 +77,6 @@ export default async function Masuk({
           </p>
         </div>
       </div>
-
-      <section className="w-full max-w-[800px] rounded-xl border border-[#D9D2BC] bg-kertas px-6 py-6 shadow-[0_2px_14px_rgba(33,50,40,.10)] md:px-7.5">
-        <h2 className="mb-1 font-serif text-xl font-semibold text-hutan">3 Peran Pengguna</h2>
-        <p className="mb-5 text-[13px] text-samar">
-          Hanya SuperAdmin &amp; Admin yang punya akun; warga mengakses tanpa login.
-        </p>
-        <div className="grid gap-3.5 md:grid-cols-3">
-          {peranPengguna.map((p) => (
-            <div
-              key={p.nama}
-              className={`rounded-xl px-4.5 pt-4.5 pb-5 ${
-                p.sorot ? "border-[1.5px] border-emas bg-[#FFFDF4]" : "border border-garis"
-              }`}
-            >
-              <div
-                className={`mb-1 text-[11px] font-extrabold tracking-[.1em] ${
-                  p.sorot || p.tanda === "LOGIN" ? "text-emas-tua" : "text-redup"
-                }`}
-              >
-                {p.tanda}
-              </div>
-              <div className="mb-3.5 font-serif text-[17px] font-semibold text-hutan">
-                {p.nama}
-                {p.catatan && (
-                  <span className="ml-1.5 font-sans text-[11.5px] font-medium text-samar">
-                    {p.catatan}
-                  </span>
-                )}
-              </div>
-              <ul className="flex flex-col gap-2.5 text-[12.5px] leading-snug">
-                {p.hak.map((h) => (
-                  <li
-                    key={h.teks}
-                    className={`flex gap-2 ${h.bisa ? "text-teks" : "text-pucat"}`}
-                  >
-                    {h.bisa ? (
-                      <CentangBulat className="mt-px flex-none" />
-                    ) : (
-                      <Ikon nama="gembok" ukuran={15} className="mt-px flex-none" />
-                    )}
-                    {h.teks}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </section>
     </div>
   );
 }
