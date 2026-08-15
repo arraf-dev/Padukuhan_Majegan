@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { hashKataSandi, periksaKataSandi, periksaSandiBaru } from "@/lib/auth";
+import { emailSah, hashKataSandi, periksaKataSandi, periksaSandiBaru } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { wajibMasuk, wajibSuperadmin } from "@/lib/sesi";
 
@@ -33,7 +33,7 @@ export async function tambahPengguna(data: FormData) {
   const sandi = String(data.get("sandi") ?? "");
   const peran = teks(data, "peran") === "superadmin" ? ("superadmin" as const) : ("admin" as const);
 
-  if (!nama || !email) redirect(kembali("lengkapi"));
+  if (!nama || !emailSah(email)) redirect(kembali("lengkapi"));
   if (periksaSandiBaru(sandi)) redirect(kembali("sandi-pendek"));
 
   const ada = await db.pengguna.findUnique({ where: { email }, select: { id: true } });
@@ -109,18 +109,19 @@ export async function gantiSandi(data: FormData) {
   const ulangi = String(data.get("ulangi") ?? "");
 
   const galat = periksaSandiBaru(baru);
-  if (galat) redirect("/admin/sandi?galat=sandi-pendek");
-  if (baru !== ulangi) redirect("/admin/sandi?galat=tidak-cocok");
+  if (galat) redirect("/admin/akun?galat=sandi-pendek");
+  if (baru !== ulangi) redirect("/admin/akun?galat=tidak-cocok");
 
   const akun = await db.pengguna.findUnique({
     where: { id: saya.id },
     select: { sandiHash: true },
   });
-  if (!akun || !periksaKataSandi(lama, akun.sandiHash)) redirect("/admin/sandi?galat=sandi-lama");
+  if (!akun || !periksaKataSandi(lama, akun.sandiHash)) redirect("/admin/akun?galat=sandi-lama");
 
   await db.pengguna.update({ where: { id: saya.id }, data: { sandiHash: hashKataSandi(baru) } });
 
-  redirect("/admin/sandi?tersimpan=1");
+  revalidatePath("/admin/akun");
+  redirect("/admin/akun?tersimpan=sandi-sendiri");
 }
 
 /** AUTH-3 — superadmin menyetel ulang sandi akun lain (lupa sandi). */

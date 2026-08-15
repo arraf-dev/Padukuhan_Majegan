@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { KopHalaman, isian, kartu, kartuPutus, label, tombol } from "@/components/primitif";
+import { IsianBerkas } from "@/components/isian-berkas";
 import { Kerangka } from "@/app/admin/kerangka";
 import { hapusPerangkat, simpanNaskah, simpanPerangkat } from "@/app/admin/profil/aksi";
 import { daftarPerangkat, naskahProfil } from "@/lib/profil";
@@ -15,13 +17,8 @@ const kabar: Record<string, string> = {
   hapus: "Perangkat dihapus dari struktur organisasi.",
   "galat-naskah": "Judul dan isi naskah tidak boleh kosong.",
   "galat-perangkat": "Nama dan jabatan wajib diisi.",
+  "galat-berkas": "Foto harus berformat JPG, PNG, atau WEBP dengan ukuran maksimal 4 MB.",
 };
-
-const isian =
-  "w-full rounded-[9px] border border-garis bg-krem px-3.5 py-2.5 text-[13.5px] text-tinta placeholder:text-samar focus:border-daun focus:outline-none";
-const label = "mb-1.5 block text-[11px] font-bold tracking-[.08em] text-samar";
-const tombol =
-  "inline-flex min-h-11 items-center gap-2 rounded-[9px] bg-hutan px-4.5 py-2.5 text-[13.5px] font-bold text-krem hover:bg-daun";
 
 /** Naskah yang wajib ada; ditampilkan meski barisnya belum pernah dibuat. */
 const NASKAH_BAKU = [
@@ -50,20 +47,30 @@ export default async function KelolaProfil({
 
   return (
     <Kerangka peran={peran} nama={nama}>
-      <div className="mb-5">
-        <h1 className="font-serif text-xl font-semibold text-hutan md:text-2xl">Profil & Struktur</h1>
-        <p className="mt-1 text-[12.5px] text-samar">
-          Naskah profil dan daftar perangkat dusun · tampil di halaman{" "}
-          <Link href="/profil" className="font-semibold text-daun underline">
-            /profil
-          </Link>
-        </p>
-      </div>
+      <KopHalaman
+        judul="Profil & Struktur"
+        keterangan={
+          <>
+            Naskah profil dan daftar perangkat dusun · tampil di halaman{" "}
+            <Link
+              href="/profil"
+              className="font-semibold text-daun underline-offset-2 transition-colors duration-200 ease-out hover:text-hutan hover:underline"
+            >
+              /profil
+            </Link>
+          </>
+        }
+      />
+
+      <nav aria-label="Bagian profil" className="mb-5 flex gap-2 overflow-x-auto pb-1 lg:mb-7">
+        <a href="#naskah" className="min-h-11 rounded-full border border-garis bg-kertas px-4 py-2.5 text-[13px] font-bold text-hutan hover:border-daun hover:bg-emas-lembut">Profil Padukuhan</a>
+        <a href="#struktur" className="min-h-11 rounded-full border border-garis bg-kertas px-4 py-2.5 text-[13px] font-bold text-hutan hover:border-daun hover:bg-emas-lembut">Struktur Perangkat</a>
+      </nav>
 
       {pesan && (
         <p
           role="status"
-          className={`mb-4 rounded-[10px] px-4 py-3 text-[13px] font-semibold ${
+          className={`mb-4 rounded-xl px-4 py-3 text-[13px] font-semibold ${
             galat
               ? "border border-bata/35 bg-bata/10 text-bata"
               : "border border-emas-garis bg-emas-muda text-emas-teks"
@@ -74,14 +81,16 @@ export default async function KelolaProfil({
       )}
 
       {/* ---------- Naskah ---------- */}
-      <section className="mb-9">
-        <h2 className="mb-3 font-serif text-[17px] font-semibold text-hutan">Naskah</h2>
-        <div className="flex flex-col gap-4">
+      <section id="naskah" className="mb-9 scroll-mt-20 lg:mb-12">
+        <h2 className="mb-3 font-serif text-base font-semibold text-hutan lg:mb-4 lg:text-[19px]">Naskah</h2>
+        {/* Dua naskah berdampingan mulai xl — keduanya blok teks pendek,
+            bertumpuk di layar lebar hanya memaksa gulir tanpa alasan. */}
+        <div className="flex flex-col gap-4 xl:grid xl:grid-cols-2 xl:items-start xl:gap-5">
           {barisNaskah.map((n) => (
             <form
               key={n.slug}
               action={simpanNaskah}
-              className="rounded-xl border border-garis bg-kertas px-4 py-4 md:px-5"
+              className={`${kartu()} px-4 py-4 md:px-5 lg:px-6 lg:py-5`}
             >
               <input type="hidden" name="slug" value={n.slug} />
 
@@ -117,7 +126,7 @@ export default async function KelolaProfil({
                   Tandai <strong>Draft</strong> — warga melihat label DRAFT
                 </label>
                 <span className="flex-1" />
-                <button type="submit" className={tombol}>
+                <button type="submit" className={`${tombol("primer")} min-h-11`}>
                   Simpan Naskah
                 </button>
               </div>
@@ -127,18 +136,29 @@ export default async function KelolaProfil({
       </section>
 
       {/* ---------- Struktur organisasi ---------- */}
-      <section>
-        <h2 className="mb-1 font-serif text-[17px] font-semibold text-hutan">Struktur Organisasi</h2>
-        <p className="mb-3 text-[12.5px] text-samar">
+      <section id="struktur" className="scroll-mt-20">
+        <h2 className="mb-1 font-serif text-base font-semibold text-hutan lg:text-[19px]">Struktur Organisasi</h2>
+        <p className="mb-3 text-[12.5px] text-samar lg:mb-4 lg:text-[13.5px]">
           {perangkat.length} orang · urutan terkecil tampil sebagai Dukuh di kartu paling atas
         </p>
 
-        <div className="flex flex-col gap-2.5">
+        {/* Tanpa cabang ini, struktur kosong hanya menyisakan borang tambah tanpa keterangan. */}
+        {perangkat.length === 0 && (
+          <p className={kartuPutus}>
+            Belum ada perangkat terdaftar. Isi borang di bawah untuk menambah orang pertama.
+          </p>
+        )}
+
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3 lg:gap-4">
           {perangkat.map((p, i) => {
             const mintaHapus = konfirmasi === p.id;
 
             return (
-              <div key={p.id} className="rounded-xl border border-garis bg-kertas px-4 py-3.5 md:px-5">
+              <div key={p.id} className={`${kartu()} px-4 py-4 md:px-5 lg:px-5 lg:py-5`}>
+                <div className="mb-3 flex items-center gap-3">
+                  <div className="foto size-10 rounded-full border border-emas" />
+                  <div className="min-w-0"><div className="truncate text-[13.5px] font-bold text-tinta">{p.nama}</div><div className="truncate text-[11.5px] text-emas-tua">{p.jabatan}</div></div>
+                </div>
                 <form action={simpanPerangkat} className="flex flex-wrap items-end gap-3">
                   <input type="hidden" name="id" value={p.id} />
 
@@ -160,26 +180,22 @@ export default async function KelolaProfil({
                       aria-label={`Urutan ${p.nama}`}
                     />
                   </div>
-                  <div className="min-w-48 flex-1">
-                    <label className={label}>TAUTAN FOTO · opsional</label>
-                    <input
-                      name="fotoUrl"
-                      defaultValue={p.fotoUrl ?? ""}
-                      placeholder="https://…"
-                      className={isian}
-                    />
+                  <div className="min-w-56 flex-1">
+                    <span className={label}>FOTO · opsional</span>
+                    <input type="hidden" name="fotoUrl" value={p.fotoUrl ?? ""} />
+                    <IsianBerkas name="fotoBerkas" awal={p.fotoUrl ?? undefined} />
                   </div>
 
                   <div className="flex flex-none items-center gap-2">
                     <button
                       type="submit"
-                      className="min-h-11 rounded-lg border-[1.5px] border-daun px-3.5 py-2.5 text-xs font-bold text-hutan hover:bg-[#EFE9D6]"
+                      className={`${tombol("sekunder", "kecil")} min-h-11 border-daun`}
                     >
                       Simpan
                     </button>
                     <Link
                       href={mintaHapus ? "/admin/profil" : `/admin/profil?konfirmasi=${p.id}`}
-                      className="rounded-lg px-3 py-2.5 text-xs font-semibold text-redup hover:text-bata"
+                      className="rounded-[10px] px-3 py-2.5 text-xs font-semibold text-redup transition-colors duration-200 ease-out hover:text-bata"
                     >
                       {mintaHapus ? "Batal" : "Hapus"}
                     </Link>
@@ -195,7 +211,7 @@ export default async function KelolaProfil({
                 {mintaHapus && (
                   <form
                     action={hapusPerangkat}
-                    className="mt-3 flex flex-wrap items-center gap-3 rounded-[10px] border border-bata/35 bg-bata/10 px-4 py-3"
+                    className="mt-3 flex flex-wrap items-center gap-3 rounded-xl border border-bata/35 bg-bata/10 px-4 py-3"
                   >
                     <input type="hidden" name="id" value={p.id} />
                     <span className="flex-1 text-[12.5px] leading-relaxed text-bata">
@@ -203,7 +219,7 @@ export default async function KelolaProfil({
                     </span>
                     <button
                       type="submit"
-                      className="min-h-10 flex-none rounded-lg bg-bata px-4 py-2 text-xs font-bold text-krem hover:opacity-90"
+                      className="min-h-10 flex-none rounded-[10px] bg-bata px-4 py-2 text-xs font-bold text-krem transition-opacity duration-200 ease-out hover:opacity-90"
                     >
                       Ya, hapus
                     </button>
@@ -217,7 +233,7 @@ export default async function KelolaProfil({
         {/* Form kosong untuk menambah — selalu di bawah daftar. */}
         <form
           action={simpanPerangkat}
-          className="mt-4 flex flex-wrap items-end gap-3 rounded-xl border-[1.5px] border-dashed border-garis-tebal bg-panel px-4 py-4 md:px-5"
+          className="mt-4 flex flex-wrap items-end gap-3 rounded-xl border border-dashed border-garis-tebal bg-panel px-4 py-4 md:px-5 lg:mt-5 lg:gap-4 lg:rounded-2xl lg:px-6 lg:py-5"
         >
           <div className="min-w-40 flex-1">
             <label className={label} htmlFor="nama-baru">
@@ -243,7 +259,11 @@ export default async function KelolaProfil({
               className={isian}
             />
           </div>
-          <button type="submit" className={tombol}>
+          <div className="min-w-56 flex-1">
+            <span className={label}>FOTO · opsional</span>
+            <IsianBerkas name="fotoBerkas" />
+          </div>
+          <button type="submit" className={`${tombol("primer")} min-h-11`}>
             <span className="text-base leading-none">+</span> Tambah
           </button>
         </form>

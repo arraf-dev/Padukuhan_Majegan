@@ -3,6 +3,7 @@ import Link from "next/link";
 import { kategoriBerita, pengumuman } from "@/content/majegan";
 import { Atap } from "@/components/ikon";
 import { KartuAlbum } from "@/components/potongan";
+import { kartu, kartuPutus, tombol } from "@/components/primitif";
 import { beritaTerbit } from "@/lib/berita";
 import { tanggalPendekTahun } from "@/lib/tanggal";
 
@@ -32,15 +33,13 @@ export default async function Berita({
   const tautan = (k?: string) => (k ? `/berita?kategori=${encodeURIComponent(k)}` : "/berita");
 
   return (
-    <div className="px-4 pt-6 pb-10 md:px-12 md:pt-9 md:pb-11">
+    <div className="wadah px-4 pt-6 pb-10 md:px-12 md:pt-10 md:pb-12 lg:px-16 lg:pt-12 lg:pb-16">
       <div className="flex flex-wrap items-baseline gap-4">
-        <h1 className="font-serif text-2xl font-semibold text-hutan md:text-[32px]">
-          Kabar Majegan
-        </h1>
-        <p className="text-sm text-redup">Berita &amp; pengumuman resmi padukuhan</p>
+        <h1 className="judul-halaman">Kabar Majegan</h1>
+        <p className="text-sm text-redup lg:text-[15px]">Berita &amp; pengumuman resmi padukuhan</p>
       </div>
 
-      <div className="my-4.5 flex flex-wrap gap-2 md:mt-4.5 md:mb-6.5">
+      <div className="my-4.5 flex flex-wrap gap-2 md:mt-5 md:mb-6 lg:mt-7 lg:mb-8">
         {[undefined, ...kategoriBerita].map((k) => {
           const ini = k === terpilih;
           return (
@@ -50,10 +49,10 @@ export default async function Berita({
               aria-current={ini ? "true" : undefined}
               // min-h-11 hanya di mobile: target sentuh 44px untuk jempol,
               // desktop tetap ramping karena diklik pakai tetikus.
-              className={`inline-flex min-h-11 items-center rounded-full px-4 py-2 text-[13px] md:min-h-0 ${
+              className={`inline-flex min-h-11 items-center rounded-full px-4 py-2 text-[13px] transition-colors duration-200 ease-out md:min-h-0 ${
                 ini
                   ? "bg-hutan font-bold text-krem"
-                  : "border border-garis-tebal font-semibold text-teks hover:border-daun hover:text-hutan"
+                  : "border border-garis-tebal font-semibold text-teks hover:border-daun hover:bg-emas-lembut hover:text-hutan"
               }`}
             >
               {k ?? "Semua"}
@@ -62,36 +61,34 @@ export default async function Berita({
         })}
       </div>
 
-      <div className="grid items-start gap-6.5 md:grid-cols-[1fr_320px]">
+      <div className="grid items-start gap-6 md:grid-cols-[1fr_320px] lg:grid-cols-[1fr_340px] lg:gap-10 xl:grid-cols-[1fr_380px]">
         <div className="min-w-0">
           {tampil.length === 0 ? (
-            <p className="rounded-xl border border-dashed border-garis-tebal bg-panel px-5 py-8 text-center text-sm text-redup">
-              Belum ada berita pada kategori ini.
-            </p>
+            <p className={kartuPutus}>Belum ada berita pada kategori ini.</p>
           ) : (
-            <div className="grid gap-4.5 md:grid-cols-2">
+            // 3 kolom baru di xl: pada 1280px ke atas, 2 kolom menyisakan
+            // kartu selebar ~430px — terlalu gemuk untuk kartu album.
+            <div className="grid gap-4.5 md:grid-cols-2 lg:gap-6 xl:grid-cols-3">
               {tampil.map((b) => (
                 <KartuAlbum key={b.slug} b={b} />
               ))}
             </div>
           )}
 
-          <div className="mt-5 flex flex-wrap items-center gap-4 rounded-xl bg-hutan px-5.5 py-4 text-krem">
+          <div className="mt-5 flex flex-wrap items-center gap-4 rounded-xl bg-hutan px-6 py-4 text-krem lg:mt-7 lg:rounded-2xl lg:px-8 lg:py-5">
             <span className="font-serif text-[15px] font-semibold">Butuh layanan?</span>
+            {/* Di atas latar hutan, ragam `sekunder` tidak terbaca — outline terang dipakai. */}
             <Link
               href="/layanan"
-              className="rounded-lg border border-krem/40 px-4 py-2 text-[13px] font-semibold hover:border-emas hover:text-emas"
+              className="inline-flex items-center rounded-[10px] border border-krem/40 px-4 py-2 text-[13px] font-semibold transition-colors duration-200 ease-out hover:border-emas hover:text-emas"
             >
               Layanan Surat
             </Link>
-            <Link
-              href="/pengaduan"
-              className="rounded-lg bg-emas px-4 py-2.5 text-[13px] font-bold text-hutan hover:shadow-[0_4px_12px_rgba(138,109,43,.4)]"
-            >
+            <Link href="/pengaduan" className={tombol("primer", "kecil")}>
               Kirim Pengaduan
             </Link>
             <span className="flex-1" />
-            <span className="text-xs text-krem/60 max-md:hidden">
+            <span className="text-xs text-krem/70 max-md:hidden">
               dikelola perangkat dusun &amp; karang taruna
             </span>
           </div>
@@ -108,10 +105,10 @@ export default async function Berita({
                     key={n}
                     href={href}
                     aria-current={ini ? "page" : undefined}
-                    className={`flex size-11 items-center justify-center rounded-[9px] text-[13px] md:size-9 ${
+                    className={`flex size-11 items-center justify-center rounded-[10px] text-[13px] transition-colors duration-200 ease-out md:size-9 ${
                       ini
                         ? "bg-hutan font-bold text-krem"
-                        : "border border-garis-tebal text-teks hover:border-daun hover:text-hutan"
+                        : "border border-garis-tebal text-teks hover:border-daun hover:bg-emas-lembut hover:text-hutan"
                     }`}
                   >
                     {n}
@@ -122,13 +119,16 @@ export default async function Berita({
           )}
         </div>
 
+        {/* Sticky di desktop: daftar berita jauh lebih panjang dari pengumuman,
+            tanpa ini rail ikut tergulir habis dan menyisakan kolom kosong.
+            top-24 = di bawah bilah nav yang kini menempel. */}
         <aside
           data-reveal
-          className="rounded-2xl border border-garis bg-kertas px-6 py-5.5 max-md:mt-6"
+          className={`${kartu()} px-6 py-6 max-md:mt-6 md:sticky md:top-24 lg:px-7 lg:py-7`}
         >
           <div className="mb-1.5 flex items-center gap-2.5">
             <Atap ukuran={22} className="flex-none" />
-            <h2 className="font-serif text-lg font-semibold text-hutan">Pengumuman</h2>
+            <h2 className="font-serif text-lg font-semibold text-hutan lg:text-xl">Pengumuman</h2>
           </div>
           <ul className="flex flex-col">
             {pengumuman.map((p, i) => (

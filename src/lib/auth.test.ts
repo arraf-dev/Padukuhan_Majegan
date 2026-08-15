@@ -3,6 +3,7 @@ import test from "node:test";
 import {
   bacaToken,
   buatToken,
+  emailSah,
   hashKataSandi,
   type IsiSesi,
   periksaKataSandi,
@@ -66,4 +67,11 @@ test("sandi baru wajib minimal 12 karakter", () => {
 
 test("sandi berisi spasi saja ditolak", () => {
   assert.ok(periksaSandiBaru(" ".repeat(20)));
+});
+
+test("format email jelas salah ditolak", () => {
+  assert.ok(emailSah("admin@majegan.id"));
+  for (const salah of ["", "admin", "admin@", "@majegan.id", "admin @majegan.id"]) {
+    assert.ok(!emailSah(salah), salah);
+  }
 });

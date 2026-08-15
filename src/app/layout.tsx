@@ -2,7 +2,10 @@ import type { Metadata, Viewport } from "next";
 import { Lora, Plus_Jakarta_Sans } from "next/font/google";
 import { desa, situsUrl } from "@/content/majegan";
 import { Reveal } from "@/components/gerak";
+import { validasiEnvironmentProduksi } from "@/lib/env";
 import "./globals.css";
+
+validasiEnvironmentProduksi();
 
 const lora = Lora({
   subsets: ["latin"],

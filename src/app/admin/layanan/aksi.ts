@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import { wajibSuperadmin } from "@/lib/sesi";
 import { perBaris, slugkan, uraikanAlur } from "@/lib/teks";
+import { unggahBerkas } from "@/lib/unggah";
 
 const teks = (fd: FormData, nama: string) => String(fd.get(nama) ?? "").trim();
 
@@ -44,6 +45,9 @@ export async function simpanLayanan(data: FormData) {
   const kembaliKe = id ? `/admin/layanan/${id}` : "/admin/layanan/baru";
   if (!nama || !deskripsi || persyaratan.length === 0) redirect(`${kembaliKe}?galat=lengkapi`);
 
+  const unggahan = await unggahBerkas(data, "templatBerkas", "layanan", "dokumen");
+  if (unggahan.galat) redirect(`${kembaliKe}?galat=berkas`);
+
   const isi = {
     namaLayanan: nama,
     deskripsi,
@@ -51,7 +55,7 @@ export async function simpanLayanan(data: FormData) {
     alur,
     estimasiWaktu: teks(data, "estimasiWaktu") || "± 1 hari kerja",
     biaya: teks(data, "biaya") || "GRATIS",
-    fileTemplat: teks(data, "fileTemplat") || null,
+    fileTemplat: unggahan.url ?? (teks(data, "fileTemplat") || null),
     urutan,
   };
 

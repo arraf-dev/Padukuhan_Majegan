@@ -1,6 +1,12 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { JEDA_KIRIM_MS, bolehKirim, buatKodeTiket, periksaPengaduan } from "./pengaduan.ts";
+import {
+  JEDA_KIRIM_MS,
+  bolehKirim,
+  cocokFilterBaca,
+  periksaPengaduan,
+  pilihFilterBaca,
+} from "./pengaduan.ts";
 
 const form = (isi: Record<string, string>) => {
   const fd = new FormData();
@@ -23,10 +29,10 @@ test("isi kosong atau hanya spasi ditolak", () => {
   assert.equal(periksaPengaduan(form({ ...lengkap, isi: "   " })), "isi");
 });
 
-test("identitas wajib kecuali anonim", () => {
+test("nama dan kontak selalu wajib", () => {
   assert.equal(periksaPengaduan(form({ ...lengkap, nama: "" })), "identitas");
   assert.equal(periksaPengaduan(form({ ...lengkap, kontak: "" })), "identitas");
-  assert.equal(periksaPengaduan(form({ ...lengkap, nama: "", kontak: "", anonim: "on" })), null);
+  assert.equal(periksaPengaduan(form({ ...lengkap, nama: "", kontak: "" })), "identitas");
 });
 
 test("satu IP kena jeda, IP lain tidak terpengaruh", () => {
@@ -36,12 +42,16 @@ test("satu IP kena jeda, IP lain tidak terpengaruh", () => {
   assert.equal(bolehKirim("2.2.2.2", t + 1_000), true, "IP lain jangan ikut kena");
   assert.equal(bolehKirim("1.1.1.1", t + JEDA_KIRIM_MS), true, "lewat jeda harus boleh lagi");
 });
+test("filter panel hanya menerima semua, belum, atau sudah dibaca", () => {
+  assert.equal(pilihFilterBaca(), undefined);
+  assert.equal(pilihFilterBaca("asing"), undefined);
+  assert.equal(pilihFilterBaca("belum"), "belum");
+  assert.equal(pilihFilterBaca("sudah"), "sudah");
 
-test("kode tiket memakai tahun-bulan dan tidak berulang", () => {
-  const kode = buatKodeTiket(new Date("2026-07-24T10:00:00+07:00"));
-  assert.match(kode, /^MJG-2607-[A-Z2-9]{4}$/);
-  assert.equal(buatKodeTiket(new Date("2026-01-05T00:00:00+07:00")).slice(0, 8), "MJG-2601");
-
-  const kumpulan = new Set(Array.from({ length: 200 }, () => buatKodeTiket()));
-  assert.ok(kumpulan.size > 190, `terlalu banyak tabrakan: ${kumpulan.size}/200`);
+  assert.equal(cocokFilterBaca(null, "belum"), true);
+  assert.equal(cocokFilterBaca(new Date(), "belum"), false);
+  assert.equal(cocokFilterBaca(null, "sudah"), false);
+  assert.equal(cocokFilterBaca(new Date(), "sudah"), true);
+  assert.equal(cocokFilterBaca(null), true);
 });
+// Filter diuji terpisah dari Prisma agar test tidak membutuhkan database.

@@ -6,6 +6,7 @@ import { kategoriBerita } from "@/content/majegan";
 import { db } from "@/lib/db";
 import { ringkasDari, slugkan } from "@/lib/teks";
 import { wajibMasuk } from "@/lib/sesi";
+import { unggahBerkas } from "@/lib/unggah";
 
 const teks = (fd: FormData, nama: string) => String(fd.get(nama) ?? "").trim();
 
@@ -49,6 +50,9 @@ export async function simpanBerita(data: FormData) {
   const kembaliKe = id ? `/admin/berita/${id}` : "/admin/berita/baru";
   if (!judul || !konten || !namaKategori) redirect(`${kembaliKe}?galat=lengkapi`);
 
+  const unggahan = await unggahBerkas(data, "gambarSampulBerkas", "berita", "gambar");
+  if (unggahan.galat) redirect(`${kembaliKe}?galat=berkas`);
+
   const kategori = await db.kategoriBerita.upsert({
     where: { slug: slugkan(namaKategori) },
     update: {},
@@ -60,7 +64,7 @@ export async function simpanBerita(data: FormData) {
     konten,
     ringkasan: ringkasDari(konten),
     lokasi: teks(data, "lokasi") || null,
-    gambarSampul: teks(data, "gambarSampul") || null,
+    gambarSampul: unggahan.url ?? (teks(data, "gambarSampul") || null),
     status,
     kategoriId: kategori.id,
   };

@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { Ikon } from "@/components/ikon";
+import { KopHalaman, tombol } from "@/components/primitif";
 import { Kerangka } from "@/app/admin/kerangka";
 import { BorangLayanan } from "@/app/admin/layanan/borang";
 import { wajibSuperadmin } from "@/lib/sesi";
@@ -15,7 +18,14 @@ export default async function LayananBaru({
 
   return (
     <Kerangka peran={peran} nama={nama}>
-      <h1 className="mb-5 font-serif text-xl font-semibold text-hutan md:text-2xl">Layanan Baru</h1>
+      <Link href="/admin/layanan" className={`${tombol("teks")} mb-3 text-[13px]`}>
+        <Ikon nama="kembali" ukuran={15} />
+        Kembali ke daftar layanan
+      </Link>
+      <KopHalaman
+        judul="Layanan Baru"
+        keterangan="Isi lengkap agar warga tahu syarat & alurnya sebelum datang."
+      />
       <BorangLayanan galat={galat} />
     </Kerangka>
   );

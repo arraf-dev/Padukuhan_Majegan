@@ -12,13 +12,17 @@ export const TAHUN_DATA = 2026;
 
 export type Ringkasan = { angka: number; label: string };
 export type KelompokUsia = { rentang: string; persen: number };
+export type RincianStatistik = { label: string; angka: number };
 
 export async function statistikPenduduk(tahun = TAHUN_DATA): Promise<{
   ringkasan: Ringkasan[];
   usia: KelompokUsia[];
+  jenisKelamin: RincianStatistik[];
+  pekerjaan: RincianStatistik[];
+  pendidikan: RincianStatistik[];
 }> {
   const baris = await db.statistikPenduduk.findMany({
-    where: { tahun, kategori: { in: ["ringkasan", "usia"] } },
+    where: { tahun, kategori: { in: ["ringkasan", "usia", "jenis_kelamin", "pekerjaan", "pendidikan"] } },
     orderBy: { urutan: "asc" },
     select: { kategori: true, label: true, nilai: true },
   });
@@ -30,6 +34,9 @@ export async function statistikPenduduk(tahun = TAHUN_DATA): Promise<{
     // `nilai` untuk kategori usia adalah persentase 0–100, bukan jumlah jiwa —
     // dipakai langsung sebagai tinggi batang grafik.
     usia: baris.filter((b) => b.kategori === "usia").map((b) => ({ rentang: b.label, persen: b.nilai })),
+    jenisKelamin: baris.filter((b) => b.kategori === "jenis_kelamin").map((b) => ({ label: b.label, angka: b.nilai })),
+    pekerjaan: baris.filter((b) => b.kategori === "pekerjaan").map((b) => ({ label: b.label, angka: b.nilai })),
+    pendidikan: baris.filter((b) => b.kategori === "pendidikan").map((b) => ({ label: b.label, angka: b.nilai })),
   };
 }
 

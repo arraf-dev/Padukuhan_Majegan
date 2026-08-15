@@ -13,7 +13,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const rute = [
     ...navigasi.map((n) => n.href),
-    "/pengaduan/lacak",
     ...layanan.map((l) => `/layanan/${l.slug}`),
     ...berita.map((b) => `/berita/${b.slug}`),
   ];

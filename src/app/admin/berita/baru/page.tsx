@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Komposer } from "@/components/komposer";
 import { wajibMasuk } from "@/lib/sesi";
-import { BilahKomposer } from "@/app/admin/kerangka";
+import { KerangkaKomposer } from "@/app/admin/kerangka";
 import { simpanBerita } from "@/app/admin/berita/aksi";
 
 export const metadata: Metadata = { title: "Buat Postingan Berita" };
@@ -15,14 +15,13 @@ export default async function BeritaBaru({
   const { galat } = await searchParams;
 
   return (
-    <>
-      <BilahKomposer
+    <KerangkaKomposer
         judul="Buat Postingan Berita"
         kembali="/admin/berita"
         nama={nama}
         peran={peran}
-      />
+      >
       <Komposer aksi={simpanBerita} galat={galat} />
-    </>
+    </KerangkaKomposer>
   );
 }

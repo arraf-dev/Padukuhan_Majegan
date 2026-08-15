@@ -29,7 +29,10 @@ export async function simpanStatistik(data: FormData) {
   await wajibSuperadmin();
 
   const tahun = angka(data, "tahun", TAHUN_DATA);
-  const kategori = teks(data, "kategori") === "usia" ? ("usia" as const) : ("ringkasan" as const);
+  const kandidat = teks(data, "kategori");
+  const kategori = ["ringkasan", "usia", "jenis_kelamin", "pekerjaan", "pendidikan"].includes(kandidat)
+    ? (kandidat as "ringkasan" | "usia" | "jenis_kelamin" | "pekerjaan" | "pendidikan")
+    : "ringkasan";
   const label = teks(data, "label");
   const nilai = angka(data, "nilai");
   const urutan = angka(data, "urutan");

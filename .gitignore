@@ -7,3 +7,11 @@ next-env.d.ts
 !.env.example
 .vercel
 .DS_Store
+TESTCASE.md
+.codex/
+.mcp.json
+.playwright-cli/
+.playwright-mcp/
+output/playwright/
+testsprite_tests/tmp/
+testsprite_tests/tmp/config.json

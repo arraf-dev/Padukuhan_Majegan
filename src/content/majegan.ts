@@ -7,6 +7,8 @@
  * di bawah sudah mengikuti kolom yang direncanakan supaya migrasinya lurus.
  */
 
+import { urlSitusProduksi } from "../lib/env.ts";
+
 export const desa = {
   nama: "Padukuhan Majegan",
   kalurahan: "Kalurahan Pandowoharjo",
@@ -18,15 +20,17 @@ export const desa = {
   // ponytail: nomor masih placeholder — ganti ke nomor asli, wa.me butuh format 62xxx.
   whatsappUrl: "https://wa.me/6281227000000",
   email: "majegan@pandowoharjo.desa.id",
+  websiteKalurahan: "https://pandowoharjosid.slemankab.go.id/home/",
+  // Situs resmi Kalurahan mencantumkan akun Instagram @pandowoharjo.
+  instagramUrl: "https://www.instagram.com/pandowoharjo/",
+  // Isi setelah akun resmi TikTok dikonfirmasi; footer menampilkan ikon nonaktif
+  // agar warga tidak diarahkan ke akun yang hanya ditebak dari nama.
+  tiktokUrl: "",
   koordinat: [-7.69139, 110.37167] as const,
 };
 
-/**
- * Alamat kanonik situs — dipakai metadataBase, sitemap, dan robots.
- * ponytail: domain `.desa.id` belum aktif; saat deploy ke Vercel cukup set
- * NEXT_PUBLIC_URL di environment, tanpa mengubah kode.
- */
-export const situsUrl = process.env.NEXT_PUBLIC_URL ?? `https://${desa.domain}`;
+/** Alamat kanonik situs — dipakai metadataBase, sitemap, dan robots. */
+export const situsUrl = urlSitusProduksi(process.env, `https://${desa.domain}`)!;
 
 export const statistik = [
   { angka: 1284, label: "jiwa penduduk" },
@@ -61,7 +65,7 @@ export const navigasi = [
 
 export const aksesCepat = [
   { href: "/layanan", label: "Layanan Surat", ringkas: "persyaratan & alur", ikon: "surat" },
-  { href: "/pengaduan", label: "Kirim Pengaduan", ringkas: "form + lampiran", ikon: "obrolan" },
+  { href: "/pengaduan", label: "Kirim Pengaduan", ringkas: "form + tautan lampiran", ikon: "obrolan" },
   { href: "/berita", label: "Berita Warga", ringkas: "kabar terbaru dusun", ikon: "berita" },
   { href: "/profil", label: "Profil Padukuhan", ringkas: "sejarah & struktur", ikon: "warga" },
 ] as const;
@@ -347,10 +351,7 @@ export type Layanan = {
   deskripsi: string;
   syarat: string[];
   alur: { judul: string; detail: string }[];
-  // ponytail: ukuran berkas dibuang — tabel `layanan` hanya menyimpan nama
-  // templatnya. Angka ukuran yang tak pernah bisa diperbarui admin lebih
-  // menyesatkan daripada tidak ditampilkan.
-  berkas?: { nama: string };
+  berkas?: { nama: string; url?: string };
 };
 
 const alurStandar = [
@@ -513,7 +514,7 @@ export const peranPengguna = [
     sorot: false,
     hak: [
       { teks: "Melihat semua halaman publik", bisa: true },
-      { teks: "Mengirim pengaduan (boleh anonim)", bisa: true },
+      { teks: "Mengirim pengaduan dengan identitas", bisa: true },
       { teks: "Tidak bisa masuk panel admin", bisa: false },
     ],
   },
@@ -561,92 +562,6 @@ export const ringkasanAdmin: Record<Peran, { label: string; angka: number; catat
   ],
 };
 
-export type StatusPengaduan = "TERKIRIM" | "DIPROSES" | "SELESAI";
-
-export type Pengaduan = {
-  kode: string;
-  isi: string;
-  status: StatusPengaduan;
-  tanggal: string;
-  tanggapan?: string;
-};
-
-export const pengaduanTerbaru: Pengaduan[] = [
-  {
-    kode: "MJG-2607-4X9K",
-    isi: "Lampu jalan RT 03 mati sejak tiga hari lalu…",
-    status: "TERKIRIM",
-    tanggal: "2026-07-22",
-  },
-  {
-    kode: "MJG-2607-7B2M",
-    isi: "Sampah menumpuk di tepi kali dekat jembatan…",
-    status: "DIPROSES",
-    tanggal: "2026-07-19",
-    tanggapan: "Sudah dikoordinasikan dengan Karang Taruna, pengangkutan dijadwalkan akhir pekan ini.",
-  },
-  {
-    kode: "MJG-2606-9C1D",
-    isi: "Usulan perbaikan saluran irigasi sawah blok timur…",
-    status: "SELESAI",
-    tanggal: "2026-06-28",
-    tanggapan: "Perbaikan selesai dikerjakan bersama kelompok tani pada 8 Juli 2026. Terima kasih atas usulannya.",
-  },
-  {
-    kode: "MJG-2607-2H8L",
-    isi: "Jalan setapak menuju makam licin dan berlumut, sudah ada warga yang terpeleset saat hujan.",
-    status: "DIPROSES",
-    tanggal: "2026-07-23",
-    tanggapan: "Sudah ditinjau bersama Ketua RT 04. Pembersihan lumut dijadwalkan pekan depan.",
-  },
-  {
-    kode: "MJG-2607-5N3P",
-    isi: "Mohon penambahan tempat sampah di sekitar balai dusun, terutama saat ada kegiatan.",
-    status: "TERKIRIM",
-    tanggal: "2026-07-21",
-  },
-  {
-    kode: "MJG-2607-8R4T",
-    isi: "Air PAM sering mati pada jam sibuk pagi di wilayah RT 06 dan RT 07.",
-    status: "DIPROSES",
-    tanggal: "2026-07-20",
-  },
-  {
-    kode: "MJG-2607-1K6V",
-    isi: "Usul agar jadwal posyandu diumumkan lebih awal supaya ibu bekerja bisa mengatur cuti.",
-    status: "SELESAI",
-    tanggal: "2026-07-14",
-    tanggapan: "Diterima. Mulai Agustus jadwal posyandu diumumkan dua pekan sebelumnya lewat grup RT dan website.",
-  },
-  {
-    kode: "MJG-2607-3W7Y",
-    isi: "Pohon di tepi jalan RT 02 miring dan rantingnya menjulur ke kabel listrik.",
-    status: "SELESAI",
-    tanggal: "2026-07-09",
-    tanggapan: "Pemangkasan sudah dilakukan bersama petugas dari kalurahan pada 12 Juli 2026.",
-  },
-  {
-    kode: "MJG-2606-6Q2Z",
-    isi: "Suara musik dari hajatan sampai lewat tengah malam, mengganggu warga yang bekerja pagi.",
-    status: "SELESAI",
-    tanggal: "2026-06-30",
-    tanggapan: "Sudah disampaikan ke penyelenggara. Kesepakatan warga: pengeras suara dimatikan maksimal pukul 23.00.",
-  },
-  {
-    kode: "MJG-2606-9D5F",
-    isi: "Papan nama gang di RT 08 sudah pudar dan sulit dibaca oleh tamu.",
-    status: "TERKIRIM",
-    tanggal: "2026-06-25",
-  },
-];
-
-export const aksiCepatAdmin = [
-  "Perbarui profil padukuhan",
-  "Kelola daftar layanan",
-  "Kelola akun admin",
-  "Perbarui statistik penduduk",
-];
-
 /**
  * Menu panel admin.
  * `superadmin: true` = terkunci untuk peran Admin (matriks peran).
@@ -655,11 +570,8 @@ export const menuAdmin = [
   { href: "/admin", label: "Dashboard", ikon: "kisi" as const },
   { href: "/admin/berita", label: "Berita", ikon: "berita" as const },
   { href: "/admin/pengaduan", label: "Pengaduan", ikon: "obrolan" as const },
-  // Terbuka untuk kedua peran: AUTH-4 berlaku juga bagi Admin, dan tanpa entri
-  // ini peran Admin tidak punya jalan ke sana — /admin/akun terkunci baginya.
-  { href: "/admin/sandi", label: "Ganti Sandi", ikon: "gembok" as const },
+  { href: "/admin/akun", label: "Akun & Pengguna", ikon: "warga" as const },
   { href: "/admin/profil", label: "Profil & Struktur", ikon: "warga" as const, superadmin: true },
   { href: "/admin/layanan", label: "Layanan", ikon: "surat" as const, superadmin: true },
   { href: "/admin/statistik", label: "Statistik", ikon: "batang" as const, superadmin: true },
-  { href: "/admin/akun", label: "Akun & Pengguna", ikon: "warga" as const, superadmin: true },
 ];

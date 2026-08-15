@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { desa } from "@/content/majegan";
 import { CentangKotak, Ikon } from "@/components/ikon";
+import { kartu, kartuPutus, tombol } from "@/components/primitif";
 import { semuaLayanan } from "@/lib/layanan";
 
 // Daftar layanan disunting dari panel admin; `generateStaticParams` dilepas
@@ -48,11 +49,18 @@ export default async function Layanan({ params, searchParams }: Params) {
     : layanan;
 
   return (
-    <div className="grid items-start gap-8 px-4 py-8 md:grid-cols-[300px_1fr] md:px-12 md:pt-8.5 md:pb-11.5">
-      {/* ---------- Daftar layanan ---------- */}
-      <div className="min-w-0">
+    <div className="wadah grid items-start gap-8 px-4 py-8 md:grid-cols-[300px_1fr] md:px-12 md:pt-10 md:pb-12 lg:grid-cols-[320px_1fr] lg:gap-10 lg:px-16 lg:pt-12 lg:pb-16">
+      {/**
+       * Rail daftar menempel di desktop — detail layanan jauh lebih panjang,
+       * tanpa sticky pengguna harus gulir balik ke atas untuk ganti layanan.
+       *
+       * max-h + overflow menjaga kasus layar pendek: 8 layanan ± 700px, di
+       * laptop setinggi 768px rail yang dipatok akan memotong item terbawah
+       * tanpa cara menjangkaunya. Overflow hanya aktif kalau memang tidak muat.
+       */}
+      <div className="min-w-0 md:sticky md:top-24 md:max-h-[calc(100vh-7rem)] md:overflow-y-auto md:pr-1">
         {/* form GET biasa: hasil pencarian ikut ke URL, bisa dibagikan & di-back */}
-        <form className="mb-3 flex items-center gap-2.5 rounded-[10px] border border-garis bg-kertas px-3.5 py-1 focus-within:border-daun">
+        <form className="mb-3 flex items-center gap-2.5 rounded-[10px] border border-garis bg-kertas px-3.5 py-1 transition-colors duration-200 ease-out focus-within:border-daun">
           <Ikon nama="cari" ukuran={14} className="flex-none text-samar" />
           <label htmlFor="q" className="sr-only">
             Cari layanan
@@ -70,7 +78,10 @@ export default async function Layanan({ params, searchParams }: Params) {
         {q && (
           <p className="mb-3 text-[12.5px] text-samar">
             {daftar.length} layanan cocok dengan &ldquo;{q}&rdquo; ·{" "}
-            <Link href="/layanan" className="font-semibold text-daun underline">
+            <Link
+              href="/layanan"
+              className="font-semibold text-daun underline transition-colors duration-200 ease-out hover:text-hutan"
+            >
               tampilkan semua
             </Link>
           </p>
@@ -84,11 +95,11 @@ export default async function Layanan({ params, searchParams }: Params) {
                 key={l.slug}
                 href={`/layanan/${l.slug}`}
                 aria-current={ini ? "page" : undefined}
-                className={`rounded-[11px] px-4 py-3.5 ${
+                className={
                   ini
-                    ? "bg-hutan text-krem shadow-[0_4px_12px_rgba(13,56,37,.22)]"
-                    : "border border-garis bg-kertas hover:border-daun"
-                }`}
+                    ? "rounded-xl bg-hutan px-4 py-3.5 text-krem shadow-[0_4px_12px_rgba(13,56,37,.22)]"
+                    : `${kartu(true)} px-4 py-3.5`
+                }
               >
                 <div className={`text-sm ${ini ? "font-bold" : "font-semibold text-tinta"}`}>
                   {l.namaSingkat}
@@ -100,9 +111,24 @@ export default async function Layanan({ params, searchParams }: Params) {
             );
           })}
         </nav>
-        <p className="mt-3.5 rounded-[11px] border border-emas-garis bg-emas-muda px-4 py-3.5 text-[12.5px] leading-relaxed text-emas-teks">
+
+        {/* Tanpa cabang ini, pencarian nihil hanya menampilkan kolom kosong tanpa keterangan. */}
+        {daftar.length === 0 && (
+          <p className={kartuPutus}>
+            Tidak ada layanan yang cocok dengan &ldquo;{q}&rdquo;.
+            <br />
+            <Link href="/layanan" className={`${tombol("teks")} mt-2 text-[13px]`}>
+              Tampilkan semua layanan
+            </Link>
+          </p>
+        )}
+
+        <p className="mt-3.5 rounded-xl border border-emas-garis bg-emas-muda px-4 py-3.5 text-[12.5px] leading-relaxed text-emas-teks">
           Ragu dengan berkas?{" "}
-          <a href={desa.whatsappUrl} className="font-bold text-emas-tua">
+          <a
+            href={desa.whatsappUrl}
+            className="font-bold text-emas-tua transition-colors duration-200 ease-out hover:text-hutan"
+          >
             Tanya via WhatsApp
           </a>{" "}
           dulu agar tidak bolak-balik.
@@ -115,12 +141,10 @@ export default async function Layanan({ params, searchParams }: Params) {
         data-reveal
         // min-w-0: item grid bawaannya `min-width:auto`, sehingga kolom melebar
         // mengikuti isi terpanjang dan menyeret seluruh halaman meluber di HP.
-        className="min-w-0 rounded-2xl border border-garis bg-kertas px-5 py-6 md:px-8.5 md:py-7.5"
+        className={`${kartu()} min-w-0 px-5 py-6 md:px-8 md:py-7 lg:px-10 lg:py-9`}
       >
         <div className="flex flex-wrap items-center gap-3">
-          <h1 className="font-serif text-2xl font-semibold text-hutan md:text-[27px]">
-            {aktif.nama}
-          </h1>
+          <h1 className="judul-halaman">{aktif.nama}</h1>
           <span className="rounded-full bg-daun-muda px-3 py-[5px] text-xs font-bold text-daun">
             {aktif.durasi}
           </span>
@@ -128,13 +152,13 @@ export default async function Layanan({ params, searchParams }: Params) {
             {aktif.biaya}
           </span>
         </div>
-        <p className="mt-3 mb-6 max-w-[64ch] text-[14.5px] leading-[1.7] text-teks">
+        <p className="mt-3 mb-6 max-w-[64ch] text-[14.5px] leading-[1.7] text-teks lg:mb-8 lg:text-base lg:leading-[1.8]">
           {aktif.deskripsi}
         </p>
 
-        <div className="grid items-start gap-6 md:grid-cols-2">
+        <div className="grid items-start gap-6 md:grid-cols-2 lg:gap-8">
           <section className="min-w-0">
-            <h2 className="mb-3 font-serif text-[17px] font-semibold text-hutan">Persyaratan</h2>
+            <h2 className="mb-3 font-serif text-[17px] font-semibold text-hutan lg:mb-4 lg:text-[19px]">Persyaratan</h2>
             <ul className="flex flex-col gap-2.5">
               {aktif.syarat.map((s) => (
                 <li
@@ -158,16 +182,25 @@ export default async function Layanan({ params, searchParams }: Params) {
                   </div>
                   <div className="text-[11.5px] text-samar">templat isian, bisa diisi di rumah</div>
                 </div>
-                {/* ponytail: berkas asli menyusul dari perangkat dusun. */}
-                <span className="flex-none rounded-lg border-[1.5px] border-daun px-4 py-2 text-[13px] font-bold text-hutan/50">
-                  Unduh
-                </span>
+                {aktif.berkas.url ? (
+                  <a
+                    href={aktif.berkas.url}
+                    download
+                    className="flex-none rounded-lg border-[1.5px] border-daun px-4 py-2 text-[13px] font-bold text-hutan transition-colors hover:bg-emas-lembut"
+                  >
+                    Unduh
+                  </a>
+                ) : (
+                  <span className="flex-none rounded-lg border-[1.5px] border-daun px-4 py-2 text-[13px] font-bold text-hutan/50">
+                    Belum tersedia
+                  </span>
+                )}
               </div>
             )}
           </section>
 
           <section className="min-w-0">
-            <h2 className="mb-3 font-serif text-[17px] font-semibold text-hutan">Alur Pengurusan</h2>
+            <h2 className="mb-3 font-serif text-[17px] font-semibold text-hutan lg:mb-4 lg:text-[19px]">Alur Pengurusan</h2>
             <ol className="flex flex-col">
               {aktif.alur.map((a, i) => {
                 const akhir = i === aktif.alur.length - 1;
