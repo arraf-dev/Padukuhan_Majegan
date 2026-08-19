@@ -8,6 +8,7 @@ Website informasi dan layanan digital Padukuhan Majegan, Kalurahan Pandowoharjo.
 
 - Profil padukuhan dan struktur perangkat
 - Berita dan pengumuman
+- Galeri kegiatan berbasis album dengan lightbox
 - Informasi persyaratan serta alur layanan administrasi
 - Pengaduan warga dengan identitas wajib dan lampiran privat
 - Statistik penduduk dalam bentuk agregat
@@ -16,6 +17,7 @@ Website informasi dan layanan digital Padukuhan Majegan, Kalurahan Pandowoharjo.
 
 - Autentikasi berbasis peran
 - Pengelolaan berita, profil, layanan, statistik, dan akun
+- Pengelolaan album Galeri dengan multi-upload foto
 - Pengelolaan pengaduan berdasarkan sudah/belum dibaca
 - Dashboard ringkasan data
 
@@ -50,6 +52,7 @@ RAHASIA_SESI=""
 SUPERADMIN_EMAIL=""
 SUPERADMIN_SANDI=""
 BLOB_READ_WRITE_TOKEN=""
+BLOB_PRIVATE_READ_WRITE_TOKEN=""
 DATA_MODE="demo"
 NEXT_PUBLIC_URL="http://localhost:3000"
 ```
@@ -83,11 +86,12 @@ Target deployment proyek ini adalah Vercel, Neon PostgreSQL, dan Vercel Blob. Is
 DATABASE_URL="postgresql://..."
 RAHASIA_SESI="rahasia-acak-minimal-32-byte"
 BLOB_READ_WRITE_TOKEN="token Blob Store Vercel"
+BLOB_PRIVATE_READ_WRITE_TOKEN="token Blob Store privat Vercel"
 NEXT_PUBLIC_URL="https://domain-resmi-anda"
 DATA_MODE="demo"
 ```
 
-`DATABASE_URL` dan `RAHASIA_SESI` wajib tersedia. `NEXT_PUBLIC_URL` dianjurkan untuk domain resmi; ketika belum diisi atau masih menunjuk localhost, deployment Vercel memakai `VERCEL_PROJECT_PRODUCTION_URL` sebagai URL HTTPS kanonik. `BLOB_READ_WRITE_TOKEN` diperlukan untuk fitur unggah, tetapi ketiadaannya tidak lagi menggagalkan seluruh build: formulir tanpa berkas tetap berfungsi dan unggahan menampilkan pesan konfigurasi yang aman.
+`DATABASE_URL` dan `RAHASIA_SESI` wajib tersedia. `NEXT_PUBLIC_URL` dianjurkan untuk domain resmi; ketika belum diisi atau masih menunjuk localhost, deployment Vercel memakai `VERCEL_PROJECT_PRODUCTION_URL` sebagai URL HTTPS kanonik. `BLOB_READ_WRITE_TOKEN` diperlukan untuk aset publik, sedangkan `BLOB_PRIVATE_READ_WRITE_TOKEN` diperlukan untuk lampiran pengaduan privat. Ketiadaan token tidak lagi menggagalkan seluruh build: formulir tanpa berkas tetap berfungsi dan unggahan menampilkan pesan konfigurasi yang aman.
 
 `SUPERADMIN_EMAIL` dan `SUPERADMIN_SANDI` hanya diperlukan ketika menjalankan seed pertama kali. Jangan jalankan ulang `npx prisma db seed` pada database yang sudah diisi admin karena seed memperbarui konten contoh dan mengganti daftar perangkat.
 

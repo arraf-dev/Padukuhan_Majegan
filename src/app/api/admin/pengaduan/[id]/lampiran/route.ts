@@ -13,7 +13,8 @@ export const dynamic = "force-dynamic";
 export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   const sesi = await sesiSaatIni();
   if (!sesi) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  if (!process.env.BLOB_READ_WRITE_TOKEN?.trim()) {
+  const token = process.env.BLOB_PRIVATE_READ_WRITE_TOKEN?.trim();
+  if (!token) {
     return NextResponse.json({ error: "Penyimpanan lampiran belum dikonfigurasi" }, { status: 503 });
   }
 
@@ -28,7 +29,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
   }
 
   try {
-    const hasil = await get(pengaduan.lampiranUrl, { access: "private" });
+    const hasil = await get(pengaduan.lampiranUrl, { access: "private", token });
     if (!hasil || hasil.statusCode !== 200) {
       return new NextResponse("Lampiran tidak ditemukan", { status: 404 });
     }

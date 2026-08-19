@@ -58,6 +58,7 @@ export const navigasi = [
   { href: "/", label: "Beranda" },
   { href: "/profil", label: "Profil" },
   { href: "/berita", label: "Berita" },
+  { href: "/galeri", label: "Galeri" },
   { href: "/layanan", label: "Layanan" },
   { href: "/pengaduan", label: "Pengaduan" },
   { href: "/statistik", label: "Statistik" },
@@ -569,6 +570,7 @@ export const ringkasanAdmin: Record<Peran, { label: string; angka: number; catat
 export const menuAdmin = [
   { href: "/admin", label: "Dashboard", ikon: "kisi" as const },
   { href: "/admin/berita", label: "Berita", ikon: "berita" as const },
+  { href: "/admin/galeri", label: "Galeri", ikon: "foto" as const },
   { href: "/admin/pengaduan", label: "Pengaduan", ikon: "obrolan" as const },
   { href: "/admin/akun", label: "Akun & Pengguna", ikon: "warga" as const },
   { href: "/admin/profil", label: "Profil & Struktur", ikon: "warga" as const, superadmin: true },

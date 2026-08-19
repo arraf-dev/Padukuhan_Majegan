@@ -11,6 +11,7 @@
 import { loadEnvFile } from "node:process";
 import { hashKataSandi } from "../src/lib/auth.ts";
 import { slugkan } from "../src/lib/teks.ts";
+import { albumGaleriDemo } from "../src/content/galeri.ts";
 import {
   berita,
   kategoriBerita,
@@ -78,6 +79,52 @@ async function main() {
       penulisId: dukuh.id,
     };
     await db.berita.upsert({ where: { slug: b.slug }, update: isi, create: { ...isi, slug: b.slug } });
+  }
+
+  /* ---------- Galeri kegiatan ---------- */
+  for (const g of albumGaleriDemo) {
+    const isi = {
+      judul: g.judul,
+      deskripsi: g.deskripsi,
+      kategori: g.kategori,
+      coverUrl: g.coverUrl,
+      tanggalKegiatan: new Date(g.tanggalKegiatan),
+      status: g.status,
+    } as const;
+    const album = await db.albumGaleri.upsert({
+      where: { slug: g.slug },
+      update: isi,
+      create: { ...isi, slug: g.slug },
+      select: { id: true },
+    });
+
+    await db.fotoGaleri.deleteMany({ where: { albumId: album.id, id: { notIn: g.foto.map((f) => f.id) } } });
+    for (const f of g.foto) {
+      await db.fotoGaleri.upsert({
+        where: { id: f.id },
+        update: {
+          albumId: album.id,
+          url: f.url,
+          alt: f.alt,
+          caption: f.caption || null,
+          urutan: f.urutan,
+          width: f.width,
+          height: f.height,
+          size: f.size,
+        },
+        create: {
+          id: f.id,
+          albumId: album.id,
+          url: f.url,
+          alt: f.alt,
+          caption: f.caption || null,
+          urutan: f.urutan,
+          width: f.width,
+          height: f.height,
+          size: f.size,
+        },
+      });
+    }
   }
 
   /* ---------- Profil & perangkat ---------- */
@@ -192,7 +239,8 @@ async function main() {
   });
 
   console.log(
-    `Selesai: ${await db.berita.count()} berita, ${await db.layanan.count()} layanan, ` +
+    `Selesai: ${await db.berita.count()} berita, ${await db.albumGaleri.count()} album galeri, ` +
+      `${await db.layanan.count()} layanan, ` +
       `${await db.pengaduan.count()} pengaduan, ${await db.pengguna.count()} pengguna.`,
   );
 }

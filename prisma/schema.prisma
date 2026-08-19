@@ -1,8 +1,8 @@
 // Skema Bab 8 PRD. Nama tabel & kolom memakai snake_case Indonesia lewat @map
 // supaya perangkat desa yang kelak membuka Neon console mengenali isinya.
 //
-// ponytail: tabel `umkm` & `galeri` sengaja belum dibuat — keduanya Fase
-// Lanjutan (Bab 11). Tambahkan kalau modulnya benar-benar dikerjakan.
+// Galeri kegiatan memakai album + foto agar dokumentasi dapat dikelola per
+// kegiatan, bukan sebagai daftar gambar yang tidak memiliki konteks.
 
 generator client {
   provider = "prisma-client-js"
@@ -19,6 +19,11 @@ enum Peran {
 }
 
 enum StatusBerita {
+  draft
+  terbit
+}
+
+enum StatusGaleri {
   draft
   terbit
 }
@@ -106,6 +111,42 @@ model Berita {
 
   @@index([status, terbitPada])
   @@map("berita")
+}
+
+model AlbumGaleri {
+  id              String       @id @default(cuid())
+  judul           String
+  slug            String       @unique
+  deskripsi       String?
+  kategori        String
+  coverUrl        String?      @map("cover_url")
+  tanggalKegiatan DateTime     @map("tanggal_kegiatan")
+  status          StatusGaleri @default(draft)
+  dibuatPada      DateTime     @default(now()) @map("created_at")
+  diperbaruiPada  DateTime     @updatedAt @map("updated_at")
+
+  foto FotoGaleri[]
+
+  @@index([status, tanggalKegiatan])
+  @@index([kategori])
+  @@map("galeri_album")
+}
+
+model FotoGaleri {
+  id         String      @id @default(cuid())
+  albumId    String      @map("album_id")
+  url        String
+  alt        String
+  caption    String?
+  urutan     Int         @default(0)
+  width      Int?
+  height     Int?
+  size       Int?
+  dibuatPada DateTime    @default(now()) @map("created_at")
+  album      AlbumGaleri @relation(fields: [albumId], references: [id], onDelete: Cascade)
+
+  @@index([albumId, urutan])
+  @@map("galeri_foto")
 }
 
 model Layanan {

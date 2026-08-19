@@ -28,9 +28,9 @@ const nilaiAwal = {
   posterSrc: "/gambar/majegan-hero-poster.webp",
   eyebrow: "Padukuhan",
   title: "Majegan",
-  location: "Kalurahan Pandowoharjo · Sleman",
-  primaryCta: { label: "Jelajahi Majegan", href: "#tentang-majegan" },
-  secondaryCta: { label: "Tentang Majegan", href: "/profil" },
+  location: "Kampung budaya di Sleman: joglo, merti dusun, dan kerja bakti",
+  primaryCta: { label: "Jelajahi", href: "#tentang-majegan" },
+  secondaryCta: { label: "Tentang", href: "/profil" },
 } satisfies Required<Omit<MajeganVideoHeroProps, "mobileVideoSrc">>;
 
 export function MajeganVideoHero({
@@ -120,7 +120,7 @@ export function MajeganVideoHero({
         className="absolute inset-0 z-10 bg-[linear-gradient(180deg,rgba(7,24,17,.26)_0%,transparent_35%,rgba(7,24,17,.2)_66%,rgba(7,24,17,.72)_100%)]"
       />
 
-      <div className="wadah relative z-20 flex min-h-[100svh] items-end px-5 pt-36 pb-[calc(9.5rem+env(safe-area-inset-bottom))] sm:px-8 md:items-center md:px-12 md:pt-32 md:pb-24 lg:px-16">
+      <div className="wadah relative z-20 flex min-h-[100svh] items-end px-5 pt-30 pb-20 sm:px-8 md:items-center md:px-12 md:pt-32 md:pb-24 lg:px-16">
         <motion.div
           initial={kurangiGerak ? false : "tersembunyi"}
           animate="terlihat"
@@ -137,9 +137,10 @@ export function MajeganVideoHero({
               tersembunyi: { opacity: 0, y: 18 },
               terlihat: { opacity: 1, y: 0, transition: transisi },
             }}
-            className="text-[11px] font-extrabold tracking-[.28em] text-[#D6B45C] uppercase sm:text-xs"
+            className="mb-4 flex items-center gap-2.5 text-[11px] font-extrabold tracking-[.28em] text-[#D6B45C] uppercase sm:text-xs"
           >
-            {eyebrow}
+            <span className="h-px w-8 rounded-full bg-[#D6B45C]/70" aria-hidden="true" />
+            <span>{eyebrow}</span>
           </motion.p>
 
           <motion.h1
@@ -158,7 +159,7 @@ export function MajeganVideoHero({
               tersembunyi: { opacity: 0, y: 18 },
               terlihat: { opacity: 1, y: 0, transition: transisi },
             }}
-            className="mt-4 text-sm font-medium tracking-[.015em] text-[#F3EBDD]/88 sm:text-base md:mt-5 md:text-lg"
+            className="mt-[clamp(1.1rem,2.6vw,1.75rem)] text-sm font-medium tracking-[.015em] text-[#F3EBDD]/88 sm:text-base md:text-lg"
           >
             {location}
           </motion.p>
@@ -172,14 +173,14 @@ export function MajeganVideoHero({
           >
             <Link
               href={primaryCta.href}
-              className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#F3EBDD] px-6 text-sm font-extrabold text-hutan transition duration-300 hover:-translate-y-0.5 hover:bg-white focus-visible:outline-offset-4"
+              className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#F3EBDD] px-5 text-[13px] font-extrabold whitespace-nowrap text-hutan transition duration-300 hover:-translate-y-0.5 hover:bg-white focus-visible:outline-offset-4 sm:px-6 sm:text-sm"
             >
               {primaryCta.label}
               <ArrowDown className="size-4 transition-transform duration-300 group-hover:translate-y-1" />
             </Link>
             <Link
               href={secondaryCta.href}
-              className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[#F3EBDD]/55 bg-transparent px-6 text-sm font-bold text-[#F3EBDD] transition duration-300 hover:-translate-y-0.5 hover:border-[#F3EBDD] hover:bg-[#F3EBDD]/10 focus-visible:outline-offset-4"
+              className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[#F3EBDD]/55 bg-transparent px-5 text-[13px] font-bold whitespace-nowrap text-[#F3EBDD] transition duration-300 hover:-translate-y-0.5 hover:border-[#F3EBDD] hover:bg-[#F3EBDD]/10 focus-visible:outline-offset-4 sm:px-6 sm:text-sm"
             >
               {secondaryCta.label}
               <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -188,22 +189,6 @@ export function MajeganVideoHero({
         </motion.div>
       </div>
 
-      <motion.div
-        initial={kurangiGerak ? false : { opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={kurangiGerak ? { duration: 0 } : { delay: 0.9, duration: 0.7 }}
-        className="absolute bottom-[calc(4.75rem+env(safe-area-inset-bottom))] left-5 z-20 sm:left-8 md:bottom-8 md:left-1/2 md:-translate-x-1/2"
-      >
-        <Link
-          href="#tentang-majegan"
-          className="group flex min-h-11 items-center gap-3 text-[10px] font-bold tracking-[.18em] text-[#F3EBDD]/72 uppercase transition-colors hover:text-[#F3EBDD]"
-        >
-          <span className="flex h-9 w-6 items-start justify-center rounded-full border border-[#F3EBDD]/35 pt-1.5">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#D6B45C] motion-safe:animate-bounce" />
-          </span>
-          Jelajahi
-        </Link>
-      </motion.div>
     </section>
   );
 }

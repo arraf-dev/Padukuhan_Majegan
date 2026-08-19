@@ -4,7 +4,7 @@ Terakhir diperbarui: 14 Agustus 2026
 
 ## Status Saat Ini
 
-Sebagian besar fitur utama website sudah selesai. Revisi Pak Dukuh pada panel admin, alur pengaduan, layanan, profil, dan statistik sudah berada di branch `main`. Sebelum pembaruan dokumen ini, working tree bersih dan HEAD lokal sinkron dengan `origin/main` pada commit `8e5ad86`. Deployment production berhasil, Vercel Authentication sudah dinonaktifkan, website dapat diakses publik, dan smoke test production sudah lulus. Pekerjaan utama yang tersisa adalah mengaktifkan Vercel Blob, menguji upload serta seluruh CRUD production dengan kedua peran, menguji ponsel fisik, memperoleh persetujuan Pak Dukuh, memasukkan data resmi, dan menyiapkan serah terima.
+Sebagian besar fitur utama website sudah selesai. Revisi Pak Dukuh pada panel admin, alur pengaduan, layanan, profil, dan statistik sudah berada di branch `main`. Rebuild footer responsif dan landing page sinematik dengan video Majegan juga telah di-commit serta di-push pada `075d13e`; HEAD lokal dan `origin/main` sinkron. Deployment production commit tersebut berstatus `READY`, Vercel Authentication sudah dinonaktifkan, website dapat diakses publik, dan verifikasi rute production kembali lulus. Pekerjaan utama yang tersisa adalah mengaktifkan Vercel Blob publik dan privat, menguji upload serta seluruh CRUD production dengan kedua peran, menguji ponsel fisik, memperoleh persetujuan Pak Dukuh, memasukkan data resmi, dan menyiapkan serah terima.
 
 ## Revisi Pak Dukuh — Status Implementasi
 
@@ -53,6 +53,10 @@ Sebagian besar fitur utama website sudah selesai. Revisi Pak Dukuh pada panel ad
 - [x] Reduced-motion menonaktifkan video dan menampilkan poster tanpa hydration mismatch.
 - [x] Browser desktop 1366 px serta mobile 320/375 px tidak mengalami overflow; video autoplay aktif, CTA smooth-scroll bekerja, dan header scroll berubah sesuai rancangan.
 - [x] Regresi `/profil` dan `/admin` lulus: profil tetap menggunakan header solid dan admin tetap diarahkan ke halaman masuk tanpa overflow pada 320 px.
+- [x] Seluruh perubahan footer dan landing page telah di-commit lalu di-push ke `main` melalui commit `075d13e` (`Rebuild landing page and responsive footers`).
+- [x] Deployment Vercel `075d13e` berstatus `READY`; `/` dan `/profil` merespons `200`, `/admin` berakhir di `/admin/masuk`, `/pengaduan/lacak` merespons `404`, dan `/api/health` mengonfirmasi database `ok`.
+- [x] Kode upload dipisahkan menjadi token Blob publik dan privat; template environment serta README sudah menjelaskan kedua token.
+- [ ] Buat/hubungkan Blob Store publik dan Blob Store privat di dashboard Vercel, lalu isi token pada environment Production dan `.env.local` tanpa membocorkan nilainya.
 
 ### Perlu disetujui melalui pengecekan tampilan
 
@@ -136,7 +140,9 @@ File utama yang ditambahkan:
 - Smoke test production pada `https://padukuhan-majegan-abdulrafi393-5137s-projects.vercel.app` lulus: rute publik `200`, `/admin` redirect `307`, `/pengaduan/lacak` `404`, dan `/api/health` `200`.
 - Audit lokal 14 Agustus mengulang `npm test` (**32/32**), `npm run typecheck`, dan `npx prisma validate`; seluruhnya lulus.
 - Rebuild landing page lulus 32 test, typecheck, Prisma validate, production build dengan override URL HTTPS lokal, dan `git diff --check`.
+- Setelah pemisahan token Blob publik/pribadi, `npm run typecheck` dan `git diff --check` kembali lulus. `npm test` tidak dapat dijalankan dari sandbox saat ini karena Node ditolak membuat subprocess (`spawn EPERM`); ini merupakan batas runtime pengujian, bukan kegagalan assertion aplikasi.
 - Repository belum memiliki konfigurasi lint; percobaan menambah ESLint dibatalkan karena resolusi paket dari registry npm lokal tidak selesai, sehingga tidak ada konfigurasi/lockfile setengah jadi yang dipertahankan.
+- Percobaan ulang `npm run test:smoke` setelah push tidak dapat menjangkau semua rute Vercel dari runtime lokal karena pembatasan koneksi keluar (`fetch failed`). Verifikasi melalui jalur Vercel kemudian mengonfirmasi deployment `075d13e` sehat pada rute inti; smoke script tetap perlu dijalankan dari CI atau terminal dengan akses internet sebagai artefak rilis mandiri.
 
 ## Yang Masih Perlu Dikerjakan
 
@@ -165,13 +171,13 @@ File utama yang ditambahkan:
 
 ## Catatan Penting
 
-- Tanpa `BLOB_READ_WRITE_TOKEN`, pemilih berkas tetap terlihat tetapi unggahan ke Vercel Blob belum bisa digunakan. Situs dan formulir tanpa berkas tetap berjalan; percobaan unggah ditolak dengan pesan yang aman.
+- Tanpa `BLOB_READ_WRITE_TOKEN` (aset publik) dan `BLOB_PRIVATE_READ_WRITE_TOKEN` (lampiran pengaduan), pemilih berkas tetap terlihat tetapi unggahan ke Vercel Blob belum bisa digunakan. Situs dan formulir tanpa berkas tetap berjalan; percobaan unggah ditolak dengan pesan yang aman.
 - Deployment production sudah terbuka untuk publik dan smoke test aplikasi lulus; pengujian upload penuh tetap menunggu Blob Store dan `BLOB_READ_WRITE_TOKEN`.
 - Lampiran pengaduan yang pernah diunggah sebagai Blob publik sebelum perubahan ini perlu diunggah ulang bila masih diperlukan; endpoint panel tidak meneruskan URL publik lama.
 - Tanpa `DATABASE_URL`, `RAHASIA_SESI`, atau URL HTTPS kanonik, build production sengaja dihentikan dengan pesan konfigurasi yang jelas. Token Blob divalidasi saat operasi unggah agar kekurangan token tidak mematikan seluruh situs.
 - Gunakan `DATA_MODE="demo"` selama data resmi belum lengkap; ubah menjadi `official` hanya setelah konten diverifikasi.
 - `TASKS.md` sudah diselaraskan dengan audit kode dan status production per 14 Agustus 2026.
-- Implementasi terbaru sudah di-commit dan di-push ke branch `main`; HEAD lokal dan `origin/main` berada pada commit `8e5ad86`.
+- Implementasi terbaru sudah di-commit dan di-push ke branch `main`; HEAD lokal dan `origin/main` berada pada commit `075d13e` (`Rebuild landing page and responsive footers`).
 
 ---
 

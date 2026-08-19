@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { pengumuman } from "@/content/majegan";
 import { Hitung } from "@/components/gerak";
+import { GaleriBento } from "@/components/galeri-bento";
 import { JudulSection, KartuRingkas } from "@/components/potongan";
 import { TentangMajegan } from "@/components/sambutan";
 import { kartu, tombol } from "@/components/primitif";
 import { MajeganVideoHero } from "@/components/ui/majegan-video-hero";
 import { beritaTerbit } from "@/lib/berita";
+import { getLatestAlbums } from "@/lib/galeri";
 import { type KelompokUsia, statistikPenduduk } from "@/lib/statistik";
 import { tanggalPendek } from "@/lib/tanggal";
 
@@ -13,7 +15,11 @@ import { tanggalPendek } from "@/lib/tanggal";
 export const dynamic = "force-dynamic";
 
 export default async function Beranda() {
-  const [terbaru, { ringkasan, usia }] = await Promise.all([beritaTerbit(3), statistikPenduduk()]);
+  const [terbaru, { ringkasan, usia }, albumTerbaru] = await Promise.all([
+    beritaTerbit(3),
+    statistikPenduduk(),
+    getLatestAlbums(4),
+  ]);
 
   return (
     <>
@@ -100,6 +106,36 @@ export default async function Beranda() {
           </div>
         </div>
       </section>
+
+      {albumTerbaru.length > 0 && (
+        <section className="wadah px-4 pt-1 pb-10 md:px-12 md:pt-0 md:pb-14 lg:px-16 lg:pb-18">
+          <div className="md:hidden">
+            <div className="mb-3 flex items-baseline justify-between">
+              <div>
+                <h2 className="font-serif text-lg font-semibold text-hutan">Momen di Majegan</h2>
+                <p className="mt-1 text-[12px] text-redup">Dokumentasi kegiatan dan kebersamaan warga Padukuhan Majegan.</p>
+              </div>
+              <Link href="/galeri" className={`${tombol("teks")} flex-none text-[12.5px]`}>
+                Semua →
+              </Link>
+            </div>
+          </div>
+          <div className="hidden md:block">
+            <JudulSection
+              anak={
+                <span>
+                  Momen di Majegan
+                  <span className="mt-1 block font-sans text-[13px] font-normal text-redup md:text-sm">
+                    Dokumentasi kegiatan dan kebersamaan warga Padukuhan Majegan.
+                  </span>
+                </span>
+              }
+              tautan={{ href: "/galeri", label: "Lihat Semua Galeri" }}
+            />
+          </div>
+          <GaleriBento albums={albumTerbaru} />
+        </section>
+      )}
     </>
   );
 }

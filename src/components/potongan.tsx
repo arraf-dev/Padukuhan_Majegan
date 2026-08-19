@@ -66,6 +66,7 @@ export function Foto({
         fill
         sizes={sizes}
         priority={prioritas}
+        loading={prioritas ? "eager" : "lazy"}
         className="object-cover"
       />
     </div>

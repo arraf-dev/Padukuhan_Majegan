@@ -18,3 +18,23 @@ export function periksaBerkas(berkas: File, jenis: JenisBerkas): string | null {
 
   return null;
 }
+
+/**
+ * MIME pada multipart request dapat dipalsukan oleh client. Gallery memanggil
+ * pemeriksaan signature ini setelah `periksaBerkas` agar file yang disimpan
+ * benar-benar memiliki header JPEG, PNG, atau WEBP yang sesuai.
+ */
+export async function periksaIsiGambar(berkas: File): Promise<string | null> {
+  const bytes = new Uint8Array(await berkas.slice(0, 12).arrayBuffer());
+  const sama = (mulai: number, nilai: number[]) => nilai.every((byte, i) => bytes[mulai + i] === byte);
+
+  const jpeg = sama(0, [0xff, 0xd8, 0xff]);
+  const png = sama(0, [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+  const webp = sama(0, [0x52, 0x49, 0x46, 0x46]) && sama(8, [0x57, 0x45, 0x42, 0x50]);
+
+  if ((berkas.type === "image/jpeg" && jpeg) || (berkas.type === "image/png" && png) || (berkas.type === "image/webp" && webp)) {
+    return null;
+  }
+
+  return "Isi berkas gambar tidak valid.";
+}
