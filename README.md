@@ -114,7 +114,6 @@ public/gambar/      Aset ilustrasi situs
 
 - [`PRD_Website_Desa_KKN_v0.1.md`](PRD_Website_Desa_KKN_v0.1.md) — kebutuhan produk
 - [`TASKS.md`](TASKS.md) — rencana dan progres pengerjaan
-- [`RAB_Infrastruktur_Website.md`](RAB_Infrastruktur_Website.md) — estimasi biaya infrastruktur
 
 ---
 
