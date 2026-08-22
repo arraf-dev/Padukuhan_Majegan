@@ -110,11 +110,6 @@ src/lib/            Autentikasi, validasi, dan akses data
 public/gambar/      Aset ilustrasi situs
 ```
 
-## Dokumentasi
-
-- [`PRD_Website_Desa_KKN_v0.1.md`](PRD_Website_Desa_KKN_v0.1.md) — kebutuhan produk
-- [`TASKS.md`](TASKS.md) — rencana dan progres pengerjaan
-
 ---
 
 Dikembangkan untuk Padukuhan Majegan melalui program KKN Universitas Negeri Yogyakarta.
