@@ -1,22 +1,19 @@
-import { get } from "@vercel/blob";
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { bacaR2, keKunciPrivat } from "@/lib/r2";
 import { sesiSaatIni } from "@/lib/sesi";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 /**
- * Mengalirkan lampiran pengaduan privat tanpa pernah memberikan URL Blob ke
+ * Mengalirkan lampiran pengaduan privat tanpa pernah memberikan URL bucket ke
  * browser. Akses hanya untuk pengguna yang sudah masuk ke panel admin.
+ * `lampiranUrl` menyimpan *object key* R2 (mis. `pengaduan/foo.jpg`).
  */
 export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   const sesi = await sesiSaatIni();
   if (!sesi) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const token = process.env.BLOB_PRIVATE_READ_WRITE_TOKEN?.trim();
-  if (!token) {
-    return NextResponse.json({ error: "Penyimpanan lampiran belum dikonfigurasi" }, { status: 503 });
-  }
 
   const { id } = await params;
   const pengaduan = await db.pengaduan.findUnique({
@@ -24,26 +21,29 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
     select: { lampiranUrl: true },
   });
 
-  if (!pengaduan?.lampiranUrl) {
+  const referensi = pengaduan?.lampiranUrl;
+  const kunci = referensi ? keKunciPrivat(referensi) : null;
+  if (!kunci) {
+    return NextResponse.json({ error: "Lampiran tidak ditemukan" }, { status: 404 });
+  }
+
+  // Hanya beri akses ke objek di bawah prefix lampiran privat pengaduan.
+  if (!kunci.startsWith("pengaduan/")) {
     return NextResponse.json({ error: "Lampiran tidak ditemukan" }, { status: 404 });
   }
 
   try {
-    const hasil = await get(pengaduan.lampiranUrl, { access: "private", token });
-    if (!hasil || hasil.statusCode !== 200) {
-      return new NextResponse("Lampiran tidak ditemukan", { status: 404 });
-    }
-
-    return new NextResponse(hasil.stream, {
+    const objek = await bacaR2("private", kunci);
+    return new NextResponse(objek.stream as unknown as BodyInit, {
       headers: {
-        "Content-Type": hasil.blob.contentType ?? "application/octet-stream",
+        "Content-Type": objek.contentType,
         "Cache-Control": "private, no-store",
         "X-Content-Type-Options": "nosniff",
       },
     });
   } catch {
-    // Blob publik lama tidak boleh diloloskan lewat endpoint baru. Unggah ulang
-    // bila masih perlu dipakai, sehingga semua lampiran berikutnya privat.
+    // Referensi Blob publik lama tidak diloloskan lewat endpoint baru — unggah
+    // ulang bila masih diperlukan supaya semua lampiran berikutnya privat.
     return new NextResponse("Lampiran tidak ditemukan", { status: 404 });
   }
 }

@@ -85,12 +85,12 @@ export function MajeganNavbar({
           aria-controls="menu-navigasi-majegan"
           aria-label={terbuka ? "Tutup menu navigasi" : "Buka menu navigasi"}
           onClick={() => setTerbuka((nilai) => !nilai)}
-            className={cn(
-              "flex size-11 items-center justify-center rounded-full border transition-colors lg:hidden",
+          className={cn(
+            "flex size-11 items-center justify-center rounded-full border transition-colors lg:hidden",
             hijau
               ? "border-krem/35 text-krem hover:border-emas hover:text-emas"
               : "border-garis-tebal text-hutan hover:border-daun hover:bg-emas-muda",
-            )}
+          )}
         >
           {terbuka ? <X aria-hidden="true" className="size-5" /> : <Menu aria-hidden="true" className="size-5" />}
         </button>

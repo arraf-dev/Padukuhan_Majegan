@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { BarChart3, FileText, House, Images, MessageCircle, Newspaper, UserRound } from "lucide-react";
+import { BarChart3, FileText, House, Images, Landmark, MessageCircle, Newspaper, UserRound } from "lucide-react";
 import { desa } from "@/content/majegan";
 import { Logo } from "@/components/ikon";
 import { StatusDataDemo } from "@/components/status-data";
@@ -14,6 +14,7 @@ const navItems: NavItem[] = [
   { name: "Profil", url: "/profil", icon: UserRound },
   { name: "Berita", url: "/berita", icon: Newspaper },
   { name: "Galeri", url: "/galeri", icon: Images },
+  { name: "Potensi", url: "/potensi", icon: Landmark },
   { name: "Layanan", url: "/layanan", icon: FileText },
   { name: "Pengaduan", url: "/pengaduan", icon: MessageCircle },
   { name: "Statistik", url: "/statistik", icon: BarChart3 },

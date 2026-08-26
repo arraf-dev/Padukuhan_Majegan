@@ -28,6 +28,17 @@ enum StatusGaleri {
   terbit
 }
 
+enum KategoriPotensi {
+  pariwisata
+  umkm
+  budaya
+}
+
+enum StatusPotensi {
+  draft
+  terbit
+}
+
 enum JenisAnggaran {
   pendapatan
   belanja
@@ -122,10 +133,12 @@ model AlbumGaleri {
   coverUrl        String?      @map("cover_url")
   tanggalKegiatan DateTime     @map("tanggal_kegiatan")
   status          StatusGaleri @default(draft)
+  potensiId       String?      @unique @map("potensi_id")
   dibuatPada      DateTime     @default(now()) @map("created_at")
   diperbaruiPada  DateTime     @updatedAt @map("updated_at")
 
   foto FotoGaleri[]
+  potensi Potensi? @relation(fields: [potensiId], references: [id], onDelete: SetNull)
 
   @@index([status, tanggalKegiatan])
   @@index([kategori])
@@ -147,6 +160,60 @@ model FotoGaleri {
 
   @@index([albumId, urutan])
   @@map("galeri_foto")
+}
+
+model PotensiKategori {
+  id          String          @id @default(cuid())
+  kode        KategoriPotensi @unique
+  label       String
+  judul       String
+  pengantar   String
+  deskripsi   String
+  gambarUrl   String?         @map("gambar_url")
+  urutan      Int             @default(0)
+  potensi     Potensi[]
+  infografis  PotensiInfografis[]
+
+  @@map("potensi_kategori")
+}
+
+model Potensi {
+  id           String          @id @default(cuid())
+  kategoriId   String          @map("kategori_id")
+  judul        String
+  slug         String          @unique
+  ringkasan    String
+  deskripsi    String
+  gambarUrl    String?         @map("gambar_url")
+  subkategori  String?
+  produk       String?
+  lokasi       String?
+  kontak       String?
+  status       StatusPotensi   @default(draft)
+  urutan       Int             @default(0)
+  dibuatPada   DateTime        @default(now()) @map("created_at")
+  diperbaruiPada DateTime      @updatedAt @map("updated_at")
+
+  kategori     PotensiKategori @relation(fields: [kategoriId], references: [id], onDelete: Cascade)
+  album        AlbumGaleri?
+
+  @@index([kategoriId, status, urutan])
+  @@map("potensi")
+}
+
+model PotensiInfografis {
+  id         String          @id @default(cuid())
+  kategoriId String          @map("kategori_id")
+  label      String
+  nilai      Int
+  satuan     String?
+  urutan     Int             @default(0)
+
+  kategori PotensiKategori @relation(fields: [kategoriId], references: [id], onDelete: Cascade)
+
+  @@unique([kategoriId, label])
+  @@index([kategoriId, urutan])
+  @@map("potensi_infografis")
 }
 
 model Layanan {

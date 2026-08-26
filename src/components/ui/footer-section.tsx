@@ -31,7 +31,7 @@ interface BagianFooter {
 const tautanPublik: BagianFooter[] = [
   {
     label: "Jelajahi",
-    tautan: navigasi.slice(0, 4).map((item) => ({ judul: item.label, href: item.href })),
+    tautan: navigasi.slice(0, 5).map((item) => ({ judul: item.label, href: item.href })),
   },
   {
     label: "Pelayanan",

@@ -8,7 +8,7 @@ import { BorangLayanan } from "@/app/admin/layanan/borang";
 import { layananUntukForm } from "@/lib/layanan";
 import { wajibSuperadmin } from "@/lib/sesi";
 
-export const metadata: Metadata = { title: "Sunting Layanan" };
+export const metadata: Metadata = { title: "Edit Layanan" };
 export const dynamic = "force-dynamic";
 
 export default async function SuntingLayanan({
@@ -31,7 +31,7 @@ export default async function SuntingLayanan({
         <Ikon nama="kembali" ukuran={15} />
         Kembali ke daftar layanan
       </Link>
-      <KopHalaman judul="Sunting Layanan" keterangan={awal.nama} />
+      <KopHalaman judul="Edit Layanan" keterangan={awal.nama} />
       <BorangLayanan awal={awal} galat={galat} />
     </Kerangka>
   );

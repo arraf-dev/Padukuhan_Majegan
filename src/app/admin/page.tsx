@@ -100,7 +100,7 @@ export default async function Dashboard() {
           terbatas ? "" : "md:grid-cols-[1.5fr_1fr] lg:grid-cols-[1.6fr_1fr]"
         }`}
       >
-        <section data-reveal className={`${kartu()} px-6 py-5 lg:px-8 lg:py-7`}>
+        <section data-reveal className={`${kartu()} min-w-0 px-6 py-5 lg:px-8 lg:py-7`}>
           <div className="mb-1.5 flex items-baseline justify-between">
             <h2 className="font-serif text-base font-semibold text-hutan lg:text-[19px]">Pengaduan terbaru</h2>
             <Link href="/admin/pengaduan" className={`${tombol("teks")} text-[12.5px]`}>
@@ -125,7 +125,9 @@ export default async function Dashboard() {
                   >
                     {p.kategori}
                   </Link>
-                  <span className="min-w-40 flex-1 truncate text-[13px] text-teks lg:text-sm">{p.isi}</span>
+                  {/* basis penuh di layar sempit agar teks turun ke baris sendiri
+                      dan `truncate` tidak memaksa grid melebar melewati viewport. */}
+                  <span className="min-w-0 flex-1 basis-full truncate text-[13px] text-teks sm:basis-auto lg:text-sm">{p.isi}</span>
                   <LencanaBaca dibaca={p.dibacaPada !== null} />
                 </li>
               ))}
@@ -134,7 +136,7 @@ export default async function Dashboard() {
         </section>
 
         {!terbatas && (
-          <section data-reveal className={`${kartu()} px-6 py-5 lg:px-8 lg:py-7`}>
+          <section data-reveal className={`${kartu()} min-w-0 px-6 py-5 lg:px-8 lg:py-7`}>
             <h2 className="mb-3 font-serif text-base font-semibold text-hutan lg:mb-4 lg:text-[19px]">Aksi cepat</h2>
             <div className="flex flex-col gap-2.5 lg:gap-3">
               {aksiCepatAdmin.map((a) => (

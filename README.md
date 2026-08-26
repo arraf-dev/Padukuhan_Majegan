@@ -9,6 +9,7 @@ Website informasi dan layanan digital Padukuhan Majegan, Kalurahan Pandowoharjo.
 - Profil padukuhan dan struktur perangkat
 - Berita dan pengumuman
 - Galeri kegiatan berbasis album dengan lightbox
+- Potensi Majegan: Pariwisata, UMKM, dan Budaya beserta infografis
 - Informasi persyaratan serta alur layanan administrasi
 - Pengaduan warga dengan identitas wajib dan lampiran privat
 - Statistik penduduk dalam bentuk agregat
@@ -18,6 +19,7 @@ Website informasi dan layanan digital Padukuhan Majegan, Kalurahan Pandowoharjo.
 - Autentikasi berbasis peran
 - Pengelolaan berita, profil, layanan, statistik, dan akun
 - Pengelolaan album Galeri dengan multi-upload foto
+- Pengelolaan Potensi Pariwisata, UMKM, dan Budaya beserta data infografis
 - Pengelolaan pengaduan berdasarkan sudah/belum dibaca
 - Dashboard ringkasan data
 
@@ -72,7 +74,9 @@ Aplikasi tersedia di [http://localhost:3000](http://localhost:3000).
 | Perintah | Kegunaan |
 | --- | --- |
 | `npm run dev` | Menjalankan server pengembangan |
-| `npm run build` | Membuat build produksi dan menjalankan migrasi |
+| `npm run build` | Membuat build produksi (tanpa migrasi database) |
+| `npm run migrate:deploy` | Menerapkan migration ke database |
+| `npm run build:monolit` | Build + migrasi dalam satu perintah (cara lama) |
 | `npm start` | Menjalankan build produksi |
 | `npm test` | Menjalankan unit test |
 | `npm run typecheck` | Memeriksa tipe TypeScript tanpa membuat berkas keluaran |
@@ -80,18 +84,22 @@ Aplikasi tersedia di [http://localhost:3000](http://localhost:3000).
 
 ## Menyiapkan production
 
-Target deployment proyek ini adalah Vercel, Neon PostgreSQL, dan Vercel Blob. Isi environment variable berikut pada Vercel untuk Preview dan Production:
+Target deployment proyek ini adalah Vercel, Neon PostgreSQL, dan Cloudflare R2 untuk penyimpanan berkas. Isi environment variable berikut pada Vercel untuk Preview dan Production:
 
 ```env
 DATABASE_URL="postgresql://..."
 RAHASIA_SESI="rahasia-acak-minimal-32-byte"
-BLOB_READ_WRITE_TOKEN="token Blob Store Vercel"
-BLOB_PRIVATE_READ_WRITE_TOKEN="token Blob Store privat Vercel"
+R2_ACCOUNT_ID="account-id"
+R2_ACCESS_KEY_ID="access-key-id"
+R2_SECRET_ACCESS_KEY="secret-access-key"
+R2_BUCKET_PUBLIK="majegan-publik"
+R2_PUBLIC_URL="https://majegan-publik.<account-id>.r2.dev"
+R2_BUCKET_PRIVAT="majegan-privat"
 NEXT_PUBLIC_URL="https://domain-resmi-anda"
 DATA_MODE="demo"
 ```
 
-`DATABASE_URL` dan `RAHASIA_SESI` wajib tersedia. `NEXT_PUBLIC_URL` dianjurkan untuk domain resmi; ketika belum diisi atau masih menunjuk localhost, deployment Vercel memakai `VERCEL_PROJECT_PRODUCTION_URL` sebagai URL HTTPS kanonik. `BLOB_READ_WRITE_TOKEN` diperlukan untuk aset publik, sedangkan `BLOB_PRIVATE_READ_WRITE_TOKEN` diperlukan untuk lampiran pengaduan privat. Ketiadaan token tidak lagi menggagalkan seluruh build: formulir tanpa berkas tetap berfungsi dan unggahan menampilkan pesan konfigurasi yang aman.
+`DATABASE_URL` dan `RAHASIA_SESI` wajib tersedia. `NEXT_PUBLIC_URL` dianjurkan untuk domain resmi; ketika belum diisi atau masih menunjuk localhost, deployment Vercel memakai `VERCEL_PROJECT_PRODUCTION_URL` sebagai URL HTTPS kanonik. Kredensial R2 hanya dibaca saat operasi unggah — kekurangannya tidak mematikan seluruh build, melainkan menampilkan pesan konfigurasi yang aman saat admin mencoba mengunggah.
 
 `SUPERADMIN_EMAIL` dan `SUPERADMIN_SANDI` hanya diperlukan ketika menjalankan seed pertama kali. Jangan jalankan ulang `npx prisma db seed` pada database yang sudah diisi admin karena seed memperbarui konten contoh dan mengganti daftar perangkat.
 
@@ -107,6 +115,7 @@ src/app/(publik)/   Halaman situs publik
 src/app/admin/      Panel administrasi
 src/components/     Komponen antarmuka bersama
 src/lib/            Autentikasi, validasi, dan akses data
+ERD.md              Diagram relasi database dalam Mermaid
 public/gambar/      Aset ilustrasi situs
 ```
 

@@ -8,7 +8,7 @@ import { Kerangka } from "@/app/admin/kerangka";
 import { getAlbumById } from "@/lib/galeri";
 import { wajibMasuk } from "@/lib/sesi";
 
-export const metadata: Metadata = { title: "Sunting Album Galeri" };
+export const metadata: Metadata = { title: "Edit Album Galeri" };
 export const dynamic = "force-dynamic";
 
 export default async function SuntingGaleri({ params }: { params: Promise<{ id: string }> }) {
@@ -22,7 +22,7 @@ export default async function SuntingGaleri({ params }: { params: Promise<{ id: 
         <Ikon nama="kembali" ukuran={15} />
         Kembali ke daftar galeri
       </Link>
-      <KopHalaman judul="Sunting Album Galeri" keterangan={album.judul} />
+      <KopHalaman judul="Edit Album Galeri" keterangan={album.judul} />
       <UnggahGaleri awal={album} />
     </Kerangka>
   );

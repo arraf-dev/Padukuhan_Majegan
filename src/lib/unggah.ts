@@ -1,23 +1,20 @@
-import { del, put } from "@vercel/blob";
-import { periksaBerkas, type JenisBerkas } from "./berkas";
+import { periksaBerkas, periksaIsiGambar, type JenisBerkas } from "./berkas.ts";
+import { keKunciPrivat, kunciObjek, unggahR2, hapusR2, type AksesStorage } from "./r2.ts";
 
-type AksesBlob = "public" | "private";
-
-function tokenBlob(akses: AksesBlob): string | null {
-  const token =
-    akses === "private"
-      ? process.env.BLOB_PRIVATE_READ_WRITE_TOKEN
-      : process.env.BLOB_READ_WRITE_TOKEN;
-
-  return token?.trim() || null;
-}
-
+/**
+ * Unggah berkas ke Cloudflare R2.
+ *
+ * - `akses = "public"`: mengembalikan `url` publik R2 yang disimpan di database
+ *   dan dipakai langsung oleh `next/image`/`<img>`.
+ * - `akses = "private"`: mengembalikan *object key* (mis. `pengaduan/foo.jpg`) ke
+ *   database; browser tidak pernah menerima URL bucket privat.
+ */
 export async function unggahBerkas(
   data: FormData,
   nama: string,
   folder: string,
   jenis: JenisBerkas,
-  akses: AksesBlob = "public",
+  akses: AksesStorage = "public",
   namaObjek?: string,
 ): Promise<{ url: string | null; galat: string | null }> {
   const berkas = data.get(nama);
@@ -26,45 +23,50 @@ export async function unggahBerkas(
   const galat = periksaBerkas(berkas, jenis);
   if (galat) return { url: null, galat };
 
-  const token = tokenBlob(akses);
-  if (!token) {
-    return {
-      url: null,
-      galat: "Penyimpanan berkas belum dikonfigurasi. Coba lagi tanpa lampiran.",
-    };
+  // MIME multipart dapat dipalsukan; validasi signature semua gambar agar tidak
+  // ada file non-gambar yang tersimpan. Galeri memanggil pemeriksaan ini secara
+  // eksplisit, tetapi pintu lainnya memakai penjaga terpusat ini.
+  if (jenis === "gambar") {
+    const isiGalat = await periksaIsiGambar(berkas);
+    if (isiGalat) return { url: null, galat: isiGalat };
   }
 
   try {
-    const hasil = await put(`${folder}/${namaObjek ?? berkas.name}`, berkas, {
-      access: akses,
-      token,
-      addRandomSuffix: true,
-      contentType: berkas.type,
-    });
-
-    return { url: hasil.url, galat: null };
+    const kunci = namaObjek ? `${folder}/${namaObjek}` : kunciObjek(folder, berkas.name);
+    const buffer = new Uint8Array(await berkas.arrayBuffer());
+    const hasil = await unggahR2(akses, kunci, buffer, berkas.type);
+    // Publik: simpan URL publik penuh (dipakai langsung oleh <img>/next/image).
+    // Privat: simpan object key (tidak pernah diekspos ke browser).
+    return { url: hasil.url ?? hasil.objectKey, galat: null };
   } catch {
     return { url: null, galat: "Unggah berkas gagal. Periksa koneksi lalu coba lagi." };
   }
 }
 
-/** Menghapus aset publik tanpa membiarkan kegagalan Blob menggagalkan mutation DB. */
-export async function hapusBerkasPublik(urls: string[]): Promise<boolean> {
-  const aset = urls.filter((url) => {
-    try {
-      const parsed = new URL(url);
-      return parsed.protocol === "https:" && parsed.hostname.endsWith(".public.blob.vercel-storage.com");
-    } catch {
-      return false;
-    }
-  });
-  if (aset.length === 0) return true;
+/** Selesaikan referensi tabel DB menjadi kunci R2 untuk operasi hapus. */
+function referensiKeKunci(referensi: string): string | null {
+  return keKunciPrivat(referensi);
+}
 
-  const token = tokenBlob("public");
-  if (!token) return false;
+/** Menghapus aset publik dari R2 tanpa membiarkan kegagalan menggagalkan mutation DB. */
+export async function hapusBerkasPublik(referensi: string[]): Promise<boolean> {
+  const kunci = referensi.map(referensiKeKunci).filter((k): k is string => Boolean(k));
+  if (kunci.length === 0) return true;
 
   try {
-    await del(aset, { token });
+    await Promise.all(kunci.map((k) => hapusR2("public", k)));
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/** Menghapus satu objek privat (lampiran pengaduan). */
+export async function hapusBerkasPrivat(referensi: string): Promise<boolean> {
+  const kunci = referensiKeKunci(referensi);
+  if (!kunci) return true;
+  try {
+    await hapusR2("private", kunci);
     return true;
   } catch {
     return false;

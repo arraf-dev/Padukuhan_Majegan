@@ -93,7 +93,7 @@ export default async function KelolaLayanan({
                       className={`${tombol("sekunder", "kecil")} border-daun`}
                     >
                       <Ikon nama="surat" ukuran={13} />
-                      Sunting
+                      Edit
                     </Link>
                     <Link
                       href={mintaHapus ? "/admin/layanan" : `/admin/layanan?konfirmasi=${l.id}`}

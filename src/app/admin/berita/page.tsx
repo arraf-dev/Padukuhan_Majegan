@@ -105,7 +105,7 @@ export default async function KelolaBerita({
                       className={`${tombol("sekunder", "kecil")} border-daun`}
                     >
                       <Ikon nama="berita" ukuran={13} />
-                      Sunting
+                      Edit
                     </Link>
                     {/* Hapus dua langkah — tanpa dialog JS, panel konfirmasinya
                         muncul di baris ini juga. */}

@@ -108,7 +108,7 @@ export default async function KelolaGaleri({
 
                 <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-garis pt-3">
                   {!draft && <Link href={`/galeri/${album.slug}`} className={tombol("sekunder", "kecil")}>Lihat</Link>}
-                  <Link href={`/admin/galeri/${album.id}`} className={`${tombol("sekunder", "kecil")} border-daun`}>Sunting</Link>
+                  <Link href={`/admin/galeri/${album.id}`} className={`${tombol("sekunder", "kecil")} border-daun`}>Edit</Link>
                   <form action={ubahStatusAlbum}>
                     <input type="hidden" name="id" value={album.id} />
                     <input type="hidden" name="status" value={draft ? "terbit" : "draft"} />

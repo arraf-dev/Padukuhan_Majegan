@@ -18,6 +18,7 @@ const pesanGalat: Record<string, string> = {
   identitas: "Nama lengkap dan nomor HP/WhatsApp wajib diisi.",
   lampiran: "Lampiran harus berformat JPG, PNG, atau WEBP dengan ukuran maksimal 4 MB.",
   penyimpanan: "Penyimpanan lampiran belum tersedia. Silakan kirim laporan tanpa lampiran terlebih dahulu.",
+  gagal: "Laporan gagal tersimpan. Silakan coba lagi dalam beberapa saat.",
   jeda: "Laporan sebelumnya baru saja terkirim. Tunggu sebentar sebelum mengirim laporan berikutnya.",
 };
 

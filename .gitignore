@@ -7,6 +7,8 @@ next-env.d.ts
 !.env.example
 .vercel
 .DS_Store
+dev.log
+output/
 TESTCASE.md
 .codex/
 .mcp.json

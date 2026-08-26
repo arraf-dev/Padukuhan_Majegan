@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { periksaBerkas } from "@/lib/berkas";
 import { db } from "@/lib/db";
 import { NAMA_JEBAKAN, bolehKirim, periksaPengaduan } from "@/lib/pengaduan";
-import { unggahBerkas } from "@/lib/unggah";
+import { hapusBerkasPrivat, unggahBerkas } from "@/lib/unggah";
 
 // Penulisan ke DB ditaruh di sini, bukan di `lib/pengaduan.ts` — berkas itu
 // harus tetap bebas impor Prisma supaya `npm test` (node --test) bisa
@@ -36,16 +36,22 @@ export async function kirimPengaduan(data: FormData) {
   const unggahan = await unggahBerkas(data, "lampiranBerkas", "pengaduan", "gambar", "private");
   if (unggahan.galat) redirect("/pengaduan?galat=penyimpanan");
 
-  await db.pengaduan.create({
-    data: {
-      kategori: teks(data, "kategori"),
-      lokasi: atauNull(teks(data, "lokasi")),
-      isi: teks(data, "isi"),
-      lampiranUrl: unggahan.url,
-      namaPelapor: teks(data, "nama"),
-      kontak: teks(data, "kontak"),
-    },
-  });
+  try {
+    await db.pengaduan.create({
+      data: {
+        kategori: teks(data, "kategori"),
+        lokasi: atauNull(teks(data, "lokasi")),
+        isi: teks(data, "isi"),
+        lampiranUrl: unggahan.url,
+        namaPelapor: teks(data, "nama"),
+        kontak: teks(data, "kontak"),
+      },
+    });
+  } catch {
+    // Objek sudah terlanjur terunggah ke R2; bersihkan agar tidak jadi orphan.
+    if (unggahan.url) await hapusBerkasPrivat(unggahan.url);
+    redirect("/pengaduan?galat=gagal");
+  }
 
   redirect("/pengaduan/terkirim");
 }

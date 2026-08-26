@@ -26,7 +26,7 @@
 - [x] Rebuild landing page dengan video hero Majegan fullscreen, header adaptif, fallback poster, dan reduced-motion yang aman.
 - [x] Verifikasi landing page pada 320 px, 375 px, dan 1366 px; CTA, header scroll, halaman publik lain, dan redirect admin lulus regresi browser.
 - [ ] Validasi tampilan video hero pada ponsel fisik dan minta persetujuan crop Joglo serta komposisi hero kepada Pak Dukuh.
-- [ ] Uji upload end-to-end untuk sampul berita, foto perangkat, lampiran pengaduan privat, dan templat layanan.
+- [ ] Uji upload end-to-end untuk sampul berita, foto perangkat, lampiran pengaduan privat, dan templat layanan (konfigurasi R2 lokal sudah terverifikasi; menunggu environment Vercel Production).
 - [ ] Uji login dan seluruh CRUD production dengan akun Admin dan SuperAdmin.
 - [ ] Tangani temuan `npm audit` secara terkontrol, lalu ulangi seluruh quality gate.
 
@@ -104,7 +104,7 @@
 ## Minggu 5 (20–26 Ags) — Polish, Responsif, Performa, Testing
 
 **Teknis**
-- [-] Review responsif mobile-first: audit browser otomatis lulus; uji ponsel fisik masih tertunda
+- [-] Review responsif mobile-first: audit browser otomatis lulus (ulang 25 Ags — 9 publik × 4 viewport + 14 admin × 3 viewport; overflow dashboard 320 px diperbaiki); uji ponsel fisik masih tertunda
 - [ ] Terapkan ISR/static generation untuk halaman publik
 - [x] Metadata & sitemap dasar (SEO)
 - [ ] Cek validasi input & proteksi dasar (XSS/injeksi) di semua form
@@ -158,7 +158,7 @@ Status ini mencerminkan audit repository dan production per 14 Agustus 2026.
 | 14 | Hapus pelacakan publik dan kode tiket sesuai revisi Pak Dukuh | BE | `app/(publik)/pengaduan` | ✅ | 13 |
 | 15 | Rate limit + honeypot form pengaduan (anti-spam) | BE | `lib/pengaduan.ts` | ✅ | 13 |
 | 16 | Admin CRUD berita + status Draft/Terbit (ADM-1) | BE | `app/admin/berita/**` | ✅ | 10, 12 |
-| 17 | Upload via Vercel Blob (ADM-5) | BE | `lib/unggah.ts` | 🟡 Store/token dan uji E2E tertunda | 12 |
+| 17 | Upload via Cloudflare R2 (ADM-5) | BE | `lib/unggah.ts`, `lib/r2.ts` | 🟡 Kode selesai; menunggu bucket + kredensial dan uji E2E | 12 |
 | 18 | Admin kelola profil & struktur organisasi (ADM-2) | BE | `app/admin/profil` | ✅ | 16, 17 |
 | 19 | Admin kelola layanan (ADM-3) | BE | `app/admin/layanan` | ✅ | 16 |
 | 20 | Admin filter baca, detail, lampiran, dan pembatasan identitas pelapor | BE | `app/admin/pengaduan` | ✅ | 13, 16 |

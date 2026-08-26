@@ -6,7 +6,7 @@ import { wajibMasuk } from "@/lib/sesi";
 import { KerangkaKomposer } from "@/app/admin/kerangka";
 import { simpanBerita } from "@/app/admin/berita/aksi";
 
-export const metadata: Metadata = { title: "Sunting Berita" };
+export const metadata: Metadata = { title: "Edit Berita" };
 
 export default async function SuntingBerita({
   params,
@@ -35,7 +35,7 @@ export default async function SuntingBerita({
   if (!b) notFound();
 
   return (
-    <KerangkaKomposer judul="Sunting Berita" kembali="/admin/berita" nama={nama} peran={peran}>
+    <KerangkaKomposer judul="Edit Berita" kembali="/admin/berita" nama={nama} peran={peran}>
       <Komposer
         aksi={simpanBerita}
         galat={galat}

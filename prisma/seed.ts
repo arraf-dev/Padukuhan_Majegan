@@ -12,6 +12,7 @@ import { loadEnvFile } from "node:process";
 import { hashKataSandi } from "../src/lib/auth.ts";
 import { slugkan } from "../src/lib/teks.ts";
 import { albumGaleriDemo } from "../src/content/galeri.ts";
+import { kategoriPotensiDemo } from "../src/content/potensi.ts";
 import {
   berita,
   kategoriBerita,
@@ -124,6 +125,86 @@ async function main() {
           size: f.size,
         },
       });
+    }
+  }
+
+  /* ---------- Potensi Majegan ---------- */
+  // Data ini sengaja berlabel contoh dan akan ditimpa ketika konten resmi
+  // dimasukkan melalui panel admin. Jangan jalankan seed ulang di production.
+  for (const p of kategoriPotensiDemo) {
+    const kategori = await db.potensiKategori.upsert({
+      where: { kode: p.kode },
+      update: {
+        label: p.label,
+        judul: p.judul,
+        pengantar: p.pengantar,
+        deskripsi: p.deskripsi,
+        gambarUrl: p.gambarUrl,
+        urutan: p.urutan,
+      },
+      create: {
+        kode: p.kode,
+        label: p.label,
+        judul: p.judul,
+        pengantar: p.pengantar,
+        deskripsi: p.deskripsi,
+        gambarUrl: p.gambarUrl,
+        urutan: p.urutan,
+      },
+      select: { id: true },
+    });
+
+    await db.potensiInfografis.deleteMany({ where: { kategoriId: kategori.id } });
+    await db.potensiInfografis.createMany({
+      data: p.infografis.map((s) => ({
+        kategoriId: kategori.id,
+        label: s.label,
+        nilai: s.nilai,
+        satuan: s.satuan,
+        urutan: s.urutan,
+      })),
+    });
+
+    for (const [urutan, item] of p.items.entries()) {
+      const potensi = await db.potensi.upsert({
+        where: { slug: slugkan(item.judul) },
+        update: {
+          kategoriId: kategori.id,
+          judul: item.judul,
+          ringkasan: item.ringkasan,
+          deskripsi: item.deskripsi,
+          gambarUrl: item.gambarUrl,
+          subkategori: item.subkategori ?? null,
+          produk: item.produk ?? null,
+          lokasi: item.lokasi ?? null,
+          kontak: item.kontak ?? null,
+          status: "terbit",
+          urutan,
+        },
+        create: {
+          kategoriId: kategori.id,
+          judul: item.judul,
+          slug: slugkan(item.judul),
+          ringkasan: item.ringkasan,
+          deskripsi: item.deskripsi,
+          gambarUrl: item.gambarUrl,
+          subkategori: item.subkategori ?? null,
+          produk: item.produk ?? null,
+          lokasi: item.lokasi ?? null,
+          kontak: item.kontak ?? null,
+          status: "terbit",
+          urutan,
+        },
+        select: { id: true },
+      });
+
+      await db.albumGaleri.updateMany({ where: { potensiId: potensi.id }, data: { potensiId: null } });
+      if (item.albumSlug) {
+        await db.albumGaleri.updateMany({
+          where: { slug: item.albumSlug },
+          data: { potensiId: potensi.id },
+        });
+      }
     }
   }
 
