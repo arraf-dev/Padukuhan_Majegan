@@ -9,7 +9,7 @@ export function BorangLayanan({ awal, galat }: { awal?: LayananForm; galat?: str
   return (
     <form action={simpanLayanan} className="flex max-w-3xl flex-col gap-4 lg:max-w-4xl lg:gap-5">
       {awal && <input type="hidden" name="id" value={awal.id} />}
-      {galat && <p role="alert" className="rounded-xl border border-bata/35 bg-bata/10 px-4 py-3 text-[13px] font-semibold text-bata">{galat === "berkas" ? "Templat harus berformat PDF, JPG, PNG, atau WEBP dengan ukuran maksimal 4 MB." : "Nama, deskripsi, dan minimal satu persyaratan wajib diisi."}</p>}
+      {galat && <p role="alert" className="rounded-xl border border-bata/35 bg-bata/10 px-4 py-3 text-[13px] font-semibold text-bata">{galat === "berkas" ? "Templat harus berformat PDF, JPG, PNG, atau WEBP dengan ukuran maksimal 4 MB." : galat === "panjang" ? "Nama maks. 200, deskripsi maks. 2.000 karakter, 50 persyaratan & 30 alur." : "Nama, deskripsi, dan minimal satu persyaratan wajib diisi."}</p>}
 
       <fieldset className="rounded-xl border border-garis bg-kertas p-4 lg:p-5">
         <legend className="px-1 text-[11px] font-bold tracking-[.1em] text-emas-tua">INFORMASI DASAR</legend>

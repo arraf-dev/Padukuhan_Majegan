@@ -11,9 +11,6 @@ import { getLatestAlbums } from "@/lib/galeri";
 import { type KelompokUsia, statistikPenduduk } from "@/lib/statistik";
 import { tanggalPendek } from "@/lib/tanggal";
 
-// ponytail: sama seperti halaman Berita — on-demand dulu, ISR di Minggu 5.
-export const dynamic = "force-dynamic";
-
 export default async function Beranda() {
   const [terbaru, { ringkasan, usia }, albumTerbaru] = await Promise.all([
     beritaTerbit(3),

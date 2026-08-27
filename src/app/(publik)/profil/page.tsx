@@ -7,10 +7,6 @@ import { profilDesa } from "@/lib/profil";
 
 export const metadata: Metadata = { title: "Profil" };
 
-// Isi halaman ini disunting dari panel admin, jadi dirender saat diminta.
-// Pindah ke ISR (`revalidate`) di Minggu 5 — lihat TASKS.md bagian Minggu 5.
-export const dynamic = "force-dynamic";
-
 const bagian = [
   { id: "sejarah", label: "Sejarah" },
   { id: "visi-misi", label: "Visi & Misi" },

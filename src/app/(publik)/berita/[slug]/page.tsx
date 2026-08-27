@@ -9,10 +9,10 @@ import { tanggalPanjang } from "@/lib/tanggal";
 
 type Params = { params: Promise<{ slug: string }> };
 
-// ponytail: `generateStaticParams` dibuang, bukan diganti query — daftar slug-nya
-// berubah tiap admin menayangkan berita. Kembali ke prerender di Minggu 5 saat
-// ISR dipasang dan DB sudah pasti hidup ketika build jalan.
-export const dynamic = "force-dynamic";
+export async function generateStaticParams() {
+  const terbit = await beritaTerbit();
+  return terbit.map((b) => ({ slug: b.slug }));
+}
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const b = await beritaSlug((await params).slug);

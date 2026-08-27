@@ -5,7 +5,6 @@ import { kartu } from "@/components/primitif";
 import { type KelompokUsia, type RincianStatistik, statistikPenduduk, TAHUN_DATA } from "@/lib/statistik";
 
 export const metadata: Metadata = { title: "Statistik Penduduk" };
-export const dynamic = "force-dynamic";
 
 export default async function Statistik() {
   const { ringkasan, usia, jenisKelamin, pekerjaan, pendidikan } = await statistikPenduduk();

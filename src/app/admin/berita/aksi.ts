@@ -4,11 +4,10 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { kategoriBerita } from "@/content/majegan";
 import { db } from "@/lib/db";
+import { ambilTeks as teks, PANJANG, sahPanjang } from "@/lib/form";
 import { ringkasDari, slugkan } from "@/lib/teks";
 import { wajibMasuk } from "@/lib/sesi";
 import { unggahBerkas } from "@/lib/unggah";
-
-const teks = (fd: FormData, nama: string) => String(fd.get(nama) ?? "").trim();
 
 /** Halaman publik yang ikut berubah tiap berita disimpan atau dihapus. */
 function segarkan(slug: string) {
@@ -49,6 +48,9 @@ export async function simpanBerita(data: FormData) {
 
   const kembaliKe = id ? `/admin/berita/${id}` : "/admin/berita/baru";
   if (!judul || !konten || !namaKategori) redirect(`${kembaliKe}?galat=lengkapi`);
+  if (!sahPanjang(judul, PANJANG.judul) || !sahPanjang(konten, PANJANG.konten)) {
+    redirect(`${kembaliKe}?galat=panjang`);
+  }
 
   const unggahan = await unggahBerkas(data, "gambarSampulBerkas", "berita", "gambar");
   if (unggahan.galat) redirect(`${kembaliKe}?galat=berkas`);
@@ -74,6 +76,7 @@ export async function simpanBerita(data: FormData) {
     // Slug lama dipertahankan meski judul disunting — tautan yang sudah
     // tersebar di WhatsApp warga tidak boleh mati karena perbaikan typo.
     const lama = await db.berita.findUnique({ where: { id }, select: { terbitPada: true } });
+    if (!lama) redirect("/admin/berita?galat=tidak-ditemukan");
     const baris = await db.berita.update({
       where: { id },
       data: {

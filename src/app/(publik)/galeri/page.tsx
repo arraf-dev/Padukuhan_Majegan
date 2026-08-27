@@ -13,8 +13,6 @@ export const metadata: Metadata = {
   alternates: { canonical: "/galeri" },
 };
 
-export const dynamic = "force-dynamic";
-
 const PER_HALAMAN = 9;
 
 const query = (nilai: { kategori?: string; tahun?: number; hal?: number }) => {

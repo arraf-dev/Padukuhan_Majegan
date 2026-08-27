@@ -71,7 +71,9 @@ export function Komposer({
           >
             {galat === "berkas"
               ? "Foto harus berformat JPG, PNG, atau WEBP dengan ukuran maksimal 4 MB."
-              : "Judul, tulisan, dan kategori wajib terisi sebelum disimpan."}
+              : galat === "panjang"
+                ? "Judul maksimal 200 karakter dan tulisan maksimal 2.200 karakter."
+                : "Judul, tulisan, dan kategori wajib terisi sebelum disimpan."}
           </p>
         )}
 

@@ -82,12 +82,15 @@ export function Hitung({ ke, className }: { ke: number; className?: string }) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    let rangka = 0;
     if (diamkanGerak()) {
-      setNilai(ke);
+      // Sekali rAF supaya setState tidak jalan sinkron di dalam effect
+      // (aturan react-hooks/set-state-in-effect), tetapi tetap segera.
+      rangka = requestAnimationFrame(() => setNilai(ke));
       return;
     }
 
-    let rangka = 0;
     const pengamat = new IntersectionObserver(
       ([e]) => {
         if (!e.isIntersecting) return;

@@ -7,14 +7,17 @@
 
 ---
 
-## Prioritas Dekat — Diperbarui 14 Agustus 2026
+## Prioritas Dekat — Diperbarui 27 Agustus 2026
 
 - [x] Hilangkan hydration warning pada animasi reveal.
 - [x] Rapikan filter pengaduan agar ketiga kategori terlihat pada mobile.
 - [x] Tambahkan favicon/ikon aplikasi.
 - [x] Audit seluruh halaman admin pada viewport 320 px dan 375 px.
 - [x] Audit halaman publik utama pada viewport 390 px, 768 px, dan 1366 px.
-- [x] Jalankan Prisma validate, 32 test, typecheck, production build, dan diff check.
+- [x] Jalankan Prisma validate, 48 test, typecheck, lint (ESLint), production build (ISR), dan diff check.
+- [x] Terapkan ISR/static generation untuk halaman publik (Minggu 5): `/`, `/profil`, `/potensi`, `/statistik`, `/berita/[slug]`, `/galeri/[slug]`, `/sitemap.xml`; halaman ber-`searchParams` (`/berita`, `/galeri`, `/layanan`, `/pengaduan`) tetap on-demand.
+- [x] Cek validasi input & proteksi dasar di semua form: batas panjang server terpusat (`lib/form.ts`), rate-limit login admin (`lib/limiter.ts`), magic-bytes dokumen PDF, validasi kontak pengaduan, whitelist slug naskah, rentang tahun/nilai statistik, penghapusan aset R2 perangkat, guard id basi.
+- [x] ESLint + script `lint` terpasang; 6 temuan awal dibereskan.
 - [ ] Uji pada ponsel fisik 320/375 px bersama calon admin.
 - [ ] Minta persetujuan Pak Dukuh untuk menu mobile, kartu Struktur Perangkat, dan visual statistik.
 - [ ] Masukkan serta verifikasi data resmi, lalu ubah `DATA_MODE` menjadi `official`.

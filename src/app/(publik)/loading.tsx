@@ -1,7 +1,8 @@
 /**
  * Umpan balik saat halaman publik menunggu data.
  *
- * Semua halaman ber-DB memakai `force-dynamic`, jadi tanpa ini layar diam
+ * Halaman publik memakai ISR (lihat `layout.tsx`), tapi halaman ber-query
+ * tetap dirender ulang saat permintaan pertama, jadi tanpa ini layar diam
  * sampai server selesai — terasa lama di koneksi desa yang lambat.
  *
  * ponytail: satu skeleton untuk semua rute publik, bukan satu per halaman.

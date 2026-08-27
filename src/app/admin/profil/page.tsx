@@ -18,6 +18,9 @@ const kabar: Record<string, string> = {
   "galat-naskah": "Judul dan isi naskah tidak boleh kosong.",
   "galat-perangkat": "Nama dan jabatan wajib diisi.",
   "galat-berkas": "Foto harus berformat JPG, PNG, atau WEBP dengan ukuran maksimal 4 MB.",
+  "galat-panjang": "Isian melebihi batas panjang yang diizinkan.",
+  "galat-slug": "Naskah yang diminta tidak dikenal.",
+  "galat-tidak-ditemukan": "Data tidak ditemukan — mungkin sudah dihapus dari sesi lain.",
 };
 
 /** Naskah yang wajib ada; ditampilkan meski barisnya belum pernah dibuat. */

@@ -38,3 +38,19 @@ export async function periksaIsiGambar(berkas: File): Promise<string | null> {
 
   return "Isi berkas gambar tidak valid.";
 }
+
+/**
+ * Signature untuk dokumen (templat layanan). PDF harus sungguh diawali `%PDF-`;
+ * dokumen yang diklaim bergambar dicek ulang sebagai gambar. MIME multipart
+ * bisa dipalsukan, jadi ini penjaga terakhir sebelum berkas disimpan.
+ */
+export async function periksaIsiDokumen(berkas: File): Promise<string | null> {
+  if (berkas.type === "application/pdf") {
+    const bytes = new Uint8Array(await berkas.slice(0, 5).arrayBuffer());
+    const awal = [0x25, 0x50, 0x44, 0x46, 0x2d]; // "%PDF-"
+    if (awal.every((byte, i) => bytes[i] === byte)) return null;
+    return "Isi berkas PDF tidak valid.";
+  }
+
+  return periksaIsiGambar(berkas);
+}

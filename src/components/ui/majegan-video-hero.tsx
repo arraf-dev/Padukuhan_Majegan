@@ -51,7 +51,10 @@ export function MajeganVideoHero({
   const kurangiGerak = sudahTerpasang && preferensiKurangiGerak === true;
 
   useEffect(() => {
-    setSudahTerpasang(true);
+    // Sekali rAF: menandai hydrasi selesai tanpa setState sinkron di effect
+    // (aturan react-hooks/set-state-in-effect).
+    const rangka = requestAnimationFrame(() => setSudahTerpasang(true));
+    return () => cancelAnimationFrame(rangka);
   }, []);
 
   useEffect(() => {

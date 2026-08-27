@@ -45,8 +45,11 @@ export function UnggahGaleri({ awal }: { awal?: AlbumGaleri }) {
   const urlsSementara = useRef(new Set<string>());
 
   useEffect(() => {
+    // Salin isi ref ke variabel lokal: cleanup jalang ditautkan ke koleksi yang
+    // sama, bukan ke `current` yang bisa berubah saat komponen dilepas.
+    const urls = urlsSementara.current;
     return () => {
-      for (const url of urlsSementara.current) URL.revokeObjectURL(url);
+      for (const url of urls) URL.revokeObjectURL(url);
     };
   }, []);
 

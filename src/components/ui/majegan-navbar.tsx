@@ -26,9 +26,13 @@ export function MajeganNavbar({
   const terang = landing && !scrolled;
   const hijau = terang || !landing;
 
-  useEffect(() => {
+  // Menutup menu saat pindah halaman: sesuaikan state selama render (pola
+  // resmi React), bukan lewat effect yang memicu render tambahan.
+  const [pathnameTampil, setPathnameTampil] = useState(pathname);
+  if (pathname !== pathnameTampil) {
+    setPathnameTampil(pathname);
     setTerbuka(false);
-  }, [pathname]);
+  }
 
   useEffect(() => {
     if (!terbuka) return;

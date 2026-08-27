@@ -14,7 +14,7 @@ const form = (isi: Record<string, string>) => {
   return fd;
 };
 
-const lengkap = { kategori: "Kebersihan", isi: "Sampah menumpuk", nama: "Budi", kontak: "0812" };
+const lengkap = { kategori: "Kebersihan", isi: "Sampah menumpuk", nama: "Budi", kontak: "0812-3456-7890" };
 
 test("laporan lengkap lolos", () => {
   assert.equal(periksaPengaduan(form(lengkap)), null);
@@ -33,6 +33,18 @@ test("nama dan kontak selalu wajib", () => {
   assert.equal(periksaPengaduan(form({ ...lengkap, nama: "" })), "identitas");
   assert.equal(periksaPengaduan(form({ ...lengkap, kontak: "" })), "identitas");
   assert.equal(periksaPengaduan(form({ ...lengkap, nama: "", kontak: "" })), "identitas");
+});
+
+test("isi dan nama tidak boleh melebihi batas panjang", () => {
+  assert.equal(periksaPengaduan(form({ ...lengkap, isi: "x".repeat(5001) })), "isi");
+  assert.equal(periksaPengaduan(form({ ...lengkap, nama: "x".repeat(101) })), "identitas");
+});
+
+test("kontak harus nomor telepon sesuai format", () => {
+  assert.equal(periksaPengaduan(form({ ...lengkap, kontak: "0812" })), "identitas");
+  assert.equal(periksaPengaduan(form({ ...lengkap, kontak: "abc" })), "identitas");
+  assert.equal(periksaPengaduan(form({ ...lengkap, kontak: "x".repeat(26) })), "identitas");
+  assert.equal(periksaPengaduan(form({ ...lengkap, kontak: "+62 812-3456-7890" })), null);
 });
 
 test("satu IP kena jeda, IP lain tidak terpengaruh", () => {

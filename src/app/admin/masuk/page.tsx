@@ -33,7 +33,9 @@ export default async function Masuk({
               role="alert"
               className="mb-5 w-full rounded-xl border border-bata/35 bg-bata/10 px-4 py-3 text-[12.5px] leading-relaxed text-bata"
             >
-              Email atau kata sandi salah. Coba lagi, atau hubungi Pak Dukuh bila lupa sandi.
+              {galat === "sering"
+                ? "Terlalu banyak percobaan gagal. Tunggu sekitar 15 menit, lalu coba lagi."
+                : "Email atau kata sandi salah. Coba lagi, atau hubungi Pak Dukuh bila lupa sandi."}
             </p>
           )}
 

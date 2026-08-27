@@ -6,7 +6,7 @@ import { semuaLayanan } from "@/lib/layanan";
 
 // Daftar slug berita berubah tiap admin menayangkan atau menghapus, jadi sitemap
 // statis akan menyebut halaman yang sudah mati.
-export const dynamic = "force-dynamic";
+export const revalidate = 3600;
 
 /** Halaman publik + semua slug berita & layanan. Panel /admin sengaja tidak masuk. */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

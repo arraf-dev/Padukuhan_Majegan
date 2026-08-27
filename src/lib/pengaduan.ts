@@ -7,6 +7,17 @@ export type FilterBaca = "belum" | "sudah";
 
 const teks = (fd: FormData, nama: string) => String(fd.get(nama) ?? "").trim();
 
+/** Bisa diisi pengguna; dibatasi supaya kolom ini tidak dipakai menyimpang. */
+const BATAS_ISI = 5000;
+const BATAS_NAMA = 100;
+const BATAS_KONTAK = 25;
+
+/** Nomor telepon/WA: digit dengan awalan opsional `+`, spasi/titik/kurawal. */
+const kontakSah = (nilai: string): boolean => {
+  const digit = nilai.replace(/\D/g, "");
+  return nilai.length <= BATAS_KONTAK && digit.length >= 8 && /^[+)(\s\d.-]+$/.test(nilai);
+};
+
 /**
  * Validasi di sisi server — jangan mengandalkan `required` di HTML saja.
  * Mengembalikan kode galat pertama, atau null bila lolos.
@@ -15,9 +26,12 @@ export function periksaPengaduan(fd: FormData): GalatPengaduan | null {
   const kategori = teks(fd, "kategori");
   if (!kategoriPengaduan.some((k) => k === kategori)) return "kategori";
 
-  if (!teks(fd, "isi")) return "isi";
+  const isi = teks(fd, "isi");
+  if (!isi || isi.length > BATAS_ISI) return "isi";
 
-  if (!teks(fd, "nama") || !teks(fd, "kontak")) return "identitas";
+  const nama = teks(fd, "nama");
+  const kontak = teks(fd, "kontak");
+  if (!nama || nama.length > BATAS_NAMA || !kontakSah(kontak)) return "identitas";
 
   return null;
 }

@@ -14,20 +14,21 @@ const kabar: Record<string, string> = {
   baru: "Layanan baru tersimpan — sudah tampil di halaman /layanan.",
   sunting: "Perubahan layanan tersimpan.",
   hapus: "Layanan dihapus.",
+  "galat-tidak-ditemukan": "Layanan tidak ditemukan — mungkin sudah dihapus dari sesi lain.",
 };
 
 export default async function KelolaLayanan({
   searchParams,
 }: {
-  searchParams: Promise<{ tersimpan?: string; terhapus?: string; konfirmasi?: string; q?: string }>;
+  searchParams: Promise<{ tersimpan?: string; terhapus?: string; konfirmasi?: string; q?: string; galat?: string }>;
 }) {
   const { nama, peran } = await wajibSuperadmin();
-  const { tersimpan, terhapus, konfirmasi, q } = await searchParams;
+  const { tersimpan, terhapus, konfirmasi, q, galat } = await searchParams;
 
   const semua = await daftarLayananAdmin();
   const cari = q?.trim().toLowerCase() ?? "";
   const daftar = cari ? semua.filter((l) => `${l.namaLayanan} ${l.deskripsi}`.toLowerCase().includes(cari)) : semua;
-  const pesan = terhapus ? kabar.hapus : tersimpan ? kabar[tersimpan] : undefined;
+  const pesan = terhapus ? kabar.hapus : galat ? kabar[`galat-${galat}`] : tersimpan ? kabar[tersimpan] : undefined;
 
   return (
     <Kerangka peran={peran} nama={nama}>
@@ -43,8 +44,12 @@ export default async function KelolaLayanan({
 
       {pesan && (
         <p
-          role="status"
-          className="mb-4 rounded-xl border border-emas-garis bg-emas-muda px-4 py-3 text-[13px] font-semibold text-emas-teks"
+          role={galat ? "alert" : "status"}
+          className={`mb-4 rounded-xl border px-4 py-3 text-[13px] font-semibold ${
+            galat
+              ? "border-bata/35 bg-bata/10 text-bata"
+              : "border-emas-garis bg-emas-muda text-emas-teks"
+          }`}
         >
           {pesan}
         </p>

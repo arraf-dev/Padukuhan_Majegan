@@ -6,10 +6,6 @@ import { CentangKotak, Ikon } from "@/components/ikon";
 import { kartu, kartuPutus, tombol } from "@/components/primitif";
 import { semuaLayanan } from "@/lib/layanan";
 
-// Daftar layanan disunting dari panel admin; `generateStaticParams` dilepas
-// karena prerender saat build menuntut koneksi DB. ISR menyusul di Minggu 5.
-export const dynamic = "force-dynamic";
-
 type Params = {
   params: Promise<{ slug?: string[] }>;
   searchParams: Promise<{ q?: string }>;

@@ -1,1 +1,3 @@
-export default { plugins: { "@tailwindcss/postcss": {} } };
+const konfigurasi = { plugins: { "@tailwindcss/postcss": {} } };
+
+export default konfigurasi;

@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { periksaBerkas, periksaIsiGambar, UKURAN_BERKAS_MAKS } from "./berkas.ts";
+import { periksaBerkas, periksaIsiDokumen, periksaIsiGambar, UKURAN_BERKAS_MAKS } from "./berkas.ts";
 
 const file = (type: string, size = 1) => new File([new Uint8Array(size)], "berkas", { type });
 
@@ -30,4 +30,30 @@ test("memeriksa signature binary gambar, bukan MIME saja", async () => {
 
   assert.equal(await periksaIsiGambar(png), null);
   assert.match((await periksaIsiGambar(palsu)) ?? "", /tidak valid/);
+});
+
+test("dokumen PDF harus diawali header %PDF", async () => {
+  const pdf = new File(
+    [new Uint8Array([0x25, 0x50, 0x44, 0x46, 0x2d, 0x31, 0x2e, 0x37])],
+    "templat.pdf",
+    { type: "application/pdf" },
+  );
+  const htmlPalsu = new File([new Uint8Array([0x3c, 0x21, 0x44, 0x4f, 0x43])], "templat.pdf", {
+    type: "application/pdf",
+  });
+
+  assert.equal(await periksaIsiDokumen(pdf), null);
+  assert.match((await periksaIsiDokumen(htmlPalsu)) ?? "", /PDF/);
+});
+
+test("dokumen bergambar tetap dicek sebagai gambar", async () => {
+  const sigin = new File(
+    [new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])],
+    "gambar.png",
+    { type: "image/png" },
+  );
+  const palsu = new File([new Uint8Array([1, 2, 3, 4])], "gambar.png", { type: "image/png" });
+
+  assert.equal(await periksaIsiDokumen(sigin), null);
+  assert.match((await periksaIsiDokumen(palsu)) ?? "", /tidak valid/);
 });

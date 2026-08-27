@@ -9,10 +9,6 @@ import { tanggalPendekTahun } from "@/lib/tanggal";
 
 export const metadata: Metadata = { title: "Kabar Majegan" };
 
-// ponytail: dirender on-demand dulu supaya `next build` tidak menuntut koneksi
-// DB. Pindah ke ISR (`revalidate`) di Minggu 5 — lihat TASKS.md bagian Minggu 5.
-export const dynamic = "force-dynamic";
-
 const PER_HALAMAN = 6;
 
 export default async function Berita({

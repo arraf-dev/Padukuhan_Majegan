@@ -14,15 +14,16 @@ const kabar: Record<string, string> = {
   terbit: "Berita ditayangkan — sudah tampil di halaman publik.",
   draft: "Tersimpan sebagai draf — belum tampil ke warga.",
   hapus: "Berita dihapus.",
+  "galat-tidak-ditemukan": "Berita tidak ditemukan — mungkin sudah dihapus dari sesi lain.",
 };
 
 export default async function KelolaBerita({
   searchParams,
 }: {
-  searchParams: Promise<{ tersimpan?: string; terhapus?: string; konfirmasi?: string }>;
+  searchParams: Promise<{ tersimpan?: string; terhapus?: string; konfirmasi?: string; galat?: string }>;
 }) {
   const { nama, peran } = await wajibMasuk();
-  const { tersimpan, terhapus, konfirmasi } = await searchParams;
+  const { tersimpan, terhapus, konfirmasi, galat } = await searchParams;
 
   const daftar = await db.berita.findMany({
     orderBy: [{ terbitPada: "desc" }, { dibuatPada: "desc" }],
@@ -37,7 +38,7 @@ export default async function KelolaBerita({
     },
   });
 
-  const pesan = terhapus ? kabar.hapus : tersimpan ? kabar[tersimpan] : undefined;
+  const pesan = terhapus ? kabar.hapus : galat ? kabar[`galat-${galat}`] : tersimpan ? kabar[tersimpan] : undefined;
 
   return (
     <Kerangka peran={peran} nama={nama}>
@@ -53,8 +54,12 @@ export default async function KelolaBerita({
 
       {pesan && (
         <p
-          role="status"
-          className="mb-4 rounded-xl border border-emas-garis bg-emas-muda px-4 py-3 text-[13px] font-semibold text-emas-teks"
+          role={galat ? "alert" : "status"}
+          className={`mb-4 rounded-xl border px-4 py-3 text-[13px] font-semibold ${
+            galat
+              ? "border-bata/35 bg-bata/10 text-bata"
+              : "border-emas-garis bg-emas-muda text-emas-teks"
+          }`}
         >
           {pesan}
         </p>

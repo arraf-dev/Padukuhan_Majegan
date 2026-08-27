@@ -20,6 +20,7 @@ const kabar: Record<string, string> = {
   dinonaktifkan: "Akun dinonaktifkan, bukan dihapus — namanya masih tercatat sebagai penulis berita.",
   hapus: "Akun dihapus.",
   "galat-lengkapi": "Nama dan email wajib diisi.",
+  "galat-panjang": "Nama atau jabatan terlalu panjang (maks. 100 karakter).",
   "galat-sandi-lama": "Sandi lama salah.",
   "galat-sandi-pendek": `Sandi minimal ${PANJANG_SANDI_MIN} karakter.`,
   "galat-tidak-cocok": "Ulangan sandi tidak sama dengan sandi baru.",

@@ -5,12 +5,15 @@ import { GaleriGrid } from "@/components/galeri-grid";
 import { LencanaKategoriGaleri } from "@/components/album-galeri";
 import { Foto } from "@/components/potongan";
 import { tombol } from "@/components/primitif";
-import { getAlbumBySlug, getLatestAlbums } from "@/lib/galeri";
+import { getAllPublishedAlbums, getAlbumBySlug, getLatestAlbums } from "@/lib/galeri";
 import { tanggalPanjang } from "@/lib/tanggal";
 
 type Params = { params: Promise<{ slug: string }> };
 
-export const dynamic = "force-dynamic";
+export async function generateStaticParams() {
+  const album = await getAllPublishedAlbums();
+  return album.map((a) => ({ slug: a.slug }));
+}
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const album = await getAlbumBySlug((await params).slug);

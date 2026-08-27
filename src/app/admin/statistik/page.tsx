@@ -15,6 +15,9 @@ const kabar: Record<string, string> = {
   "galat-label": "Label tidak boleh kosong.",
   "galat-persen": "Persentase kelompok usia harus antara 0 dan 100.",
   "galat-negatif": "Nilai tidak boleh negatif.",
+  "galat-panjang": "Label terlalu panjang (maksimal 120 karakter).",
+  "galat-tahun": "Tahun harus antara 1970 dan 2100.",
+  "galat-nilai": "Nilai terlalu besar — maksimal 100 juta.",
 };
 
 /**

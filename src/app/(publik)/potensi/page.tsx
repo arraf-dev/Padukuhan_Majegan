@@ -10,8 +10,6 @@ export const metadata: Metadata = {
   alternates: { canonical: "/potensi" },
 };
 
-export const dynamic = "force-dynamic";
-
 const GAMBAR_HERO_BAKU = "/gambar/gapura-majegan.svg";
 
 export default async function Potensi() {

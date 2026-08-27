@@ -3,12 +3,11 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
+import { ambilTeks as teks, PANJANG, sahPanjang } from "@/lib/form";
 import { kodePotensiSah, statusPotensiSah } from "@/lib/potensi";
 import { hapusBerkasPublik, unggahBerkas } from "@/lib/unggah";
 import { slugkan } from "@/lib/teks";
 import { wajibMasuk } from "@/lib/sesi";
-
-const teks = (data: FormData, nama: string) => String(data.get(nama) ?? "").trim();
 
 function angka(data: FormData, nama: string, baku = 0) {
   const nilai = Number.parseInt(teks(data, nama), 10);
@@ -44,6 +43,14 @@ function validasiTeks(data: FormData) {
   if (!ringkasan || ringkasan.length > 320) return { galat: "Ringkasan wajib diisi dan maksimal 320 karakter." } as const;
   if (!deskripsi || deskripsi.length > 3000) return { galat: "Deskripsi wajib diisi dan maksimal 3.000 karakter." } as const;
   if (!status) return { galat: "Status Potensi tidak valid." } as const;
+  if (
+    !sahPanjang(teks(data, "subkategori") || "", PANJANG.subkategori) ||
+    !sahPanjang(teks(data, "produk") || "", PANJANG.produk) ||
+    !sahPanjang(teks(data, "lokasi") || "", 150) ||
+    !sahPanjang(teks(data, "kontak") || "", PANJANG.kontak)
+  ) {
+    return { galat: "Isian opsional melebihi batas panjang." } as const;
+  }
 
   return {
     judul,
@@ -83,12 +90,10 @@ export async function simpanPotensi(data: FormData) {
   const gambarUrl = unggahan.url ?? (teks(data, "gambarUrl") || null);
 
   let potensiId = id;
-  let slug = "";
 
   if (id) {
     const lama = await db.potensi.findUnique({ where: { id }, select: { slug: true, gambarUrl: true } });
     if (!lama) redirect("/admin/potensi?galat=tidak-ditemukan");
-    slug = lama.slug;
     await db.potensi.update({
       where: { id },
       data: { ...isi, kategoriId, gambarUrl: gambarUrl ?? lama.gambarUrl },
@@ -96,10 +101,9 @@ export async function simpanPotensi(data: FormData) {
   } else {
     const baru = await db.potensi.create({
       data: { ...isi, kategoriId, gambarUrl, slug: await slugBaru(isi.judul) },
-      select: { id: true, slug: true },
+      select: { id: true },
     });
     potensiId = baru.id;
-    slug = baru.slug;
   }
 
   await db.$transaction(async (tx) => {
@@ -144,6 +148,13 @@ export async function simpanKategoriPotensi(data: FormData) {
   const pengantar = teks(data, "pengantar");
   const deskripsi = teks(data, "deskripsi");
   if (!id || !judul || !pengantar || !deskripsi) redirect("/admin/potensi?galat=kategori-isi");
+  if (
+    !sahPanjang(judul, PANJANG.judul) ||
+    !sahPanjang(pengantar, PANJANG.pengantar) ||
+    !sahPanjang(deskripsi, PANJANG.deskripsi)
+  ) {
+    redirect("/admin/potensi?galat=kategori-isi");
+  }
 
   const unggahan = await unggahBerkas(data, "gambarKategoriBerkas", "potensi/kategori", "gambar");
   if (unggahan.galat) redirect("/admin/potensi?galat=berkas");
@@ -169,10 +180,16 @@ export async function simpanInfografis(data: FormData) {
   const kategoriId = teks(data, "kategoriId");
   const label = teks(data, "label");
   const nilai = angka(data, "nilai", -1);
+  const satuan = teks(data, "satuan");
   if (!kategoriId || !label || nilai < 0) redirect("/admin/potensi?galat=infografis");
+  if (!sahPanjang(label, PANJANG.label) || !sahPanjang(satuan, PANJANG.satuan)) {
+    redirect("/admin/potensi?galat=infografis");
+  }
 
-  const isi = { label, nilai, satuan: teks(data, "satuan") || null, urutan: Math.max(0, angka(data, "urutan")) };
+  const isi = { label, nilai, satuan: satuan || null, urutan: Math.max(0, angka(data, "urutan")) };
   if (id) {
+    const ada = await db.potensiInfografis.findUnique({ where: { id }, select: { id: true } });
+    if (!ada) redirect("/admin/potensi?galat=infografis");
     await db.potensiInfografis.update({ where: { id }, data: isi });
   } else {
     await db.potensiInfografis.upsert({

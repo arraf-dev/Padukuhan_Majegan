@@ -4,9 +4,8 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { emailSah, hashKataSandi, periksaKataSandi, periksaSandiBaru } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { ambilTeks as teks, PANJANG, sahPanjang } from "@/lib/form";
 import { wajibMasuk, wajibSuperadmin } from "@/lib/sesi";
-
-const teks = (fd: FormData, nama: string) => String(fd.get(nama) ?? "").trim();
 
 const kembali = (galat?: string) => `/admin/akun${galat ? `?galat=${galat}` : "?tersimpan=1"}`;
 
@@ -34,6 +33,9 @@ export async function tambahPengguna(data: FormData) {
   const peran = teks(data, "peran") === "superadmin" ? ("superadmin" as const) : ("admin" as const);
 
   if (!nama || !emailSah(email)) redirect(kembali("lengkapi"));
+  if (!sahPanjang(nama, PANJANG.nama) || !sahPanjang(jabatan ?? "", PANJANG.jabatan)) {
+    redirect(kembali("panjang"));
+  }
   if (periksaSandiBaru(sandi)) redirect(kembali("sandi-pendek"));
 
   const ada = await db.pengguna.findUnique({ where: { email }, select: { id: true } });
@@ -58,6 +60,9 @@ export async function simpanPengguna(data: FormData) {
   const aktif = data.get("aktif") === "on";
 
   if (!id || !nama) redirect(kembali("lengkapi"));
+  if (!sahPanjang(nama, PANJANG.nama) || !sahPanjang(jabatan ?? "", PANJANG.jabatan)) {
+    redirect(kembali("panjang"));
+  }
 
   // Superadmin terakhir tidak boleh diturunkan perannya atau dinonaktifkan.
   const turun = peran !== "superadmin" || !aktif;

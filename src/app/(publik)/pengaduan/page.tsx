@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 const pesanGalat: Record<string, string> = {
   isi: "Isi laporan wajib diisi.",
   kategori: "Pilih salah satu kategori terlebih dahulu.",
-  identitas: "Nama lengkap dan nomor HP/WhatsApp wajib diisi.",
+  identitas: "Nama lengkap dan nomor HP/WhatsApp (8–25 digit) wajib diisi.",
   lampiran: "Lampiran harus berformat JPG, PNG, atau WEBP dengan ukuran maksimal 4 MB.",
   penyimpanan: "Penyimpanan lampiran belum tersedia. Silakan kirim laporan tanpa lampiran terlebih dahulu.",
   gagal: "Laporan gagal tersimpan. Silakan coba lagi dalam beberapa saat.",

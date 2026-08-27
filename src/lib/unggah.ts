@@ -1,4 +1,4 @@
-import { periksaBerkas, periksaIsiGambar, type JenisBerkas } from "./berkas.ts";
+import { periksaBerkas, periksaIsiDokumen, periksaIsiGambar, type JenisBerkas } from "./berkas.ts";
 import { keKunciPrivat, kunciObjek, unggahR2, hapusR2, type AksesStorage } from "./r2.ts";
 
 /**
@@ -23,13 +23,12 @@ export async function unggahBerkas(
   const galat = periksaBerkas(berkas, jenis);
   if (galat) return { url: null, galat };
 
-  // MIME multipart dapat dipalsukan; validasi signature semua gambar agar tidak
-  // ada file non-gambar yang tersimpan. Galeri memanggil pemeriksaan ini secara
-  // eksplisit, tetapi pintu lainnya memakai penjaga terpusat ini.
-  if (jenis === "gambar") {
-    const isiGalat = await periksaIsiGambar(berkas);
-    if (isiGalat) return { url: null, galat: isiGalat };
-  }
+  // MIME multipart dapat dipalsukan; validasi signature semua berkas agar tidak
+  // ada file non-gambar/PDF yang tersimpan. Pintu lain (galeri) memanggil
+  // pemeriksaan ini secara eksplisit, tetapi penjaga terpusat ini menutup
+  // sisanya — termasuk dokumen templat layanan.
+  const isiGalat = jenis === "gambar" ? await periksaIsiGambar(berkas) : await periksaIsiDokumen(berkas);
+  if (isiGalat) return { url: null, galat: isiGalat };
 
   try {
     const kunci = namaObjek ? `${folder}/${namaObjek}` : kunciObjek(folder, berkas.name);

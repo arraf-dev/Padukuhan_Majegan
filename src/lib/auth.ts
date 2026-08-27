@@ -40,8 +40,11 @@ export const PANJANG_SANDI_MIN = 12;
  * komposisi mendorong perangkat dusun menulis sandi di kertas tempel, dan itu
  * menurunkan keamanan, bukan menaikkannya.
  */
+export const PANJANG_SANDI_MAKS = 256;
+
 export function periksaSandiBaru(sandi: string): string | null {
   if (sandi.length < PANJANG_SANDI_MIN) return `Sandi minimal ${PANJANG_SANDI_MIN} karakter.`;
+  if (sandi.length > PANJANG_SANDI_MAKS) return `Sandi maksimal ${PANJANG_SANDI_MAKS} karakter.`;
   if (sandi.trim().length === 0) return "Sandi tidak boleh hanya spasi.";
   return null;
 }
