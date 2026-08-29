@@ -3,8 +3,10 @@ import type { NextConfig } from "next";
 // `standalone` mengemas server + dependensi yang benar-benar dipakai ke
 // `.next/standalone`, jadi VPS tidak perlu menyimpan `node_modules` lengkap.
 // Dijalankan lewat `node .next/standalone/server.js`.
+// Di Vercel dimatikan: adapter build Vercel + `standalone` memicu regresi
+// Next 16.3 (`ENOENT .next/next-server.js.nft.json`, vercel/next.js#96646).
 const nextConfig: NextConfig = {
-  output: "standalone",
+  output: process.env.VERCEL ? undefined : "standalone",
 
   experimental: {
     serverActions: { bodySizeLimit: "5mb" },
