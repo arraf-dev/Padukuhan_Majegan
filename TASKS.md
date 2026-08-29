@@ -31,7 +31,8 @@
 - [ ] Validasi tampilan video hero pada ponsel fisik dan minta persetujuan crop Joglo serta komposisi hero kepada Pak Dukuh.
 - [ ] Uji upload end-to-end untuk sampul berita, foto perangkat, lampiran pengaduan privat, dan templat layanan (konfigurasi R2 lokal sudah terverifikasi; menunggu environment Vercel Production).
 - [ ] Uji login dan seluruh CRUD production dengan akun Admin dan SuperAdmin.
-- [ ] Tangani temuan `npm audit` secara terkontrol, lalu ulangi seluruh quality gate.
+- [x] Tangani temuan `npm audit` secara terkontrol, lalu ulangi seluruh quality gate.
+- [x] Pasang Playwright e2e (`npm run test:e2e`): login/sandi salah, pembuatan akun Admin, siklus berita, dan alur pengaduan + lampiran privat; jalankan untuk pertama kali begitu kredensial `.env.e2e` terisi.
 
 ---
 

@@ -5,10 +5,14 @@ next-env.d.ts
 *.tsbuildinfo
 .env*
 !.env.example
+!.env.e2e.example
 .vercel
 .DS_Store
 dev.log
 output/
+test-results/
+playwright-report/
+playwright/.cache/
 TESTCASE.md
 .codex/
 .mcp.json

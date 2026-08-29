@@ -53,8 +53,12 @@ DATABASE_URL=""
 RAHASIA_SESI=""
 SUPERADMIN_EMAIL=""
 SUPERADMIN_SANDI=""
-BLOB_READ_WRITE_TOKEN=""
-BLOB_PRIVATE_READ_WRITE_TOKEN=""
+R2_ACCOUNT_ID=""
+R2_ACCESS_KEY_ID=""
+R2_SECRET_ACCESS_KEY=""
+R2_BUCKET_PUBLIK="majegan-publik"
+R2_BUCKET_PRIVAT="majegan-private"
+R2_PUBLIC_URL="https://majegan-publik.<account-id>.r2.dev"
 DATA_MODE="demo"
 NEXT_PUBLIC_URL="http://localhost:3000"
 ```
@@ -79,6 +83,9 @@ Aplikasi tersedia di [http://localhost:3000](http://localhost:3000).
 | `npm run build:monolit` | Build + migrasi dalam satu perintah (cara lama) |
 | `npm start` | Menjalankan build produksi |
 | `npm test` | Menjalankan unit test |
+| `npm run test:e2e` | Menjalankan uji akhir Playwright (butuh `.env.e2e`, salin dari `.env.e2e.example`) |
+| `npm run test:e2e:install` | Mengunduh browser Chromium untuk Playwright |
+| `npm run test:e2e:ui` | Menjalankan uji dalam mode antarmuka Playwright |
 | `npm run typecheck` | Memeriksa tipe TypeScript tanpa membuat berkas keluaran |
 | `SMOKE_URL=https://domain-anda npm run test:smoke` | Memeriksa rute publik dan koneksi database pada deployment HTTPS |
 
@@ -106,6 +113,17 @@ DATA_MODE="demo"
 Selama informasi resmi belum lengkap, gunakan `DATA_MODE="demo"`; situs akan menampilkan penanda data contoh. Ubah menjadi `official` setelah konten diverifikasi. Production akan gagal dibangun bila `DATABASE_URL`, `RAHASIA_SESI`, atau URL HTTPS kanonik tidak tersedia.
 
 Sebelum merilis, jalankan `npm test`, `npm run typecheck`, `npm run build`, lalu smoke test terhadap URL deployment. Lanjutkan dengan pemeriksaan manual untuk login, peran Admin/SuperAdmin, unggahan seluruh jenis berkas, pengaduan, filter baca, dan pembatasan identitas pelapor.
+
+### Uji akhir end-to-end (Playwright)
+
+Salin `.env.e2e.example` menjadi `.env.e2e`, isi `E2E_URL`, kredensial uji, dan `E2E_UJI_UNGGAN`, lalu:
+
+```bash
+npm run test:e2e:install
+npm run test:e2e
+```
+
+Spec otomatis menguji: login & sandi salah, pembuatan akun Admin, siklus hidup berita (buat → tampil publik → hapus), serta alur pengaduan (kirim beridentitas + lampiran privat → baca oleh SuperAdmin → tandai dibaca → filter). Saat `E2E_UJI_UNGGAN=true`, unggah berkas juga benar-benar dijalankan — pastikan 7 environment `R2_*` sudah terisi di Vercel.
 
 ## Struktur proyek
 
