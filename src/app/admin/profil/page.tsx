@@ -144,6 +144,13 @@ export default async function KelolaProfil({
         <p className="mb-3 text-[12.5px] text-samar lg:mb-4 lg:text-[13.5px]">
           {perangkat.length} orang · urutan terkecil tampil sebagai Dukuh di kartu paling atas
         </p>
+        <p className="mb-4 rounded-xl border border-emas-garis bg-emas-muda px-4 py-3 text-[12.5px] leading-relaxed text-emas-teks">
+          Kartu di halaman publik menyusun otomatis dari teks <strong>JABATAN</strong> sesuai bagan
+          resmi: berisi &ldquo;LPMKal&rdquo; → baris lembaga; PKK / Karang Taruna / Kelompok
+          Kandang / Kelompok Tani / Organisasi Kemasyarakatan → kotak KSM; &ldquo;RW&rdquo; →
+          baris RW; &ldquo;RT&rdquo; → baris RT; sisanya tampil di baris terakhir. Isi nama resmi
+          begitu diperoleh — kartu menampilkan jabatan saja selama nama masih &ldquo;-&rdquo;.
+        </p>
 
         {/* Tanpa cabang ini, struktur kosong hanya menyisakan borang tambah tanpa keterangan. */}
         {perangkat.length === 0 && (
