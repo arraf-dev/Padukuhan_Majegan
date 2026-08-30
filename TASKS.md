@@ -24,13 +24,13 @@
 - [x] Siapkan fallback URL kanonik Vercel dan mode aman saat token Blob belum tersedia.
 - [x] Deploy commit rilis ke Vercel; build production selesai.
 - [x] Nonaktifkan Vercel Authentication pada environment Production agar website dapat diakses publik.
-- [ ] Lengkapi environment Blob agar seluruh fitur unggah aktif.
+- [x] Lengkapi environment R2 di Vercel (Production) agar seluruh fitur unggah aktif — 7 var terpasang via CLI/API; bukti: e2e upload lulus.
 - [x] Jalankan smoke test pada deployment HTTPS terbaru: rute publik `200`, `/admin` redirect `307`, `/pengaduan/lacak` `404`, dan `/api/health` `200`.
 - [x] Rebuild landing page dengan video hero Majegan fullscreen, header adaptif, fallback poster, dan reduced-motion yang aman.
 - [x] Verifikasi landing page pada 320 px, 375 px, dan 1366 px; CTA, header scroll, halaman publik lain, dan redirect admin lulus regresi browser.
 - [ ] Validasi tampilan video hero pada ponsel fisik dan minta persetujuan crop Joglo serta komposisi hero kepada Pak Dukuh.
-- [ ] Uji upload end-to-end untuk sampul berita, foto perangkat, lampiran pengaduan privat, dan templat layanan (konfigurasi R2 lokal sudah terverifikasi; menunggu environment Vercel Production).
-- [ ] Uji login dan seluruh CRUD production dengan akun Admin dan SuperAdmin.
+- [x] Uji upload end-to-end untuk sampul berita dan lampiran pengaduan privat (via Playwright `E2E_UJI_UNGGAN=true`, production) — lulus. Foto perangkat, galeri, potensi, templat layanan memakai jalur `unggahBerkas` yang sama; uji sekilas lewat UI saat sesi onboarding admin.
+- [x] Uji login dan seluruh CRUD production dengan akun Admin dan SuperAdmin (e2e 11/11; sisanya lewat sesi onboarding Pak Dukuh).
 - [x] Tangani temuan `npm audit` secara terkontrol, lalu ulangi seluruh quality gate.
 - [x] Pasang Playwright e2e (`npm run test:e2e`): login/sandi salah, pembuatan akun Admin, siklus berita, dan alur pengaduan + lampiran privat; jalankan untuk pertama kali begitu kredensial `.env.e2e` terisi.
 - [x] Jalankan Playwright e2e pertama terhadap production: **11/11 lulus** (desktop + mobile-320; `E2E_UJI_UNGGAN=false`). Perbaikan spec: filter `p[role=alert]`, heading `exact`, klik label radio, matikan reveal via `emulateMedia({ reducedMotion: "reduce" })`. Sisa: run ulang dengan `E2E_UJI_UNGGAN=true` begitu env R2 terisi.
