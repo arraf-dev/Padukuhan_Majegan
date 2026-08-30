@@ -149,7 +149,7 @@ export default async function Profil() {
             {(profil.struktur.lpmkal || profil.struktur.ksm.length > 0) && (
               <>
                 <div className="h-[22px] w-0.5 bg-garis-tebal" />
-                <div className="grid w-full items-center gap-4 md:grid-cols-2 lg:gap-6">
+                <div className="grid w-full grid-cols-1 items-center gap-4 md:grid-cols-2 lg:gap-6">
                   {profil.struktur.lpmkal && (
                     <div
                       className={`${kartu()} flex min-w-0 items-center gap-3 px-4 py-4 md:justify-self-center lg:justify-self-start lg:w-[430px] lg:max-w-full lg:px-6`}
