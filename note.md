@@ -13,7 +13,7 @@ Kesiapan production diperkirakan **~75%**: platform teknis hampir selesai — uj
 | Fitur & kode | 100% | ISR/SSG halaman publik, validasi form terpusat, rate-limit login, lint bersih, test 48/48 | — |
 | Deployment | 95% | Situs live di Vercel; 7 env R2 + `DATA_MODE` terisi di Production; env Preview menyusul (konfigurasi gitBranch lama era Blob telah dibersihkan) | Tanpa langkah blokir |
 | QA e2e production | 100% | Playwright e2e **11/11 dengan `E2E_UJI_UNGGAN=true`** (30 Ags): upload sampul berita & lampiran privat beneran jalan di production | — |
-| Konten resmi | 35% | Struktur & 8 layanan resmi sudah live; masih `DATA_MODE=demo`; nama perangkat & data lain menunggu Pak Dukuh | Persetujuan Pak Dukuh, isi nama/data, ubah ke `official` |
+| Konten resmi | 40% | `DATA_MODE=official` aktif (badge "data contoh" hilang); struktur + 8 layanan resmi live; sisanya masih isi contoh (statistik, berita, sejarah/visi DRAFT, potensi) | Isi data real via panel admin (statistik, berita, naskah, potensi, kontak) |
 | Keamanan | 70% | Header keamanan, rate-limit login, magic-bytes PDF, batas panjang form; sisa 3 high di Prisma CLI (dev-only) | `npm audit --omit=dev` kembali 0; rotasi token R2 |
 | Serah terima | 10% | Panduan admin + outline laporan siap (`dokumen/`) | Pelatihan, transfer kredensial |
 

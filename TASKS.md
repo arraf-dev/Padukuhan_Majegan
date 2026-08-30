@@ -20,7 +20,7 @@
 - [x] ESLint + script `lint` terpasang; 6 temuan awal dibereskan.
 - [ ] Uji pada ponsel fisik 320/375 px bersama calon admin.
 - [ ] Minta persetujuan Pak Dukuh untuk menu mobile, kartu Struktur Perangkat, dan visual statistik.
-- [ ] Masukkan serta verifikasi data resmi, lalu ubah `DATA_MODE` menjadi `official`.
+- [x] Masukkan serta verifikasi data resmi, lalu ubah `DATA_MODE` menjadi `official` — bagian struktur & 8 layanan resmi sudah masuk; mode diubah ke `official` (30 Ags). Data lain (statistik, berita, sejarah/visi-misi) tetap diisi lewat panel admin dan langsung tampil apa adanya.
 - [x] Siapkan fallback URL kanonik Vercel dan mode aman saat token Blob belum tersedia.
 - [x] Deploy commit rilis ke Vercel; build production selesai.
 - [x] Nonaktifkan Vercel Authentication pada environment Production agar website dapat diakses publik.
