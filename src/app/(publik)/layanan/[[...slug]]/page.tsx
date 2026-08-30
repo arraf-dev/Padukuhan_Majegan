@@ -119,6 +119,15 @@ export default async function Layanan({ params, searchParams }: Params) {
           </p>
         )}
 
+        <a
+          href="/gambar/syarat-surat-menyurat.jpg"
+          target="_blank"
+          className="mt-3.5 flex items-center gap-2.5 rounded-xl border-[1.5px] border-dashed border-garis-tebal bg-kertas px-4 py-3.5 text-[12.5px] font-semibold text-teks transition-colors duration-200 ease-out hover:border-daun hover:text-hutan"
+        >
+          <Ikon nama="berkas" ukuran={16} className="flex-none text-emas-tua" />
+          Poster syarat permohonan surat (JPG)
+        </a>
+
         <p className="mt-3.5 rounded-xl border border-emas-garis bg-emas-muda px-4 py-3.5 text-[12.5px] leading-relaxed text-emas-teks">
           Ragu dengan berkas?{" "}
           <a

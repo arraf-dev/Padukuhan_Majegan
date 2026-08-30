@@ -34,20 +34,27 @@
 - [ ] Visi & misi siap → `#judul-visi-misi`
 - [ ] Foto bangunan/balai untuk halaman Profil (opsional)
 
-### 3. Perangkat padukuhan
-Isi per baris di `/admin/profil` (foto: JPG/PNG/WEBP ≤ 4 MB):
+### 3. Perangkat padukuhan — **sudah dipasang sesuai poster resmi** (nama & foto menunggu Anda; kartu menampilkan jabatan saja)
 
-| Nama | Jabatan | Foto |
+| Jabatan (sudah live di situs) | Nama (isi di sini / edit via `/admin/profil`) | Foto |
 |---|---|---|
-| | Dukuh | [ ] |
-| | Sekretaris | [ ] |
-| | Ketua RT 01..0n | [ ] |
+| Dukuh Majegan | | [ ] |
+| LPMKal Sub Unit Majegan | | [ ] |
+| Ketua PKK | | [ ] |
+| Ketua Karang Taruna | | [ ] |
+| Ketua Kelompok Kandang | | [ ] |
+| Ketua Kelompok Tani | | [ ] |
+| Ketua Organisasi Kemasyarakatan Lain | | [ ] |
+| Ketua RW 32 | | [ ] |
+| Ketua RW 33 | | [ ] |
+| Ketua RT 1 s.d. RT 5 (masing-masing baris) | | [ ] |
 
-### 4. Layanan administrasi
-Tiap layanan perlu divalidasi syarat & alurnya **bersama perangkat yang menangani**:
-- [ ] Layanan terlampir di `/admin/layanan` sudah sesuai syarat riil (surat/berkas/durasi)
-- [ ] Templat berkas (PDF) per layanan tersedia untuk diunggah
-- [ ] Alur langkah (1–4) sudah benar
+**Konfirmasi tambahan:** pembagian RT di bawah RW 32 dan RW 33 (poster hanya menampilkan RT 1–5 di RW 32) — dan nama resmi tiap jabatan.
+
+### 4. Layanan administrasi — **8 surat resmi sudah dipasang sesuai poster** (lihat halaman `/layanan`; admin dapat menyunting kapan pun)
+- [ ] Konfirmasi **tautan/petunjuk form usaha** pada layanan "Surat Pengajuan Surat Keterangan Usaha" (saat ini tertulis "tautan disampaikan saat mengajukan")
+- [ ] Konfirmasi biaya & durasi per layanan (saat ini `GRATIS` dan `± 1 hari kerja`)
+- [ ] Templat berkas (PDF) masih belum ada di poster — menyusul bila diperlukan
 
 ### 5. Statistik penduduk
 - [ ] Data terbaru per tahun (total jiwa, KK, kelompok umur, jenis kelamin, pendidikan, pekerjaan)

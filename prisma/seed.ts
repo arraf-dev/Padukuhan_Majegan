@@ -42,9 +42,15 @@ async function main() {
   const dukuh = await db.pengguna.upsert({
     where: { email: email.toLowerCase() },
     // Sandi tidak ditimpa saat seed diulang — kalau sudah diganti, biarkan.
-    update: { nama: profil.dukuh.nama, jabatan: profil.dukuh.jabatan, peran: "superadmin" },
+    // Nama tidak ditimpa saat seed diulang; juga biarkan bila dari data resmi
+    // masih menunggu nama ("-"), supaya akun admin tidak bernama "-".
+    update: {
+      nama: profil.dukuh.nama.trim() ? profil.dukuh.nama : undefined,
+      jabatan: profil.dukuh.jabatan,
+      peran: "superadmin",
+    },
     create: {
-      nama: profil.dukuh.nama,
+      nama: profil.dukuh.nama.trim() || "Kepala Dukuh",
       email: email.toLowerCase(),
       sandiHash: hashKataSandi(sandi),
       jabatan: profil.dukuh.jabatan,

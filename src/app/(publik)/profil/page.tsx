@@ -103,7 +103,11 @@ export default async function Profil() {
                 className="size-[46px] flex-none rounded-full border-2 border-emas lg:size-[58px]"
               />
               <div>
-                <div className="font-serif text-base font-semibold lg:text-[19px]">{profil.dukuh.nama}</div>
+                {profil.dukuh.nama !== "-" && (
+                  <div className="font-serif text-base font-semibold lg:text-[19px]">
+                    {profil.dukuh.nama}
+                  </div>
+                )}
                 <div className="text-xs font-semibold text-emas">{profil.dukuh.jabatan}</div>
               </div>
             </div>
@@ -121,11 +125,21 @@ export default async function Profil() {
                     sizes="40px"
                     className="mx-auto mb-2 size-10 rounded-full border-[1.5px] border-emas lg:mb-3 lg:size-14"
                   />
-                  <div className="text-[13.5px] font-bold text-tinta lg:text-[15px]">{p.nama}</div>
+                  {p.nama !== "-" && (
+                    <div className="text-[13.5px] font-bold text-tinta lg:text-[15px]">{p.nama}</div>
+                  )}
                   <div className="text-[11.5px] font-semibold text-emas-tua lg:text-[12.5px]">{p.jabatan}</div>
                 </div>
               ))}
             </div>
+            <a
+              href="/gambar/struktur-organisasi.jpg"
+              target="_blank"
+              className="mt-4 inline-flex items-center gap-2 rounded-[10px] border-[1.5px] border-daun px-4.5 py-2.5 text-[13px] font-bold text-hutan transition-colors duration-200 ease-out hover:bg-emas-lembut"
+            >
+              <Ikon nama="berkas" ukuran={15} />
+              Bagan struktur resmi (JPG)
+            </a>
             <p className="mt-3.5 text-center text-[12.5px] text-samar">{profil.catatanStruktur}</p>
           </div>
         </section>

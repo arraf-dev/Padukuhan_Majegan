@@ -13,7 +13,7 @@ Kesiapan production diperkirakan **~75%**: platform teknis hampir selesai — uj
 | Fitur & kode | 100% | ISR/SSG halaman publik, validasi form terpusat, rate-limit login, lint bersih, test 48/48 | — |
 | Deployment | 50% | Situs live di Vercel, env R2 belum diisi | Isi 7 env R2 + `NEXT_PUBLIC_URL`, redeploy |
 | QA e2e production | 60% | Playwright e2e siap (login/berita/pengaduan), unit 48/48, audit 7→3 high | Isi `.env.e2e`, jalankan `npm run test:e2e`, isi env Vercel → `E2E_UJI_UNGGAN=true` |
-| Konten resmi | 25% | Masih `DATA_MODE=demo`; dokumen persetujuan & template siap (`dokumen/`) | Persetujuan Pak Dukuh, isi data resmi |
+| Konten resmi | 35% | Struktur & 8 layanan resmi sudah live; masih `DATA_MODE=demo`; nama perangkat & data lain menunggu Pak Dukuh | Persetujuan Pak Dukuh, isi nama/data, ubah ke `official` |
 | Keamanan | 70% | Header keamanan, rate-limit login, magic-bytes PDF, batas panjang form; sisa 3 high di Prisma CLI (dev-only) | `npm audit --omit=dev` kembali 0; rotasi token R2 |
 | Serah terima | 10% | Panduan admin + outline laporan siap (`dokumen/`) | Pelatihan, transfer kredensial |
 
@@ -25,6 +25,8 @@ Status per 27 Agustus 2026 (sesi "Fitur & kode" 95% → 100%):
 - **ESLint** terpasang (`eslint-config-next` flat config) + script `lint`; 6 temuan awal (3 error, 3 warning) dibereskan — pola set-state-in-effect diganti sesuaai aturan React 19.
 - **Playwright e2e** (30 Ags): `playwright.config.ts` (projects desktop + mobile-320), spec `e2e/01-masuk.spec.ts` (sandi salah, masuk SuperAdmin, buat akun Admin, batasan role), `e2e/02-berita.spec.ts` (buat → tampil publik → hapus), `e2e/03-pengaduan.spec.ts` (kirim beridentitas + lampiran privat → baca SuperAdmin → tandai dibaca → filter). Berjalan saat `E2E_UJI_UNGGAN=true` barulah mengunggah berkas; `.env.e2e` di-gitignore.
 - **npm audit** (30 Ags): 7 high → 3 high. Tersisa `deepmerge-ts` via `prisma` (CLI build-time; tidak dipakai di runtime server/browser; perbaikan paksa menjatuhkan Prisma 7 → 6 yang breaking — ditolak). Risiko praktis mendekati nol karena config proyek statis. Keputusan: terima dengan catatan, pantau upgrade Prisma.
+- **Struktur & layanan resmi** (30 Ags): data demo diganti sesuai dua poster resmi (`Struktur_Organisasi_Padukuhan.jpg.jpeg`, `Syarat_Surat_menyurat.jpg.jpeg` di root repo). Struktur: Dukuh, LPMKal Sub Unit Majegan, PKK, Karang Taruna, Kelompok Kandang, Kelompok Tani, Ormas Lain, RW 32/33, RT 1–5 — nama diisi `"-"` (jabatan dulu, nama menyusul dari Pak Dukuh). Layanan: 8 surat resmi; 6 layanan demo lama dihapus; slug `surat-keterangan-usaha` & `surat-keterangan-tidak-mampu` dipertahankan. Penerapan via skrip `scripts/pasang-data-resmi.ts` (hanya `layanan` + `perangkat_desa`, tidak menyentuh modul lain). Temuan penting: **DB Neon di `.env.local` ternyata sama dengan DATABASE_URL production** — data resmi langsung live di Vercel begitu skrip dijalankan (terverifikasi di `/layanan`).
+- **Aset**: poster dikompres ke `public/gambar/struktur-organisasi.jpg` (≈580 KB) dan `public/gambar/syarat-surat-menyurat.jpg` (≈616 KB) — halaman Profil menampilkan tautan unduh bagan, halaman Layanan tautan poster syarat; kartu perangkat menampilkan jabatan saja bila nama belum diisi.
 - Quality gate lengkap hijau: **test 48/48, typecheck, lint (exit 0), build production** — build lokal perlu `NEXT_PUBLIC_URL` HTTPS di env (nilai `.env.local` masih `localhost`).
 
 ## Keputusan Utama

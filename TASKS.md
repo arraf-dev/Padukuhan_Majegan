@@ -33,6 +33,8 @@
 - [ ] Uji login dan seluruh CRUD production dengan akun Admin dan SuperAdmin.
 - [x] Tangani temuan `npm audit` secara terkontrol, lalu ulangi seluruh quality gate.
 - [x] Pasang Playwright e2e (`npm run test:e2e`): login/sandi salah, pembuatan akun Admin, siklus berita, dan alur pengaduan + lampiran privat; jalankan untuk pertama kali begitu kredensial `.env.e2e` terisi.
+- [x] Pasang struktur organisasi resmi (poster: Dukuh, LPMKal, 5 KSM, RW 32/33, RT 1–5) dan 8 layanan surat resmi (E-KTP, KK, akta lahir/kematian, pindah penduduk, ket. usaha, domisili perusahaan, ket. tidak mampu) — data lama diganti, live di production via `scripts/pasang-data-resmi.ts`.
+- [x] Tambahkan aset poster resmi (struktur-organisasi.jpg, syarat-surat-menyurat.jpg) + tautan unduh pada halaman Profil & Layanan.
 
 ---
 
