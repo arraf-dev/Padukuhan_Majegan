@@ -193,7 +193,7 @@ export default async function Profil() {
                               {p.nama !== "-" && (
                                 <div className="truncate text-[13px] font-bold text-tinta">{p.nama}</div>
                               )}
-                              <div className="truncate text-[11.5px] font-semibold text-emas-tua">
+                              <div className="text-[11.5px] leading-snug font-semibold text-emas-tua">
                                 {p.jabatan}
                               </div>
                             </div>
