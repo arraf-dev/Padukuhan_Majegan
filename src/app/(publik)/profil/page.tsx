@@ -19,7 +19,7 @@ function KartuOrang({
 }) {
   return (
     <div
-      className={`${kartu()} p-3.5 text-center transition-colors duration-200 ease-out hover:border-daun ${
+      className={`${kartu()} min-w-0 p-3.5 text-center transition-colors duration-200 ease-out hover:border-daun ${
         kecil ? "lg:p-4" : "lg:p-5"
       } ${className}`}
     >
@@ -149,9 +149,11 @@ export default async function Profil() {
             {(profil.struktur.lpmkal || profil.struktur.ksm.length > 0) && (
               <>
                 <div className="h-[22px] w-0.5 bg-garis-tebal" />
-                <div className="grid w-full gap-4 md:grid-cols-2 lg:gap-6">
+                <div className="grid w-full items-center gap-4 md:grid-cols-2 lg:gap-6">
                   {profil.struktur.lpmkal && (
-                    <div className={`${kartu()} flex items-center gap-3 px-4 py-4 lg:px-6`}>
+                    <div
+                      className={`${kartu()} flex min-w-0 items-center gap-3 px-4 py-4 md:justify-self-center lg:justify-self-start lg:w-[430px] lg:max-w-full lg:px-6`}
+                    >
                       <Foto
                         src={profil.struktur.lpmkal.foto}
                         keterangan={profil.struktur.lpmkal.jabatan}
@@ -164,7 +166,7 @@ export default async function Profil() {
                             {profil.struktur.lpmkal.nama}
                           </div>
                         )}
-                        <div className="text-[12.5px] font-semibold text-emas-tua">
+                        <div className="truncate text-[12.5px] leading-snug font-semibold text-emas-tua">
                           {profil.struktur.lpmkal.jabatan}
                         </div>
                       </div>
