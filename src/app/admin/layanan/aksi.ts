@@ -60,7 +60,6 @@ export async function simpanLayanan(data: FormData) {
     deskripsi,
     persyaratan,
     alur,
-    estimasiWaktu: teks(data, "estimasiWaktu").slice(0, 100) || "± 1 hari kerja",
     biaya: teks(data, "biaya").slice(0, 100) || "GRATIS",
     fileTemplat: unggahan.url ?? (teks(data, "fileTemplat") || null),
     urutan,

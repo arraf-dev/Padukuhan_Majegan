@@ -81,7 +81,7 @@ export default async function KelolaLayanan({
                   <div className="min-w-48 flex-1">
                     <div className="text-[14px] font-semibold text-tinta">{l.namaLayanan}</div>
                     <div className="mt-0.5 text-[11.5px] text-samar">
-                      {l.persyaratan.length} syarat · {l.estimasiWaktu} · {l.biaya}
+                      {l.persyaratan.length} syarat · {l.biaya}
                       {l.fileTemplat && " · templat tersedia"}
                     </div>
                   </div>

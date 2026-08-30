@@ -352,7 +352,6 @@ export type Layanan = {
   slug: string;
   nama: string;
   namaSingkat: string;
-  durasi: string;
   biaya: string;
   deskripsi: string;
   syarat: string[];
@@ -372,7 +371,6 @@ export const layanan: Layanan[] = [
     slug: "pembuatan-e-ktp",
     nama: "Pembuatan E-KTP",
     namaSingkat: "Pembuatan E-KTP",
-    durasi: "± 1 hari kerja",
     biaya: "GRATIS",
     deskripsi:
       "Pengurusan pembuatan E-KTP di Kalurahan Pandowoharjo/Dukcapil — pengantar disiapkan lewat padukuhan hingga surat pengantar dari kalurahan.",
@@ -389,7 +387,6 @@ export const layanan: Layanan[] = [
     slug: "kartu-keluarga",
     nama: "Pembuatan Kartu Keluarga",
     namaSingkat: "Pembuatan Kartu Keluarga",
-    durasi: "± 1 hari kerja",
     biaya: "GRATIS",
     deskripsi:
       "Pengurusan pembuatan/perubahan Kartu Keluarga di kalurahan — pengantar disiapkan lewat padukuhan hingga surat pengantar dari kalurahan.",
@@ -405,7 +402,6 @@ export const layanan: Layanan[] = [
     slug: "pembuatan-akta-kelahiran",
     nama: "Pembuatan Akta Kelahiran",
     namaSingkat: "Pembuatan Akta Kelahiran",
-    durasi: "± 1 hari kerja",
     biaya: "GRATIS",
     deskripsi:
       "Pengurusan akta kelahiran untuk pengesahan anak — berkas dari kalurahan setempat dengan fotokopi legalisir orang tua.",
@@ -423,7 +419,6 @@ export const layanan: Layanan[] = [
     slug: "pembuatan-akta-kematian",
     nama: "Pembuatan Akta Kematian",
     namaSingkat: "Pembuatan Akta Kematian",
-    durasi: "± 1 hari kerja",
     biaya: "GRATIS",
     deskripsi:
       "Pengurusan akta kematian untuk pengesahan warga yang berpulang — dilengkapi data almarhum, ahli waris, dan dua orang saksi.",
@@ -441,7 +436,6 @@ export const layanan: Layanan[] = [
     slug: "surat-pindah-penduduk",
     nama: "Surat Masuk atau Keluar Penduduk",
     namaSingkat: "Surat Pindah Penduduk",
-    durasi: "± 1 hari kerja",
     biaya: "GRATIS",
     deskripsi:
       "Pengurusan pindah masuk/keluar penduduk — berkas lengkap dengan surat keterangan pindah atau cabut berkas pindah penduduk.",
@@ -458,7 +452,6 @@ export const layanan: Layanan[] = [
     slug: "surat-keterangan-usaha",
     nama: "Surat Pengajuan Surat Keterangan Usaha",
     namaSingkat: "Surat Keterangan Usaha",
-    durasi: "± 1 hari kerja",
     biaya: "GRATIS",
     deskripsi:
       "Pengajuan surat keterangan usaha — biasanya dipakai pelaku UMKM saat mengajukan izin, pembiayaan, atau berpartisipasi pada program kemitraan.",
@@ -473,7 +466,6 @@ export const layanan: Layanan[] = [
     slug: "surat-domisili-perusahaan",
     nama: "Surat Domisili Perusahaan",
     namaSingkat: "Surat Domisili Perusahaan",
-    durasi: "± 1 hari kerja",
     biaya: "GRATIS",
     deskripsi:
       "Keterangan domisili bagi badan usaha/usaha yang menempati wilayah padukuhan — untuk perizinan dan administrasi perusahaan.",
@@ -494,7 +486,6 @@ export const layanan: Layanan[] = [
     slug: "surat-keterangan-tidak-mampu",
     nama: "Surat Keterangan Tidak Mampu",
     namaSingkat: "Surat Ket. Tidak Mampu",
-    durasi: "± 1 hari kerja",
     biaya: "GRATIS",
     deskripsi:
       "Keterangan tidak mampu untuk keperluan bantuan pendidikan, kesehatan, jaminan sosial, atau program bantuan lainnya.",

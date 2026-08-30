@@ -245,7 +245,6 @@ async function main() {
       deskripsi: l.deskripsi,
       persyaratan: l.syarat,
       alur: l.alur,
-      estimasiWaktu: l.durasi,
       biaya: l.biaya,
       fileTemplat: l.berkas?.nama ?? null,
       urutan: i,

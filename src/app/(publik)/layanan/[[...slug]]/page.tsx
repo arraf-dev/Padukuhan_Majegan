@@ -101,7 +101,7 @@ export default async function Layanan({ params, searchParams }: Params) {
                   {l.namaSingkat}
                 </div>
                 <div className={`mt-1 text-[11.5px] ${ini ? "text-emas" : "text-samar"}`}>
-                  {l.syarat.length} syarat · {l.durasi}
+                  {l.syarat.length} syarat
                 </div>
               </Link>
             );
@@ -150,9 +150,6 @@ export default async function Layanan({ params, searchParams }: Params) {
       >
         <div className="flex flex-wrap items-center gap-3">
           <h1 className="judul-halaman">{aktif.nama}</h1>
-          <span className="rounded-full bg-daun-muda px-3 py-[5px] text-xs font-bold text-daun">
-            {aktif.durasi}
-          </span>
           <span className="rounded-full bg-emas-muda px-3 py-[5px] text-xs font-bold text-emas-tua">
             {aktif.biaya}
           </span>

@@ -217,17 +217,16 @@ model PotensiInfografis {
 }
 
 model Layanan {
-  id            String   @id @default(cuid())
-  slug          String   @unique
-  namaLayanan   String   @map("nama_layanan")
-  deskripsi     String
-  persyaratan   String[]
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  namaLayanan String   @map("nama_layanan")
+  deskripsi   String
+  persyaratan String[]
   /// Larik langkah {judul, detail} — bentuknya bebas, jadi Json.
-  alur          Json
-  estimasiWaktu String   @map("estimasi_waktu")
-  biaya         String   @default("GRATIS")
-  fileTemplat   String?  @map("file_templat")
-  urutan        Int      @default(0)
+  alur        Json
+  biaya       String   @default("GRATIS")
+  fileTemplat String?  @map("file_templat")
+  urutan      Int      @default(0)
 
   @@map("layanan")
 }

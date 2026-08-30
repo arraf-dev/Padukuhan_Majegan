@@ -16,7 +16,6 @@ const pilih = {
   deskripsi: true,
   persyaratan: true,
   alur: true,
-  estimasiWaktu: true,
   biaya: true,
   fileTemplat: true,
   urutan: true,
@@ -47,7 +46,6 @@ const keLayanan = (l: Baris): Layanan => ({
   // Tambah kolom `nama_singkat` hanya kalau nanti benar-benar ada nama yang
   // kepanjangan di daftar samping.
   namaSingkat: l.namaLayanan,
-  durasi: l.estimasiWaktu,
   biaya: l.biaya,
   deskripsi: l.deskripsi,
   syarat: l.persyaratan,
@@ -81,7 +79,6 @@ export async function layananUntukForm(id: string) {
     deskripsi: l.deskripsi,
     persyaratan: l.persyaratan.join("\n"),
     alur: rangkaiAlur(bacaAlur(l.alur)),
-    estimasiWaktu: l.estimasiWaktu,
     biaya: l.biaya,
     fileTemplat: l.fileTemplat ?? "",
     urutan: l.urutan,
