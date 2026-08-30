@@ -3,9 +3,41 @@ import { desa } from "@/content/majegan";
 import { Ikon } from "@/components/ikon";
 import { Foto, JudulSection } from "@/components/potongan";
 import { kartu } from "@/components/primitif";
-import { profilDesa } from "@/lib/profil";
+import { profilDesa, type Perangkat } from "@/lib/profil";
 
 export const metadata: Metadata = { title: "Profil" };
+
+/** Kartu satu perangkat pada bagan struktur — nama tampil bila sudah diisi. */
+function KartuOrang({
+  p,
+  kecil = false,
+  className = "",
+}: {
+  p: Perangkat;
+  kecil?: boolean;
+  className?: string;
+}) {
+  return (
+    <div
+      className={`${kartu()} p-3.5 text-center transition-colors duration-200 ease-out hover:border-daun ${
+        kecil ? "lg:p-4" : "lg:p-5"
+      } ${className}`}
+    >
+      <Foto
+        src={p.foto}
+        keterangan={p.jabatan}
+        sizes="40px"
+        className={`mx-auto mb-2 rounded-full border-[1.5px] border-emas ${
+          kecil ? "size-9 lg:size-11" : "size-10 lg:size-14"
+        }`}
+      />
+      {p.nama !== "-" && (
+        <div className="text-[13.5px] font-bold text-tinta lg:text-[15px]">{p.nama}</div>
+      )}
+      <div className="text-[11.5px] font-semibold text-emas-tua lg:text-[12.5px]">{p.jabatan}</div>
+    </div>
+  );
+}
 
 const bagian = [
   { id: "sejarah", label: "Sejarah" },
@@ -95,6 +127,7 @@ export default async function Profil() {
         <section id="struktur" data-reveal className="scroll-mt-6 md:scroll-mt-20">
           <JudulSection anak="Struktur Organisasi" />
           <div className="flex flex-col items-center">
+            {/* Level 0 — Kepala Dukuh */}
             <div className="flex items-center gap-3.5 rounded-xl bg-hutan px-6 py-4 text-krem shadow-[0_4px_14px_rgba(13,56,37,.25)] lg:gap-4 lg:rounded-2xl lg:px-8 lg:py-5">
               <Foto
                 src={profil.dukuh.foto}
@@ -111,31 +144,112 @@ export default async function Profil() {
                 <div className="text-xs font-semibold text-emas">{profil.dukuh.jabatan}</div>
               </div>
             </div>
-            <div className="h-[22px] w-0.5 bg-garis-tebal" />
-            <div className="h-0.5 w-3/4 bg-garis-tebal" />
-            <div className="grid w-full grid-cols-2 gap-4 pt-5 md:grid-cols-4 lg:gap-5 lg:pt-7">
-              {profil.perangkat.map((p) => (
-                <div
-                  key={p.id}
-                  className={`${kartu()} p-3.5 text-center hover:border-daun lg:p-5`}
-                >
-                  <Foto
-                    src={p.foto}
-                    keterangan={p.jabatan}
-                    sizes="40px"
-                    className="mx-auto mb-2 size-10 rounded-full border-[1.5px] border-emas lg:mb-3 lg:size-14"
-                  />
-                  {p.nama !== "-" && (
-                    <div className="text-[13.5px] font-bold text-tinta lg:text-[15px]">{p.nama}</div>
+
+            {/* Level 1 — LPMKal Sub Unit Majegan · Kelompok Swadaya Masyarakat */}
+            {(profil.struktur.lpmkal || profil.struktur.ksm.length > 0) && (
+              <>
+                <div className="h-[22px] w-0.5 bg-garis-tebal" />
+                <div className="grid w-full gap-4 md:grid-cols-2 lg:gap-6">
+                  {profil.struktur.lpmkal && (
+                    <div className={`${kartu()} flex items-center gap-3 px-4 py-4 lg:px-6`}>
+                      <Foto
+                        src={profil.struktur.lpmkal.foto}
+                        keterangan={profil.struktur.lpmkal.jabatan}
+                        sizes="48px"
+                        className="size-12 flex-none rounded-full border-[1.5px] border-emas lg:size-14"
+                      />
+                      <div className="min-w-0">
+                        {profil.struktur.lpmkal.nama !== "-" && (
+                          <div className="truncate text-[14px] font-bold text-tinta lg:text-[15px]">
+                            {profil.struktur.lpmkal.nama}
+                          </div>
+                        )}
+                        <div className="text-[12.5px] font-semibold text-emas-tua">
+                          {profil.struktur.lpmkal.jabatan}
+                        </div>
+                      </div>
+                    </div>
                   )}
-                  <div className="text-[11.5px] font-semibold text-emas-tua lg:text-[12.5px]">{p.jabatan}</div>
+                  {profil.struktur.ksm.length > 0 && (
+                    <div className={`${kartu()} px-5 py-4`}>
+                      <div className="mb-3 text-[11px] font-extrabold tracking-[.1em] text-emas-tua">
+                        KELOMPOK SWADAYA MASYARAKAT
+                      </div>
+                      <ul className="flex flex-col gap-2">
+                        {profil.struktur.ksm.map((p) => (
+                          <li
+                            key={p.id}
+                            className="flex items-center gap-3 rounded-[10px] border border-garis bg-panel px-3 py-2.5"
+                          >
+                            <Foto
+                              src={p.foto}
+                              keterangan={p.jabatan}
+                              sizes="36px"
+                              className="size-9 flex-none rounded-full border-[1.5px] border-emas"
+                            />
+                            <div className="min-w-0">
+                              {p.nama !== "-" && (
+                                <div className="truncate text-[13px] font-bold text-tinta">{p.nama}</div>
+                              )}
+                              <div className="truncate text-[11.5px] font-semibold text-emas-tua">
+                                {p.jabatan}
+                              </div>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
-              ))}
+              </>
+            )}
+
+            {/* Level 2 — RW */}
+            {profil.struktur.rw.length > 0 && (
+              <>
+                <div className="h-[22px] w-0.5 bg-garis-tebal" />
+                <div className="flex w-full flex-wrap justify-center gap-4 lg:gap-5">
+                  {profil.struktur.rw.map((p) => (
+                    <KartuOrang key={p.id} p={p} className="w-full sm:w-[240px]" />
+                  ))}
+                </div>
+              </>
+            )}
+
+            {/* Level 3 — RT di bawah RW 32 (sesuai bagan resmi) */}
+            {profil.struktur.rt.length > 0 && (
+              <>
+                <div className="h-[22px] w-0.5 bg-garis-tebal" />
+                <div className="h-0.5 w-3/5 bg-garis-tebal" />
+                <div className="grid w-full grid-cols-2 gap-4 pt-5 sm:grid-cols-3 md:grid-cols-5 lg:gap-5">
+                  {profil.struktur.rt.map((p) => (
+                    <KartuOrang key={p.id} p={p} kecil />
+                  ))}
+                </div>
+              </>
+            )}
+
+            {/* Level 4 — Masyarakat / Warga */}
+            <div className="mt-6 flex w-full items-center justify-center rounded-xl border-[1.5px] border-garis-tebal bg-panel px-6 py-4 text-sm font-extrabold tracking-[.08em] text-teks">
+              MASYARAKAT / WARGA
             </div>
+
+            {/* Jabatan di luar bagan resmi (dikelola admin) */}
+            {profil.struktur.lain.length > 0 && (
+              <>
+                <div className="h-[22px] w-0.5 bg-garis-tebal" />
+                <div className="grid w-full grid-cols-2 gap-4 pt-5 sm:grid-cols-3 md:grid-cols-4 lg:gap-5">
+                  {profil.struktur.lain.map((p) => (
+                    <KartuOrang key={p.id} p={p} kecil />
+                  ))}
+                </div>
+              </>
+            )}
+
             <a
               href="/gambar/struktur-organisasi.jpg"
               target="_blank"
-              className="mt-4 inline-flex items-center gap-2 rounded-[10px] border-[1.5px] border-daun px-4.5 py-2.5 text-[13px] font-bold text-hutan transition-colors duration-200 ease-out hover:bg-emas-lembut"
+              className="mt-5 inline-flex items-center gap-2 rounded-[10px] border-[1.5px] border-daun px-4.5 py-2.5 text-[13px] font-bold text-hutan transition-colors duration-200 ease-out hover:bg-emas-lembut"
             >
               <Ikon nama="berkas" ukuran={15} />
               Bagan struktur resmi (JPG)
