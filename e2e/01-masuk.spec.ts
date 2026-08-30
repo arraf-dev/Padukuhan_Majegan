@@ -3,11 +3,16 @@ import { perlu, paksaMasuk } from "./helpers";
 
 test.describe("Autentikasi admin", () => {
   test("sandi salah menampilkan peringatan tanpa masuk", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/admin/masuk");
     await page.fill("#email", perlu("E2E_SUPERADMIN_EMAIL"));
     await page.fill("#sandi", "sandi-sengaja-salah-e2e");
     await page.getByRole("button", { name: "Masuk" }).click();
-    await expect(page.getByRole("alert")).toContainText("Email atau kata sandi salah");
+    // Route announcer Next juga memakai role=alert — saring ke paragraf
+    // galat formnya saja.
+    await expect(page.locator('p[role="alert"]')).toContainText(
+      "Email atau kata sandi salah",
+    );
     await expect(page).toHaveURL(/\/admin\/masuk/);
   });
 
@@ -39,6 +44,6 @@ test.describe("Autentikasi admin", () => {
     );
     await paksaMasuk(page, perlu("E2E_ADMIN_EMAIL"), perlu("E2E_ADMIN_SANDI"));
     await page.goto("/admin/akun");
-    await expect(page.getByRole("heading", { name: "Akun Saya" })).toBeVisible();
+    await expect(page.getByRole("heading", { name: "Akun Saya", exact: true })).toBeVisible();
   });
 });

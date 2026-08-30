@@ -12,7 +12,7 @@ Kesiapan production diperkirakan **~75%**: platform teknis hampir selesai — uj
 |---|---|---|---|
 | Fitur & kode | 100% | ISR/SSG halaman publik, validasi form terpusat, rate-limit login, lint bersih, test 48/48 | — |
 | Deployment | 50% | Situs live di Vercel, env R2 belum diisi | Isi 7 env R2 + `NEXT_PUBLIC_URL`, redeploy |
-| QA e2e production | 60% | Playwright e2e siap (login/berita/pengaduan), unit 48/48, audit 7→3 high | Isi `.env.e2e`, jalankan `npm run test:e2e`, isi env Vercel → `E2E_UJI_UNGGAN=true` |
+| QA e2e production | 70% | Playwright e2e: **11/11 lulus** pertama run (30 Ags, desktop + mobile-320) — login/peran/sandi salah, akun Admin, berita, pengaduan+tandai dibaca; upload dikecualikan sementara | Isi env R2 di Vercel → `E2E_UJI_UNGGAN=true` → run ulang e2e full |
 | Konten resmi | 35% | Struktur & 8 layanan resmi sudah live; masih `DATA_MODE=demo`; nama perangkat & data lain menunggu Pak Dukuh | Persetujuan Pak Dukuh, isi nama/data, ubah ke `official` |
 | Keamanan | 70% | Header keamanan, rate-limit login, magic-bytes PDF, batas panjang form; sisa 3 high di Prisma CLI (dev-only) | `npm audit --omit=dev` kembali 0; rotasi token R2 |
 | Serah terima | 10% | Panduan admin + outline laporan siap (`dokumen/`) | Pelatihan, transfer kredensial |

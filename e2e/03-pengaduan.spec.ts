@@ -5,8 +5,10 @@ import { perlu, paksaMasuk, tandai, UNGGAN } from "./helpers";
 test("warga mengirim pengaduan beridentitas dan SuperAdmin membacanya", async ({ page }) => {
   const tanda = tandai("laporan");
 
+  await page.emulateMedia({ reducedMotion: "reduce" });
   await page.goto("/pengaduan");
-  await page.getByRole("radio", { name: "Infrastruktur", exact: true }).check();
+  // Radio diberi sr-only (di balik label) — klik labelnya, bukan inputnya.
+  await page.getByText("Infrastruktur", { exact: true }).click();
   await page.fill("#lokasi", "RT 03 uji akhir");
   await page.fill("#isi", `Laporan uji akhir E2E: ${tanda}. Mohon dicek alur pengaduannya.`);
   if (UNGGAN) {
