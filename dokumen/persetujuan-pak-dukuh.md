@@ -31,7 +31,7 @@
 ### 2. Sejarah & visi-misi (naskah)
 
 - [ ] Naskah sejarah padukuhan siap (2–4 paragraf) → tempel ke `#judul-sejarah` di `/admin/profil`
-- [ ] Visi & misi siap → `#judul-visi-misi`
+- [x] **Draf visi-misi terpasang** (Var. "majeg" — 30 Ags 2026): visi bertema majem (teguh/gotong royong) + 5 misi (rukun & merti dusun; tani/UMKM; layanan Balai Dusun; lingkungan & ronda; generasi & kesehatan). Siap-muat sudah dimatikan — **tinggal pengesahan musyawarah** bila rumusannya mau diubah, cukup edit di `/admin/profil`.
 - [ ] Foto bangunan/balai untuk halaman Profil (opsional)
 
 ### 3. Perangkat padukuhan — **sudah dipasang sesuai poster resmi** (nama & foto menunggu Anda; kartu menampilkan jabatan saja)

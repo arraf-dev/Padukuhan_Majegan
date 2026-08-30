@@ -322,9 +322,16 @@ export const profil = {
     "Kini Majegan berkembang menjadi permukiman agraris, ditopang pertanian, kelompok tani dan kandang, serta UMKM olahan pangan. Balai Dusun Majegan menjadi pusat kegiatan warga — dari posyandu, rapat RT/RW, hingga merti dusun tahunan.",
   ],
   // Ditandai DRAFT di mockup: rumusan resmi belum disepakati musyawarah dusun.
-  visi: "Rumusan visi sedang disusun bersama perangkat dusun dan tokoh masyarakat — ditayangkan setelah disepakati.",
-  misi: ["Butir misi menyusul setelah musyawarah dusun…", "Butir misi menyusul…"],
-  visiMisiDraft: true,
+  visi:
+    "Majegan yang majeg — teguh dalam gotong royong, kukuh menjaga tanah dan air — sebagai padukuhan agraris yang menyejahterakan warganya, merawat budayanya, dan bertumbuh bersama zaman tanpa kehilangan ruhnya.",
+  misi: [
+    "Menjaga ruh Majegan — gotong royong, merti dusun, dan kerukunan warga lintas RT dan RW yang berdampingan.",
+    "Menguatkan pangan dan ekonomi padukuhan: mendampingi kelompok tani, kelompok kandang, Kelompok Wanita Tani, dan UMKM olahan pangan — dari hulu sawah hingga pasar.",
+    "Melayani warga dengan cepat, adil, dan ramah: layanan surat yang ringkas melalui Balai Dusun dan saluran aspirasi yang menjangkau gang serta sudut kampung.",
+    "Merawat kampung: sungai yang bersih, jalan yang mulus, pekarangan yang hijau, dan malam yang aman berkat ronda bersama.",
+    "Menumbuhkan generasi: pendidikan anak, ruang kreatif remaja (sanggar karawitan, karang taruna), serta kesehatan ibu, balita, dan lansia lewat posyandu yang rutin.",
+  ],
+  visiMisiDraft: false,
   // Nama disetel "-" sampai konfirmasi nama resmi dari Pak Dukuh; kartu
   // menampilkan jabatan saja. Admin bisa mengisinya kapan pun via panel.
   dukuh: { nama: "-", jabatan: "Dukuh Majegan" },
