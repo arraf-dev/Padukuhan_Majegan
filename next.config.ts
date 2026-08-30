@@ -42,6 +42,13 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        // Peta dimuat lewat iframe same-origin di halaman Profil. DENY
+        // menghalangi frame sekalipun dari origin sendiri — beri SAMEORIGIN
+        // hanya pada berkas peta, aplikasi tetap DENY di luar itu.
+        source: "/peta-majegan.html",
+        headers: [{ key: "X-Frame-Options", value: "SAMEORIGIN" }],
+      },
     ];
   },
 };
