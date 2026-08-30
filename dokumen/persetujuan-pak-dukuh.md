@@ -24,7 +24,7 @@
 |---|---|
 | Nama padukuhan resmi | Majegan, Kalurahan Pandowoharjo, Kapanewon Sewon, Bantul |
 | Tokoh/pemimpin (isi jabatan + nama) | Dukuh: \_\_\_\_\_\_\_\_\_\_ , Kaur: \_\_\_\_\_\_\_\_\_\_ |
-| Nomor WhatsApp resmi (wa.me) | \_\_\_\_\_\_\_\_\_\_ |
+| Nomor WhatsApp resmi (wa.me) | 0851-5651-3401 |
 | Alamat balai | \_\_\_\_\_\_\_\_\_\_ |
 | Koordinat peta (opsional) | \_\_\_\_\_\_\_\_\_\_ |
 

@@ -16,9 +16,9 @@ export const desa = {
   wilayahSingkat: "Kalurahan Pandowoharjo · Kapanewon Sleman · DIY",
   domain: "majegan.pandowoharjo.desa.id",
   alamat: ["Balai Dusun Majegan", "Majegan, Pandowoharjo,", "Kapanewon Sleman, DIY"],
-  whatsapp: "0812-2700-xxxx",
-  // ponytail: nomor masih placeholder — ganti ke nomor asli, wa.me butuh format 62xxx.
-  whatsappUrl: "https://wa.me/6281227000000",
+  // Nomor resmi Padukuhan (Pak Dukuh) — per 30 Agustus 2026.
+  whatsapp: "0851-5651-3401",
+  whatsappUrl: "https://wa.me/6285156513401",
   email: "majegan@pandowoharjo.desa.id",
   websiteKalurahan: "https://pandowoharjosid.slemankab.go.id/home/",
   // Situs resmi Kalurahan mencantumkan akun Instagram @pandowoharjo.
