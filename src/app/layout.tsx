@@ -22,14 +22,54 @@ const jakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL(situsUrl),
   title: {
-    default: `Website Resmi ${desa.nama}`,
-    template: `%s · ${desa.nama}`,
+    default: "Padukuhan Majegan | Pandowoharjo, Sleman",
+    template: "%s | Padukuhan Majegan",
   },
-  description: `Kanal informasi dan layanan resmi warga ${desa.nama}, ${desa.kalurahan}.`,
+  description:
+    "Website resmi Padukuhan Majegan, Kalurahan Pandowoharjo, Kapanewon Sleman, Kabupaten Sleman, Daerah Istimewa Yogyakarta.",
+  keywords: [
+    "Padukuhan Majegan",
+    "Pandowoharjo",
+    "Kapanewon Sleman",
+    "Kabupaten Sleman",
+    "Daerah Istimewa Yogyakarta",
+    "situs resmi padukuhan",
+    "informasi desa Sleman",
+  ],
+  authors: [{ name: "Pemerintah Padukuhan Majegan" }],
+  creator: "Pemerintah Padukuhan Majegan",
+  publisher: "Pemerintah Padukuhan Majegan",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
   openGraph: {
     type: "website",
     locale: "id_ID",
+    url: "/",
     siteName: desa.nama,
+    title: {
+      default: "Padukuhan Majegan | Pandowoharjo, Sleman",
+      template: "%s | Padukuhan Majegan",
+    },
+    description:
+      "Website resmi Padukuhan Majegan, Kalurahan Pandowoharjo, Kapanewon Sleman, Kabupaten Sleman, Daerah Istimewa Yogyakarta.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: {
+      default: "Padukuhan Majegan | Pandowoharjo, Sleman",
+      template: "%s | Padukuhan Majegan",
+    },
+    description:
+      "Website resmi Padukuhan Majegan, Kalurahan Pandowoharjo, Kapanewon Sleman, Kabupaten Sleman, Daerah Istimewa Yogyakarta.",
   },
 };
 

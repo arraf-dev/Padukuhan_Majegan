@@ -26,9 +26,10 @@ export interface MajeganVideoHeroProps {
 const nilaiAwal = {
   videoSrc: "/videos/majegan-hero.mp4",
   posterSrc: "/gambar/majegan-hero-poster.webp",
-  eyebrow: "Padukuhan",
-  title: "Majegan",
-  location: "Kampung budaya di Sleman: joglo, merti dusun, dan kerja bakti",
+  eyebrow: "Selamat datang di",
+  title: "Padukuhan Majegan",
+  location:
+    "Padukuhan Majegan, Kalurahan Pandowoharjo · Kapanewon Sleman · Daerah Istimewa Yogyakarta",
   primaryCta: { label: "Jelajahi", href: "#tentang-majegan" },
   secondaryCta: { label: "Tentang", href: "/profil" },
 } satisfies Required<Omit<MajeganVideoHeroProps, "mobileVideoSrc">>;
@@ -152,7 +153,7 @@ export function MajeganVideoHero({
               tersembunyi: { opacity: 0, y: 20 },
               terlihat: { opacity: 1, y: 0, transition: transisi },
             }}
-            className="mt-2 font-serif text-[clamp(3.4rem,16vw,5.4rem)] leading-[.92] font-semibold tracking-[-.035em] text-[#F3EBDD] uppercase drop-shadow-[0_2px_20px_rgba(0,0,0,.18)] md:mt-3 md:text-[clamp(5rem,8vw,7.5rem)]"
+            className="mt-2 font-serif text-[clamp(2rem,9vw,4.5rem)] leading-[.98] font-semibold tracking-[-.035em] text-balance text-[#F3EBDD] uppercase drop-shadow-[0_2px_20px_rgba(0,0,0,.18)] md:mt-3 md:text-[clamp(3.25rem,6.5vw,5.5rem)] md:leading-[.95]"
           >
             {title}
           </motion.h1>

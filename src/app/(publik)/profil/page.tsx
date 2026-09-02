@@ -3,9 +3,16 @@ import { desa } from "@/content/majegan";
 import { Ikon } from "@/components/ikon";
 import { Foto, JudulSection } from "@/components/potongan";
 import { kartu } from "@/components/primitif";
+import { JsonLd } from "@/components/seo-jsonld";
+import { breadcrumbJsonLd } from "@/lib/seo";
 import { profilDesa, type Perangkat } from "@/lib/profil";
 
-export const metadata: Metadata = { title: "Profil" };
+export const metadata: Metadata = {
+  title: "Profil Padukuhan Majegan",
+  description:
+    "Profil Padukuhan Majegan: sejarah, visi dan misi, struktur organisasi, serta wilayah dan kontak di Kalurahan Pandowoharjo, Kapanewon Sleman, Daerah Istimewa Yogyakarta.",
+  alternates: { canonical: "/profil" },
+};
 
 /** Kartu satu perangkat pada bagan struktur — nama tampil bila sudah diisi. */
 function KartuOrang({
@@ -50,7 +57,9 @@ export default async function Profil() {
   const profil = await profilDesa();
 
   return (
-    <div className="wadah gap-10 px-4 py-8 md:grid md:grid-cols-[210px_1fr] md:px-12 md:pt-10 md:pb-12 lg:grid-cols-[240px_1fr] lg:gap-14 lg:px-16 lg:pt-12 lg:pb-16">
+    <>
+      <JsonLd data={breadcrumbJsonLd([{ nama: "Beranda", path: "/" }, { nama: "Profil", path: "/profil" }])} />
+      <div className="wadah gap-10 px-4 py-8 md:grid md:grid-cols-[210px_1fr] md:px-12 md:pt-10 md:pb-12 lg:grid-cols-[240px_1fr] lg:gap-14 lg:px-16 lg:pt-12 lg:pb-16">
       {/* ponytail: daftar isi tanpa scroll-spy — anchor biasa sudah cukup.
           top-24 mulai md: header desktop sekarang sticky, top-5 akan terselip. */}
       <nav className="sticky top-5 mb-6 self-start max-md:hidden md:top-24">
@@ -301,6 +310,7 @@ export default async function Profil() {
           </div>
         </section>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

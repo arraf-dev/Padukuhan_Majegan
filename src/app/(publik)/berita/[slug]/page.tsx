@@ -4,7 +4,9 @@ import { notFound } from "next/navigation";
 import { Atap, Ikon } from "@/components/ikon";
 import { Foto, JudulSection, KartuRingkas, LencanaKategori } from "@/components/potongan";
 import { tombol } from "@/components/primitif";
+import { JsonLd } from "@/components/seo-jsonld";
 import { beritaSlug, beritaTerbit } from "@/lib/berita";
+import { artikelJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 import { tanggalPanjang } from "@/lib/tanggal";
 
 type Params = { params: Promise<{ slug: string }> };
@@ -16,7 +18,30 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const b = await beritaSlug((await params).slug);
-  return b ? { title: b.judul, description: b.ringkasan } : {};
+  if (!b) return {};
+
+  const gambar = b.foto && !b.foto.endsWith(".svg") ? b.foto : undefined;
+
+  return {
+    title: b.judul,
+    description: b.ringkasan,
+    alternates: { canonical: `/berita/${b.slug}` },
+    openGraph: {
+      type: "article",
+      title: b.judul,
+      description: b.ringkasan,
+      url: `/berita/${b.slug}`,
+      publishedTime: b.tanggal,
+      modifiedTime: b.tanggal,
+      images: gambar ? [{ url: gambar, alt: b.fotoKeterangan }] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: b.judul,
+      description: b.ringkasan,
+      images: gambar ? [gambar] : undefined,
+    },
+  };
 }
 
 export default async function DetailBerita({ params }: Params) {
@@ -27,6 +52,14 @@ export default async function DetailBerita({ params }: Params) {
 
   return (
     <div className="wadah px-4 pt-5 pb-10 md:px-12 md:pt-8 md:pb-12 lg:px-16 lg:pt-10 lg:pb-16">
+      <JsonLd data={artikelJsonLd(b)} />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { nama: "Beranda", path: "/" },
+          { nama: "Kabar Majegan", path: "/berita" },
+          { nama: b.judul, path: `/berita/${b.slug}` },
+        ])}
+      />
       <Link href="/berita" className={`${tombol("teks")} text-[13px] lg:text-sm`}>
         <Ikon nama="kembali" ukuran={15} />
         Kembali ke Kabar Majegan

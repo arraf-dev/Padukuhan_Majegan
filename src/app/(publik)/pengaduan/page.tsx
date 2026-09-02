@@ -10,6 +10,7 @@ import { kirimPengaduan } from "./aksi";
 export const metadata: Metadata = {
   title: "Kirim Pengaduan",
   description: "Sampaikan keluhan atau usulan Anda. Identitas pelapor tidak ditampilkan ke publik.",
+  alternates: { canonical: "/pengaduan" },
 };
 
 const pesanGalat: Record<string, string> = {

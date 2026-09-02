@@ -4,7 +4,12 @@ import { JudulSection } from "@/components/potongan";
 import { kartu } from "@/components/primitif";
 import { type KelompokUsia, type RincianStatistik, statistikPenduduk, TAHUN_DATA } from "@/lib/statistik";
 
-export const metadata: Metadata = { title: "Statistik Penduduk" };
+export const metadata: Metadata = {
+  title: "Statistik Penduduk",
+  description:
+    "Statistik penduduk Padukuhan Majegan: jumlah jiwa, kepala keluarga, komposisi usia, dan jenis kelamin di Kalurahan Pandowoharjo, Kapanewon Sleman.",
+  alternates: { canonical: "/statistik" },
+};
 
 export default async function Statistik() {
   const { ringkasan, usia, jenisKelamin, pekerjaan, pendidikan } = await statistikPenduduk();

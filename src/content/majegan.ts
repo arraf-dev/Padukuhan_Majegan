@@ -7,14 +7,14 @@
  * di bawah sudah mengikuti kolom yang direncanakan supaya migrasinya lurus.
  */
 
-import { urlSitusProduksi } from "../lib/env.ts";
+import { SITUS_KANONIK, urlSitusProduksi } from "../lib/env.ts";
 
 export const desa = {
   nama: "Padukuhan Majegan",
   kalurahan: "Kalurahan Pandowoharjo",
   wilayah: "Kalurahan Pandowoharjo · Kapanewon Sleman · Daerah Istimewa Yogyakarta",
   wilayahSingkat: "Kalurahan Pandowoharjo · Kapanewon Sleman · DIY",
-  domain: "majegan.pandowoharjo.desa.id",
+  domain: "www.majegan-pandowoharjo.id",
   alamat: ["Balai Dusun Majegan", "Majegan, Pandowoharjo,", "Kapanewon Sleman, DIY"],
   // Nomor resmi Padukuhan (Pak Dukuh) — per 30 Agustus 2026.
   whatsapp: "0851-5651-3401",
@@ -30,7 +30,7 @@ export const desa = {
 };
 
 /** Alamat kanonik situs — dipakai metadataBase, sitemap, dan robots. */
-export const situsUrl = urlSitusProduksi(process.env, `https://${desa.domain}`)!;
+export const situsUrl = urlSitusProduksi(process.env, SITUS_KANONIK)!;
 
 export const statistik = [
   { angka: 1284, label: "jiwa penduduk" },

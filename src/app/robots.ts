@@ -3,7 +3,11 @@ import { situsUrl } from "@/content/majegan";
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: "*", allow: "/", disallow: "/admin" },
+    rules: {
+      userAgent: "*",
+      allow: "/",
+      disallow: ["/admin", "/api"],
+    },
     sitemap: `${situsUrl}/sitemap.xml`,
   };
 }

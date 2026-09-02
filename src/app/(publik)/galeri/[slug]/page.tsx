@@ -5,7 +5,9 @@ import { GaleriGrid } from "@/components/galeri-grid";
 import { LencanaKategoriGaleri } from "@/components/album-galeri";
 import { Foto } from "@/components/potongan";
 import { tombol } from "@/components/primitif";
+import { JsonLd } from "@/components/seo-jsonld";
 import { getAllPublishedAlbums, getAlbumBySlug, getLatestAlbums } from "@/lib/galeri";
+import { breadcrumbJsonLd } from "@/lib/seo";
 import { tanggalPanjang } from "@/lib/tanggal";
 
 type Params = { params: Promise<{ slug: string }> };
@@ -41,6 +43,13 @@ export default async function DetailGaleri({ params }: Params) {
 
   return (
     <div className="wadah px-4 pt-5 pb-12 md:px-12 md:pt-8 md:pb-14 lg:px-16 lg:pt-10 lg:pb-20">
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { nama: "Beranda", path: "/" },
+          { nama: "Galeri", path: "/galeri" },
+          { nama: album.judul, path: `/galeri/${album.slug}` },
+        ])}
+      />
       <Link href="/galeri" className={`${tombol("teks")} text-[13px] lg:text-sm`}>
         <span aria-hidden="true">&#8592;</span>
         Kembali ke Galeri Majegan

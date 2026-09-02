@@ -7,7 +7,12 @@ import { kartu, kartuPutus, tombol } from "@/components/primitif";
 import { beritaTerbit } from "@/lib/berita";
 import { tanggalPendekTahun } from "@/lib/tanggal";
 
-export const metadata: Metadata = { title: "Kabar Majegan" };
+export const metadata: Metadata = {
+  title: "Kabar Majegan",
+  description:
+    "Berita dan pengumuman resmi Padukuhan Majegan: kegiatan warga, pembangunan, dan informasi layanan di Kalurahan Pandowoharjo, Kapanewon Sleman.",
+  alternates: { canonical: "/berita" },
+};
 
 const PER_HALAMAN = 6;
 

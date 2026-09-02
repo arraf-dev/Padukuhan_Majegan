@@ -2,7 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { tombol } from "@/components/primitif";
 
-export const metadata: Metadata = { title: "Laporan Terkirim" };
+export const metadata: Metadata = {
+  title: "Laporan Terkirim",
+  robots: { index: false, follow: true },
+  alternates: { canonical: "/pengaduan" },
+};
 
 export default function Terkirim() {
   return (

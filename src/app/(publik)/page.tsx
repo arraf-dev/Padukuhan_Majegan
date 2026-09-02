@@ -1,15 +1,22 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { pengumuman } from "@/content/majegan";
 import { Hitung } from "@/components/gerak";
 import { GaleriBento } from "@/components/galeri-bento";
 import { JudulSection, KartuRingkas } from "@/components/potongan";
 import { TentangMajegan } from "@/components/sambutan";
+import { JsonLd } from "@/components/seo-jsonld";
 import { kartu, tombol } from "@/components/primitif";
 import { MajeganVideoHero } from "@/components/ui/majegan-video-hero";
 import { beritaTerbit } from "@/lib/berita";
 import { getLatestAlbums } from "@/lib/galeri";
+import { berandaJsonLd } from "@/lib/seo";
 import { type KelompokUsia, statistikPenduduk } from "@/lib/statistik";
 import { tanggalPendek } from "@/lib/tanggal";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export default async function Beranda() {
   const [terbaru, { ringkasan, usia }, albumTerbaru] = await Promise.all([
@@ -20,6 +27,7 @@ export default async function Beranda() {
 
   return (
     <>
+      <JsonLd data={berandaJsonLd()} />
       <MajeganVideoHero />
       <TentangMajegan ringkasan={ringkasan} />
 

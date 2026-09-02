@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { desa } from "@/content/majegan";
 import { CentangKotak, Ikon } from "@/components/ikon";
 import { kartu, kartuPutus, tombol } from "@/components/primitif";
+import { JsonLd } from "@/components/seo-jsonld";
+import { breadcrumbJsonLd } from "@/lib/seo";
 import { semuaLayanan } from "@/lib/layanan";
 
 type Params = {
@@ -16,8 +18,25 @@ const cari = (daftar: Awaited<ReturnType<typeof semuaLayanan>>, slug?: string[])
   slug?.length ? daftar.find((l) => l.slug === slug[0]) : daftar[0];
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const l = cari(await semuaLayanan(), (await params).slug);
-  return l ? { title: l.nama, description: l.deskripsi } : {};
+  const daftar = await semuaLayanan();
+  const slug = (await params).slug;
+  const l = cari(daftar, slug);
+  if (!l) return {};
+
+  // Tanpa slug, halaman ini adalah pusat informasi layanan — bukan duplikat
+  // dari layanan pertama — supaya title tidak kembar dengan /layanan/{slug}.
+  return slug?.length
+    ? {
+        title: l.nama,
+        description: l.deskripsi,
+        alternates: { canonical: `/layanan/${l.slug}` },
+      }
+    : {
+        title: "Informasi Layanan",
+        description:
+          "Daftar layanan surat dan administrasi Padukuhan Majegan: E-KTP, Kartu Keluarga, akta kelahiran/kematian, surat keterangan, dan lainnya.",
+        alternates: { canonical: "/layanan" },
+      };
 }
 
 /** `**tebal**` → <strong>. ponytail: satu pola, tidak perlu parser markdown. */
@@ -46,6 +65,13 @@ export default async function Layanan({ params, searchParams }: Params) {
 
   return (
     <div className="wadah grid items-start gap-8 px-4 py-8 md:grid-cols-[300px_1fr] md:px-12 md:pt-10 md:pb-12 lg:grid-cols-[320px_1fr] lg:gap-10 lg:px-16 lg:pt-12 lg:pb-16">
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { nama: "Beranda", path: "/" },
+          { nama: "Layanan", path: "/layanan" },
+          ...(aktif.slug ? [{ nama: aktif.nama, path: `/layanan/${aktif.slug}` }] : []),
+        ])}
+      />
       {/**
        * Rail daftar menempel di desktop — detail layanan jauh lebih panjang,
        * tanpa sticky pengguna harus gulir balik ke atas untuk ganti layanan.
