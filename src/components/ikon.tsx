@@ -24,14 +24,12 @@ export const Logo = ({ ukuran = 42, ...rest }: Props) =>
     <>
       <rect width="42" height="42" rx="10" className="fill-hutan-pekat" />
       <path
-        d="M8 24 L21 12 L34 24"
-        fill="none"
-        className="stroke-emas"
-        strokeWidth="2.6"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        d="M6 21 21 9l15 12h-7l-8-6.5L13 21Z"
+        className="fill-emas"
       />
-      <path d="M13 29 H29" className="stroke-emas" strokeWidth="2.6" strokeLinecap="round" />
+      <path d="M10 21h22v4H10z" className="fill-emas" />
+      <path d="M12 25h5v8h-5zm13 0h5v8h-5z" className="fill-krem" />
+      <path d="M16 33h10l-5-7z" className="fill-emas" />
     </>,
   );
 

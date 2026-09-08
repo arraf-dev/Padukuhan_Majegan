@@ -1,8 +1,8 @@
 import Link from "next/link";
+import Image from "next/image";
 import { aksesCepat, desa } from "@/content/majegan";
 import { Hitung } from "@/components/gerak";
 import { Ikon } from "@/components/ikon";
-import { Foto } from "@/components/potongan";
 import { kartu, tombol } from "@/components/primitif";
 import type { Ringkasan } from "@/lib/statistik";
 
@@ -53,14 +53,12 @@ export function TentangMajegan({ ringkasan }: { ringkasan: Ringkasan[] }) {
         <dl
           data-reveal
           data-jeda="4"
-          className="mt-6 flex flex-wrap border-t border-garis pt-4 md:mt-[30px] md:flex-nowrap md:pt-5 lg:mt-9 lg:pt-7"
+          className="mt-6 grid grid-cols-2 gap-y-4 border-t border-garis pt-4 sm:grid-cols-4 md:mt-[30px] md:pt-5 lg:mt-9 lg:pt-7"
         >
           {ringkasan.map((s, i) => (
             <div
               key={s.label}
-              className={`px-4 py-1 md:px-7 md:py-0 lg:px-9 ${i === 0 ? "pl-0 lg:pl-0" : "border-l border-garis"} ${
-                i === ringkasan.length - 1 ? "md:pr-0" : ""
-              }`}
+              className={`min-w-0 border-garis px-3 py-1 sm:border-l sm:first:border-l-0 sm:first:pl-0 md:py-0 ${i % 2 === 0 ? "max-sm:pl-0" : "border-l"}`}
             >
               <dd className="font-serif text-[22px] font-bold text-hutan md:text-[27px] lg:text-[32px]">
                 <Hitung ke={s.angka} />
@@ -73,16 +71,24 @@ export function TentangMajegan({ ringkasan }: { ringkasan: Ringkasan[] }) {
         </dl>
       </div>
 
-      <div className="flex flex-col gap-3 md:gap-3.5 lg:gap-5">
-        {/* min-h naik di lg: pada kolom selebar ~560px, 150px membuat gapura
-            tampak seperti strip, bukan foto. */}
-        <Foto
-          src="/gambar/gapura-majegan.svg"
-          keterangan="Gapura masuk Padukuhan Majegan"
-          prioritas
-          sizes="(min-width: 1024px) 42vw, (min-width: 768px) 33vw, 100vw"
-          className="aspect-[16/10] rounded-xl border border-garis md:aspect-auto md:min-h-[150px] md:flex-1 lg:min-h-[340px] lg:rounded-2xl"
-        />
+      <div className="flex min-w-0 flex-col gap-4 lg:gap-5">
+        <figure className="relative isolate flex flex-col items-center overflow-hidden rounded-3xl bg-[#0d3825] px-6 pt-4 pb-8 text-center text-[#f7f2e6] lg:pt-5 lg:pb-9">
+          <div aria-hidden="true" className="pointer-events-none absolute inset-3 rounded-[18px] border border-[#c5a15b]/25" />
+          <Image
+            src="/gambar/majegan-gapura-sawah.png"
+            alt="Simbol gapura Jawa, matahari, dan hamparan sawah Majegan"
+            width={1254}
+            height={1254}
+            sizes="(min-width: 1024px) 224px, 192px"
+            className="size-48 shrink-0 object-contain [mask-image:radial-gradient(ellipse_at_center,black_55%,transparent_72%)] lg:size-56"
+          />
+          <figcaption className="relative mt-1">
+            <span className="block text-[10px] font-semibold tracking-[.32em] text-[#d6b875] uppercase">Padukuhan</span>
+            <span className="mt-1.5 block font-serif text-[42px] leading-[1.1] tracking-[-.025em] lg:text-5xl">Majegan</span>
+            <span aria-hidden="true" className="mx-auto mt-4 block h-px w-10 bg-[#c5a15b]/60" />
+            <span className="mt-3 block text-[11px] tracking-[.06em] text-[#f7f2e6]/70">Pandowoharjo · Sleman</span>
+          </figcaption>
+        </figure>
 
         <div
           data-reveal
