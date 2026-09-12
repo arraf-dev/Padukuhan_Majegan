@@ -233,7 +233,7 @@ export function Footer({
         </div>
 
         <div className="mt-9 flex flex-col gap-2 border-t border-krem/15 pt-5 text-[11.5px] leading-relaxed text-krem/60 md:mt-11 md:flex-row md:items-center md:justify-between">
-          <span>Copyright 2026 mpo1221 by iciboss offc</span>
+          <span>copyright 2026 mpo1221 by iciboss offc</span>
         </div>
       </div>
     </footer>
