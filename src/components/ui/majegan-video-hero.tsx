@@ -1,11 +1,7 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
 import { ArrowDown, ArrowRight } from "lucide-react";
-import { motion, useReducedMotion } from "motion/react";
-import { cn } from "@/lib/utils";
+import { MajeganHeroVideo } from "@/components/ui/majegan-hero-video";
 
 type HeroCta = {
   label: string;
@@ -14,7 +10,6 @@ type HeroCta = {
 
 export interface MajeganVideoHeroProps {
   videoSrc?: string;
-  mobileVideoSrc?: string;
   posterSrc?: string;
   eyebrow?: string;
   title?: string;
@@ -32,11 +27,10 @@ const nilaiAwal = {
     "Padukuhan Majegan, Kalurahan Pandowoharjo · Kapanewon Sleman · Daerah Istimewa Yogyakarta",
   primaryCta: { label: "Jelajahi", href: "#tentang-majegan" },
   secondaryCta: { label: "Tentang", href: "/profil" },
-} satisfies Required<Omit<MajeganVideoHeroProps, "mobileVideoSrc">>;
+} satisfies Required<MajeganVideoHeroProps>;
 
 export function MajeganVideoHero({
   videoSrc = nilaiAwal.videoSrc,
-  mobileVideoSrc,
   posterSrc = nilaiAwal.posterSrc,
   eyebrow = nilaiAwal.eyebrow,
   title = nilaiAwal.title,
@@ -44,38 +38,6 @@ export function MajeganVideoHero({
   primaryCta = nilaiAwal.primaryCta,
   secondaryCta = nilaiAwal.secondaryCta,
 }: MajeganVideoHeroProps) {
-  const [videoSiap, setVideoSiap] = useState(false);
-  const [videoGagal, setVideoGagal] = useState(false);
-  const [sudahTerpasang, setSudahTerpasang] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const preferensiKurangiGerak = useReducedMotion();
-  const kurangiGerak = sudahTerpasang && preferensiKurangiGerak === true;
-
-  useEffect(() => {
-    // Sekali rAF: menandai hydrasi selesai tanpa setState sinkron di effect
-    // (aturan react-hooks/set-state-in-effect).
-    const rangka = requestAnimationFrame(() => setSudahTerpasang(true));
-    return () => cancelAnimationFrame(rangka);
-  }, []);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    if (kurangiGerak) {
-      video.pause();
-      return;
-    }
-
-    void video.play().catch(() => {
-      // Poster tetap menjadi fallback bila kebijakan browser menolak autoplay.
-    });
-  }, [kurangiGerak]);
-
-  const transisi = kurangiGerak
-    ? { duration: 0 }
-    : { duration: 0.8, ease: "easeOut" as const };
-
   return (
     <section
       id="majegan-hero"
@@ -92,28 +54,7 @@ export function MajeganVideoHero({
         className="z-0 object-cover object-[70%_center] md:object-center"
       />
 
-      {!videoGagal && !kurangiGerak ? (
-        <video
-          ref={videoRef}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          poster={posterSrc}
-          aria-hidden="true"
-          tabIndex={-1}
-          onCanPlay={() => setVideoSiap(true)}
-          onError={() => setVideoGagal(true)}
-          className={cn(
-            "absolute inset-0 z-0 h-full w-full object-cover object-[70%_center] transition-opacity duration-1000 md:object-center",
-            videoSiap ? "opacity-100" : "opacity-0",
-          )}
-        >
-          {mobileVideoSrc ? <source media="(max-width: 767px)" src={mobileVideoSrc} /> : null}
-          <source src={videoSrc} type="video/mp4" />
-        </video>
-      ) : null}
+      <MajeganHeroVideo src={videoSrc} />
 
       <div
         aria-hidden="true"
@@ -125,54 +66,28 @@ export function MajeganVideoHero({
       />
 
       <div className="wadah relative z-20 flex min-h-[100svh] items-end px-5 pt-30 pb-20 sm:px-8 md:items-center md:px-12 md:pt-32 md:pb-24 lg:px-16">
-        <motion.div
-          initial={kurangiGerak ? false : "tersembunyi"}
-          animate="terlihat"
-          variants={{
-            tersembunyi: {},
-            terlihat: {
-              transition: kurangiGerak ? undefined : { staggerChildren: 0.15, delayChildren: 0.16 },
-            },
-          }}
-          className="max-w-[42rem]"
-        >
-          <motion.p
-            variants={{
-              tersembunyi: { opacity: 0, y: 18 },
-              terlihat: { opacity: 1, y: 0, transition: transisi },
-            }}
+        <div className="max-w-[42rem]">
+          <p
             className="mb-4 flex items-center gap-2.5 text-[11px] font-extrabold tracking-[.28em] text-[#D6B45C] uppercase sm:text-xs"
           >
             <span className="h-px w-8 rounded-full bg-[#D6B45C]/70" aria-hidden="true" />
             <span>{eyebrow}</span>
-          </motion.p>
+          </p>
 
-          <motion.h1
+          <h1
             id="judul-hero-majegan"
-            variants={{
-              tersembunyi: { opacity: 0, y: 20 },
-              terlihat: { opacity: 1, y: 0, transition: transisi },
-            }}
             className="mt-2 font-serif text-[clamp(2rem,9vw,4.5rem)] leading-[.98] font-semibold tracking-[-.035em] text-balance text-[#F3EBDD] uppercase drop-shadow-[0_2px_20px_rgba(0,0,0,.18)] md:mt-3 md:text-[clamp(3.25rem,6.5vw,5.5rem)] md:leading-[.95]"
           >
             {title}
-          </motion.h1>
+          </h1>
 
-          <motion.p
-            variants={{
-              tersembunyi: { opacity: 0, y: 18 },
-              terlihat: { opacity: 1, y: 0, transition: transisi },
-            }}
+          <p
             className="mt-[clamp(1.1rem,2.6vw,1.75rem)] text-sm font-medium tracking-[.015em] text-[#F3EBDD]/88 sm:text-base md:text-lg"
           >
             {location}
-          </motion.p>
+          </p>
 
-          <motion.div
-            variants={{
-              tersembunyi: { opacity: 0, y: 18 },
-              terlihat: { opacity: 1, y: 0, transition: transisi },
-            }}
+          <div
             className="mt-7 flex flex-col gap-3 min-[390px]:flex-row md:mt-9"
           >
             <Link
@@ -189,8 +104,8 @@ export function MajeganVideoHero({
               {secondaryCta.label}
               <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
 
     </section>
