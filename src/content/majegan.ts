@@ -17,9 +17,9 @@ export const desa = {
   domain: "www.majegan-pandowoharjo.id",
   alamat: ["Balai Dusun Majegan", "Majegan, Pandowoharjo,", "Kapanewon Sleman, DIY"],
   // Nomor resmi Padukuhan (Pak Dukuh) — per 30 Agustus 2026.
-  whatsapp: "0851-5651-3401",
+  whatsapp: "+62 851-5651-3401",
   whatsappUrl: "https://wa.me/6285156513401",
-  email: "majegan@pandowoharjo.desa.id",
+  email: "padukuhanmajegan@gmail.com",
   websiteKalurahan: "https://pandowoharjosid.slemankab.go.id/home/",
   // Situs resmi Kalurahan mencantumkan akun Instagram @pandowoharjo.
   instagramUrl: "https://www.instagram.com/pandowoharjo/",
