@@ -61,6 +61,19 @@ export async function beritaTerbit(batas?: number): Promise<Berita[]> {
   return baris.map(keBerita);
 }
 
+/**
+ * Pengumuman publik berasal dari berita yang sudah ditayangkan.
+ *
+ * Sebelumnya beranda dan sidebar berita memakai array hardcoded dari fixture
+ * demo. Dengan mengambilnya dari tabel `berita`, setiap pengumuman yang
+ * tampil bisa dikelola lewat panel admin dan tidak ada kabar lama yang
+ * tertinggal hanya karena lupa mengubah source code.
+ */
+export async function pengumumanTerbit(batas = 4): Promise<{ tanggal: string; teks: string }[]> {
+  const berita = await beritaTerbit(batas);
+  return berita.map((b) => ({ tanggal: b.tanggal, teks: b.judul }));
+}
+
 export async function beritaSlug(slug: string): Promise<Berita | null> {
   const baris = await db.berita.findUnique({ where: { slug }, select: pilih });
 

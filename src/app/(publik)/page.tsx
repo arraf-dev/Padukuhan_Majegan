@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { pengumuman } from "@/content/majegan";
 import { Hitung } from "@/components/gerak";
 import { GaleriBento } from "@/components/galeri-bento";
 import { JudulSection, KartuRingkas } from "@/components/potongan";
@@ -8,7 +7,7 @@ import { TentangMajegan } from "@/components/sambutan";
 import { JsonLd } from "@/components/seo-jsonld";
 import { kartu, tombol } from "@/components/primitif";
 import { MajeganVideoHero } from "@/components/ui/majegan-video-hero";
-import { beritaTerbit } from "@/lib/berita";
+import { beritaTerbit, pengumumanTerbit } from "@/lib/berita";
 import { getLatestAlbums } from "@/lib/galeri";
 import { berandaJsonLd } from "@/lib/seo";
 import { type KelompokUsia, statistikPenduduk } from "@/lib/statistik";
@@ -19,10 +18,11 @@ export const metadata: Metadata = {
 };
 
 export default async function Beranda() {
-  const [terbaru, { ringkasan, usia }, albumTerbaru] = await Promise.all([
+  const [terbaru, { ringkasan, usia }, albumTerbaru, pengumuman] = await Promise.all([
     beritaTerbit(3),
     statistikPenduduk(),
     getLatestAlbums(4),
+    pengumumanTerbit(4),
   ]);
 
   return (
@@ -39,7 +39,7 @@ export default async function Beranda() {
         </span>
         <div className="h-6 flex-1 overflow-hidden">
           <div className="ticker flex flex-col">
-            {[...pengumuman, pengumuman[0]].map((p, i) => (
+            {[...pengumuman, ...(pengumuman[0] ? [pengumuman[0]] : [])].map((p, i) => (
               <span
                 key={i}
                 className="flex h-6 items-center whitespace-nowrap text-[12.5px] text-emas-teks"
@@ -107,6 +107,7 @@ export default async function Beranda() {
                   <span>{p.teks}</span>
                 </li>
               ))}
+              {pengumuman.length === 0 && <li>Belum ada pengumuman terbaru.</li>}
             </ul>
           </div>
         </div>

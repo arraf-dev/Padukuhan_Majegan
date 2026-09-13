@@ -309,13 +309,6 @@ export const berita: Berita[] = [
   },
 ];
 
-export const pengumuman = [
-  { tanggal: "2026-07-18", teks: "Pembagian bantuan bibit cabai untuk anggota KWT Majegan" },
-  { tanggal: "2026-07-16", teks: "Pendataan ulang penerima BLT-DD tahap III — hubungi Ketua RT" },
-  { tanggal: "2026-07-12", teks: "Rapat rutin RT/RW — Sabtu pukul 20.00 di Balai Dusun" },
-  { tanggal: "2026-07-08", teks: "Jadwal ronda bulan Agustus telah ditempel di pos kamling" },
-];
-
 export const profil = {
   sejarah: [
     'Majegan adalah salah satu padukuhan di Kalurahan Pandowoharjo. Namanya dipercaya berasal dari kata "majeg" — tetap dan kukuh — merujuk pada warga yang teguh menetap dan menggarap lahan di kawasan ini sejak masa Kasultanan.',

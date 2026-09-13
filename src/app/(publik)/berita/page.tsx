@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { kategoriBerita, pengumuman } from "@/content/majegan";
+import { kategoriBerita } from "@/content/majegan";
 import { Atap } from "@/components/ikon";
 import { KartuAlbum } from "@/components/potongan";
 import { kartu, kartuPutus, tombol } from "@/components/primitif";
-import { beritaTerbit } from "@/lib/berita";
+import { beritaTerbit, pengumumanTerbit } from "@/lib/berita";
 import { tanggalPendekTahun } from "@/lib/tanggal";
 
 export const metadata: Metadata = {
@@ -22,7 +22,7 @@ export default async function Berita({
   searchParams: Promise<{ kategori?: string; hal?: string }>;
 }) {
   const { kategori, hal } = await searchParams;
-  const berita = await beritaTerbit();
+  const [berita, pengumuman] = await Promise.all([beritaTerbit(), pengumumanTerbit(4)]);
 
   const terpilih = kategoriBerita.find((k) => k === kategori);
   const tersaring = terpilih ? berita.filter((b) => b.kategori === terpilih) : berita;
@@ -144,6 +144,11 @@ export default async function Berita({
               </li>
             ))}
           </ul>
+          {pengumuman.length === 0 && (
+            <p className="rounded-[10px] border border-dashed border-garis-tebal bg-panel px-3 py-3 text-[12.5px] text-samar">
+              Belum ada pengumuman terbaru.
+            </p>
+          )}
         </aside>
       </div>
     </div>
