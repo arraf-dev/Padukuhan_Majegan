@@ -4,6 +4,7 @@ import { Ikon } from "@/components/ikon";
 import { Foto, JudulSection } from "@/components/potongan";
 import { kartu } from "@/components/primitif";
 import { JsonLd } from "@/components/seo-jsonld";
+import { SejarahProfil } from "@/components/sejarah-profil";
 import { breadcrumbJsonLd } from "@/lib/seo";
 import { profilDesa, type Perangkat } from "@/lib/profil";
 
@@ -82,21 +83,11 @@ export default async function Profil() {
       <div className="flex min-w-0 flex-col gap-10 lg:gap-14">
         <section id="sejarah" data-reveal className="scroll-mt-6 md:scroll-mt-20">
           <JudulSection anak="Sejarah Padukuhan" />
-          <div className="grid items-start gap-6 md:grid-cols-[1.5fr_1fr] lg:gap-9">
-            <div className="text-[15px] leading-[1.8] text-teks lg:text-[16.5px] lg:leading-[1.85]">
-              {profil.sejarah.map((p, i) => (
-                <p key={i} className={i === 0 ? "mb-3.5" : ""}>
-                  {p}
-                </p>
-              ))}
-            </div>
-            <Foto
-              src="/gambar/balai-dusun.svg"
-              keterangan="Balai Dusun Majegan"
-              sizes="(min-width: 768px) 40vw, 100vw"
-              className="h-[190px] rounded-xl border border-garis lg:h-[280px] lg:rounded-2xl"
-            />
-          </div>
+          <SejarahProfil
+            paragraf={profil.sejarah}
+            gambar={profil.sejarahGambar}
+            sumber={profil.sejarahSumber}
+          />
         </section>
 
         <section id="visi-misi" data-reveal className="scroll-mt-6 md:scroll-mt-20">
