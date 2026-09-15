@@ -1,6 +1,6 @@
 import { profil as contoh } from "@/content/majegan";
 import {
-  naskahSejarahResmi,
+  naskahSejarahPublik,
   sejarahResmi,
   type GambarSejarah,
   type SumberSejarah,
@@ -104,7 +104,7 @@ export async function profilDesa(): Promise<ProfilDesa> {
   return {
     // Konten resmi menjadi fallback bila baris sejarah belum pernah dibuat.
     // Setelah tersimpan, naskah database tetap dapat disunting dari panel admin.
-    sejarah: paragraf(sejarah?.konten ?? naskahSejarahResmi()),
+    sejarah: paragraf(naskahSejarahPublik(sejarah?.konten)),
     sejarahGambar: sejarahResmi.gambar,
     sejarahSumber: sejarahResmi.sumber,
     visi,

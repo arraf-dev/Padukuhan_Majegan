@@ -1,6 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { naskahSejarahResmi, sejarahResmi } from "../content/sejarah.ts";
+import {
+  naskahSejarahPublik,
+  naskahSejarahResmi,
+  sejarahResmi,
+} from "../content/sejarah.ts";
 
 test("sejarah resmi memuat empat paragraf dari dokumen", () => {
   assert.equal(sejarahResmi.paragraf.length, 4);
@@ -31,4 +35,18 @@ test("paragraf sejarah siap disimpan sebagai naskah admin", () => {
 
   assert.equal(konten.split("\n\n").length, 4);
   assert.doesNotMatch(konten, /\n{3,}/);
+});
+
+test("naskah contoh lama diganti dengan sejarah resmi", () => {
+  const contohLama =
+    'Majegan adalah salah satu padukuhan tertua di Kalurahan Pandowoharjo. Namanya dipercaya berasal dari kata "majeg" — tetap dan kukuh — merujuk pada warga yang teguh menetap dan menggarap lahan di kawasan ini sejak masa Kasultanan.\n\n' +
+    "Kini Majegan berkembang menjadi permukiman agraris dengan 8 RT dalam 2 RW, ditopang pertanian padi, kelompok wanita tani, serta UMKM olahan pangan. Balai Dusun Majegan menjadi pusat kegiatan warga — dari posyandu, rapat RT, hingga merti dusun tahunan.";
+
+  assert.equal(naskahSejarahPublik(contohLama), naskahSejarahResmi());
+});
+
+test("naskah hasil suntingan admin tetap dipertahankan", () => {
+  const suntinganAdmin = "Naskah sejarah yang telah diperbarui oleh admin padukuhan.";
+
+  assert.equal(naskahSejarahPublik(suntinganAdmin), suntinganAdmin);
 });

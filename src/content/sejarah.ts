@@ -51,3 +51,18 @@ export const sejarahResmi = {
 export function naskahSejarahResmi() {
   return sejarahResmi.paragraf.join("\n\n");
 }
+
+const naskahContohLama = new Set([
+  'Majegan adalah salah satu padukuhan tertua di Kalurahan Pandowoharjo. Namanya dipercaya berasal dari kata "majeg" — tetap dan kukuh — merujuk pada warga yang teguh menetap dan menggarap lahan di kawasan ini sejak masa Kasultanan.\n\nKini Majegan berkembang menjadi permukiman agraris dengan 8 RT dalam 2 RW, ditopang pertanian padi, kelompok wanita tani, serta UMKM olahan pangan. Balai Dusun Majegan menjadi pusat kegiatan warga — dari posyandu, rapat RT, hingga merti dusun tahunan.',
+  'Majegan adalah salah satu padukuhan di Kalurahan Pandowoharjo. Namanya dipercaya berasal dari kata "majeg" — tetap dan kukuh — merujuk pada warga yang teguh menetap dan menggarap lahan di kawasan ini sejak masa Kasultanan.\n\nKini Majegan berkembang menjadi permukiman agraris, ditopang pertanian, kelompok tani dan kandang, serta UMKM olahan pangan. Balai Dusun Majegan menjadi pusat kegiatan warga — dari posyandu, rapat RT/RW, hingga merti dusun tahunan.',
+]);
+
+/**
+ * Ganti hanya naskah demo yang pernah di-seed; suntingan admin lain tetap
+ * menjadi sumber utama halaman publik.
+ */
+export function naskahSejarahPublik(kontenDatabase?: string | null) {
+  const konten = kontenDatabase?.trim();
+
+  return !konten || naskahContohLama.has(konten) ? naskahSejarahResmi() : konten;
+}
