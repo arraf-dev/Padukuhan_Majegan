@@ -18,6 +18,7 @@ TESTCASE.md
 .mcp.json
 .playwright-cli/
 .playwright-mcp/
+.worktrees/
 output/playwright/
 testsprite_tests/tmp/
 testsprite_tests/tmp/config.json
