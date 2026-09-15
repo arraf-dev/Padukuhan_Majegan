@@ -8,6 +8,7 @@
  */
 
 import { SITUS_KANONIK, urlSitusProduksi } from "../lib/env.ts";
+import { sejarahResmi } from "./sejarah.ts";
 
 export const desa = {
   nama: "Padukuhan Majegan",
@@ -310,10 +311,7 @@ export const berita: Berita[] = [
 ];
 
 export const profil = {
-  sejarah: [
-    'Majegan adalah salah satu padukuhan di Kalurahan Pandowoharjo. Namanya dipercaya berasal dari kata "majeg" — tetap dan kukuh — merujuk pada warga yang teguh menetap dan menggarap lahan di kawasan ini sejak masa Kasultanan.',
-    "Kini Majegan berkembang menjadi permukiman agraris, ditopang pertanian, kelompok tani dan kandang, serta UMKM olahan pangan. Balai Dusun Majegan menjadi pusat kegiatan warga — dari posyandu, rapat RT/RW, hingga merti dusun tahunan.",
-  ],
+  sejarah: [...sejarahResmi.paragraf],
   // Ditandai DRAFT di mockup: rumusan resmi belum disepakati musyawarah dusun.
   visi:
     "Majegan yang majeg — teguh dalam gotong royong, kukuh menjaga tanah dan air — sebagai padukuhan agraris yang menyejahterakan warganya, merawat budayanya, dan bertumbuh bersama zaman tanpa kehilangan ruhnya.",
