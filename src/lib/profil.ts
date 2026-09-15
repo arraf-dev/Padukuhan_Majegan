@@ -1,4 +1,10 @@
 import { profil as contoh } from "@/content/majegan";
+import {
+  naskahSejarahResmi,
+  sejarahResmi,
+  type GambarSejarah,
+  type SumberSejarah,
+} from "@/content/sejarah";
 import { db } from "@/lib/db";
 import { paragraf, pisahVisiMisi } from "@/lib/teks";
 
@@ -28,6 +34,8 @@ export type StrukturTerkelompok = {
 
 export type ProfilDesa = {
   sejarah: string[];
+  sejarahGambar: readonly GambarSejarah[];
+  sejarahSumber: readonly SumberSejarah[];
   visi: string;
   misi: string[];
   visiMisiDraft: boolean;
@@ -80,6 +88,7 @@ export async function profilDesa(): Promise<ProfilDesa> {
   ]);
 
   const naskah = (slug: string) => halaman.find((h) => h.slug === slug);
+  const sejarah = naskah("sejarah");
   const visiMisi = naskah("visi-misi");
   const { visi, misi } = pisahVisiMisi(visiMisi?.konten ?? "");
 
@@ -93,9 +102,11 @@ export async function profilDesa(): Promise<ProfilDesa> {
     : { id: "", nama: contoh.dukuh.nama, jabatan: contoh.dukuh.jabatan, foto: AVATAR_DUKUH };
 
   return {
-    // Baris naskah bisa dihapus dari panel. Halaman publik tidak boleh 500
-    // karenanya — bagian yang kosong cukup tampil kosong.
-    sejarah: paragraf(naskah("sejarah")?.konten ?? ""),
+    // Konten resmi menjadi fallback bila baris sejarah belum pernah dibuat.
+    // Setelah tersimpan, naskah database tetap dapat disunting dari panel admin.
+    sejarah: paragraf(sejarah?.konten ?? naskahSejarahResmi()),
+    sejarahGambar: sejarahResmi.gambar,
+    sejarahSumber: sejarahResmi.sumber,
     visi,
     misi,
     // Naskah yang belum ada diperlakukan sebagai draf: menandai DRAFT lebih

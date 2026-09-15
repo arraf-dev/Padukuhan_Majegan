@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { sejarahResmi } from "../content/sejarah.ts";
+import { naskahSejarahResmi, sejarahResmi } from "../content/sejarah.ts";
 
 test("sejarah resmi memuat empat paragraf dari dokumen", () => {
   assert.equal(sejarahResmi.paragraf.length, 4);
@@ -24,4 +24,11 @@ test("daftar sumber mempertahankan tiga rujukan dokumen", () => {
   assert.equal(sejarahResmi.sumber.length, 3);
   assert.match(sejarahResmi.sumber[0].teks, /Topografische Dienst/);
   assert.match(sejarahResmi.sumber[2].teks, /Wawancara pribadi, 30 Mei 2026/);
+});
+
+test("paragraf sejarah siap disimpan sebagai naskah admin", () => {
+  const konten = naskahSejarahResmi();
+
+  assert.equal(konten.split("\n\n").length, 4);
+  assert.doesNotMatch(konten, /\n{3,}/);
 });

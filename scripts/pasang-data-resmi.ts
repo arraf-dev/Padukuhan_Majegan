@@ -1,10 +1,10 @@
 /**
- * Pasang data resmi (struktur & layanan) sesuai poster Padukuhan ke database.
+ * Pasang data resmi (sejarah, struktur, dan layanan) Padukuhan ke database.
  *
  * Bedanya dengan `npx prisma db seed`: skrip ini hanya menyentuh tabel
- * `layanan` dan `perangkat_desa` — berita, galeri, statistik, potensi, dan
- * pengguna yang sudah disunting admin TIDAK ikut ditimpa. Aman dijalankan
- * berulang (upsert by slug / jabatan).
+ * `halaman_profil` slug sejarah, `layanan`, dan `perangkat_desa` — berita,
+ * galeri, statistik, potensi, pengaduan, dan pengguna TIDAK ikut ditimpa.
+ * Aman dijalankan berulang (upsert by slug / jabatan).
  *
  * Jalankan: node scripts/pasang-data-resmi.ts
  * (DATABASE_URL diambil dari environment, fallback ke .env.local)
@@ -19,6 +19,7 @@ try {
 
 const { db } = await import("../src/lib/db.ts");
 const { layanan, profil } = await import("../src/content/majegan.ts");
+const { naskahSejarahResmi } = await import("../src/content/sejarah.ts");
 
 // Nama-nama demo lama yang mencetak perangkat; akan digantikan tanda "-"
 // (nama resmi menyusul dari Pak Dukuh). Nama lain dianggap suntingan admin.
@@ -42,6 +43,23 @@ async function main() {
   if (!process.env.DATABASE_URL?.trim()) {
     throw new Error("DATABASE_URL belum tersedia — set di .env.local atau environment.");
   }
+
+  /* ---------- Sejarah resmi ---------- */
+  await db.halamanProfil.upsert({
+    where: { slug: "sejarah" },
+    update: {
+      judul: "Sejarah Padukuhan",
+      konten: naskahSejarahResmi(),
+      draft: false,
+    },
+    create: {
+      slug: "sejarah",
+      judul: "Sejarah Padukuhan",
+      konten: naskahSejarahResmi(),
+      draft: false,
+    },
+  });
+  console.log("naskah sejarah resmi tersimpan");
 
   /* ---------- Layanan resmi (8 surat) ---------- */
   for (const [i, l] of layanan.entries()) {

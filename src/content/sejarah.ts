@@ -46,3 +46,8 @@ export const sejarahResmi = {
   gambar: readonly GambarSejarah[];
   sumber: readonly SumberSejarah[];
 };
+
+/** Format yang dipakai textarea admin dan kolom `halaman_profil.konten`. */
+export function naskahSejarahResmi() {
+  return sejarahResmi.paragraf.join("\n\n");
+}
