@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { EditorAlur, EditorPersyaratan } from "@/components/editor-daftar-layanan";
 import { isian, label, tombol } from "@/components/primitif";
 import { IsianBerkas } from "@/components/isian-berkas";
 import { simpanLayanan } from "@/app/admin/layanan/aksi";
@@ -20,15 +21,14 @@ export function BorangLayanan({ awal, galat }: { awal?: LayananForm; galat?: str
 
       <fieldset className="rounded-xl border border-garis bg-kertas p-4 lg:p-5">
         <legend className="px-1 text-[11px] font-bold tracking-[.1em] text-emas-tua">PERSYARATAN</legend>
-        <label className={label} htmlFor="persyaratan">SATU BARIS SATU SYARAT · <code>**tebal**</code> UNTUK MENYOROT</label>
-        <textarea id="persyaratan" name="persyaratan" rows={5} defaultValue={awal?.persyaratan} placeholder={"Fotokopi **KTP** pemohon (1 lembar)\nFotokopi **Kartu Keluarga** (1 lembar)"} className={`${isian} leading-relaxed`} />
+        <EditorPersyaratan nilaiAwal={awal?.persyaratan ?? ""} />
+        <p className="mt-2 text-[11.5px] text-samar">Tulis <code>**tebal**</code> bila ingin menyorot bagian penting di halaman publik.</p>
       </fieldset>
 
       <fieldset className="rounded-xl border border-garis bg-kertas p-4 lg:p-5">
         <legend className="px-1 text-[11px] font-bold tracking-[.1em] text-emas-tua">ALUR PENGURUSAN</legend>
-        <label className={label} htmlFor="alur">SATU BARIS SATU LANGKAH · PISAHKAN JUDUL DAN DETAIL DENGAN <code>|</code></label>
-        <textarea id="alur" name="alur" rows={5} defaultValue={awal?.alur} placeholder={"Siapkan berkas persyaratan | Lengkapi berkas di rumah\nDatang ke Balai Dusun | Serahkan ke perangkat dusun"} className={`${isian} leading-relaxed`} />
-        <p className="mt-1.5 text-[11.5px] text-samar">Baris tanpa <code>|</code> tetap sah dan akan dipakai sebagai judul langkah.</p>
+        <EditorAlur nilaiAwal={awal?.alur ?? ""} />
+        <p className="mt-2 text-[11.5px] text-samar">Detail langkah bersifat opsional dan tampil sebagai keterangan pada halaman publik.</p>
       </fieldset>
 
       <fieldset className="rounded-xl border border-garis bg-kertas p-4 lg:p-5">
