@@ -45,6 +45,7 @@ test("superadmin mengisi, mengurutkan, dan menerbitkan daftar layanan", async ({
     await expect(syarat.nth(1)).toContainText("Fotokopi KTP");
     await expect(page.getByText("Datang ke balai dusun", { exact: true })).toBeVisible();
     await expect(page.getByText("Siapkan berkas", { exact: true })).toBeVisible();
+    await expect(page.getByText("Bawa dokumen asli.", { exact: true })).toBeVisible();
   } finally {
     if (tersimpan) {
       await page.goto("/admin/layanan");
