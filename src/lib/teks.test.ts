@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { pisahVisiMisi, rangkaiAlur, ringkasDari, slugkan, uraikanAlur } from "./teks.ts";
+import { perBaris, pisahVisiMisi, rangkaiAlur, ringkasDari, slugkan, uraikanAlur } from "./teks.ts";
 
 test("slug bersih dari tanda baca & spasi", () => {
   assert.equal(slugkan("Merti Dusun Majegan 2026!"), "merti-dusun-majegan-2026");
@@ -52,4 +52,16 @@ test("alur bolak-balik lewat rangkaiAlur tidak berubah", () => {
 test("detail yang memuat | tidak terpotong", () => {
   const [langkah] = uraikanAlur("Bayar | tunai | atau transfer");
   assert.equal(langkah.detail, "tunai | atau transfer");
+});
+
+test("persyaratan: baris kosong dan spasi tidak ikut disimpan", () => {
+  assert.deepEqual(
+    perBaris("  Fotokopi **KTP**  \n\n Fotokopi KK \r\n  "),
+    ["Fotokopi **KTP**", "Fotokopi KK"],
+  );
+});
+
+test("alur bolak-balik mempertahankan detail yang memuat pemisah", () => {
+  const teks = "Bayar | tunai | atau transfer";
+  assert.equal(rangkaiAlur(uraikanAlur(teks)), teks);
 });
