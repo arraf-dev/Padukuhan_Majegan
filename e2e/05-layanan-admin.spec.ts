@@ -58,3 +58,16 @@ test("superadmin mengisi, mengurutkan, dan menerbitkan daftar layanan", async ({
     }
   }
 });
+
+test("layanan tanpa syarat tetap ditolak setelah baris terakhir dihapus", async ({ page }) => {
+  await paksaMasuk(page, perlu("E2E_SUPERADMIN_EMAIL"), perlu("E2E_SUPERADMIN_SANDI"));
+  await page.goto("/admin/layanan/baru");
+
+  await page.fill("#nama", tandai("Layanan Tanpa Syarat"));
+  await page.fill("#deskripsi", "Memastikan validasi persyaratan tetap berjalan.");
+  await page.getByRole("button", { name: "Hapus syarat 1" }).click();
+  await page.getByRole("button", { name: "Simpan Layanan" }).click();
+
+  await expect(page.locator('p[role="alert"]')).toContainText("minimal satu persyaratan wajib diisi");
+  await expect(page).toHaveURL(/\/admin\/layanan\/baru\?galat=lengkapi/);
+});
