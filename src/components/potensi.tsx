@@ -58,12 +58,13 @@ export function PotensiSection({ kategori, indeks }: { kategori: PotensiKategori
           <Infografis data={kategori.infografis} />
         </div>
 
-        <div data-reveal data-jeda="1" className="min-w-0">
+        <div data-reveal data-jeda="1" data-potensi-visual={kategori.kode} className="min-w-0">
           <Foto
             src={kategori.gambarUrl}
             keterangan={`Visual ${kategori.label.toLowerCase()} Padukuhan Majegan`}
             sizes="(min-width: 1024px) 55vw, 100vw"
             prioritas={indeks === 0}
+            mode="contain"
             className="aspect-[16/10] rounded-2xl border border-garis"
           />
           <div className="mt-2.5 flex items-center gap-3 text-[11px] text-samar">

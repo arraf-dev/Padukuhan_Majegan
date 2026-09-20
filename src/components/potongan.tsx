@@ -43,12 +43,14 @@ export function Foto({
   className = "",
   sizes = "100vw",
   prioritas = false,
+  mode = "cover",
 }: {
   src?: string | null;
   keterangan: string;
   className?: string;
   sizes?: string;
   prioritas?: boolean;
+  mode?: "cover" | "contain";
 }) {
   if (!src) {
     return (
@@ -67,7 +69,7 @@ export function Foto({
         sizes={sizes}
         priority={prioritas}
         loading={prioritas ? "eager" : "lazy"}
-        className="object-cover"
+        className={mode === "contain" ? "object-contain" : "object-cover"}
       />
     </div>
   );
