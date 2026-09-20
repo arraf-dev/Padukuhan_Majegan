@@ -22,6 +22,10 @@ const pilih = {
   terbitPada: true,
   dibuatPada: true,
   kategori: { select: { nama: true } },
+  fotoDokumentasi: {
+    select: { url: true, alt: true, caption: true },
+    orderBy: { urutan: "asc" },
+  },
 } satisfies Prisma.BeritaSelect;
 
 type Baris = Prisma.BeritaGetPayload<{ select: typeof pilih }>;
@@ -39,6 +43,11 @@ const keBerita = (b: Baris): Berita => ({
   // tulisan di kartu berita. `Foto` menampilkan placeholder saat src kosong.
   foto: b.gambarSampul ?? "",
   fotoKeterangan: b.gambarSampul ? b.judul : "Belum ada foto",
+  fotoDokumentasi: b.fotoDokumentasi.map((foto) => ({
+    url: foto.url,
+    alt: foto.alt,
+    caption: foto.caption ?? "",
+  })),
   suka: b.suka,
   tanggapan: b.tanggapan,
 });

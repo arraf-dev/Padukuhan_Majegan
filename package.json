@@ -17,6 +17,7 @@
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:install": "playwright install chromium",
     "audit:data": "node scripts/audit-data.ts",
+    "data:berita-posyandu": "node scripts/bersihkan-berita-demo.ts",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test:smoke": "node scripts/smoke-production.mjs"

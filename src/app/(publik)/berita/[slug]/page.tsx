@@ -108,6 +108,31 @@ export default async function DetailBerita({ params }: Params) {
             {paragraf}
           </p>
         ))}
+
+        {b.fotoDokumentasi.length ? (
+          <section aria-labelledby="dokumentasi-berita" className="mt-7 border-t border-dashed border-garis pt-6 lg:mt-9">
+            <p className="font-mono text-[10px] font-bold tracking-[.14em] text-emas-tua">DOKUMENTASI</p>
+            <h2 id="dokumentasi-berita" className="mt-1 font-serif text-xl font-semibold text-hutan">
+              Kegiatan dalam gambar
+            </h2>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              {b.fotoDokumentasi.map((foto) => (
+                <figure key={foto.url}>
+                  <Foto
+                    src={foto.url}
+                    keterangan={foto.alt}
+                    mode="contain"
+                    sizes="(min-width: 1280px) 360px, (min-width: 640px) 45vw, 100vw"
+                    className="aspect-[3/4] rounded-xl border border-garis bg-foto"
+                  />
+                  {foto.caption ? (
+                    <figcaption className="mt-2 text-sm leading-relaxed text-redup">{foto.caption}</figcaption>
+                  ) : null}
+                </figure>
+              ))}
+            </div>
+          </section>
+        ) : null}
       </article>
 
       {/* Jadi rail kanan yang menempel mulai xl; di bawah itu tetap blok biasa

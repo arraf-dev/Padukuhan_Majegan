@@ -14,7 +14,6 @@ import { slugkan } from "../src/lib/teks.ts";
 import { albumGaleriDemo } from "../src/content/galeri.ts";
 import { kategoriPotensiDemo } from "../src/content/potensi.ts";
 import {
-  berita,
   kategoriBerita,
   kelompokUsia,
   layanan,
@@ -39,7 +38,7 @@ async function main() {
     throw new Error("Set SUPERADMIN_EMAIL & SUPERADMIN_SANDI di .env.local dulu");
   }
 
-  const dukuh = await db.pengguna.upsert({
+  await db.pengguna.upsert({
     where: { email: email.toLowerCase() },
     // Sandi tidak ditimpa saat seed diulang — kalau sudah diganti, biarkan.
     // Nama tidak ditimpa saat seed diulang; juga biarkan bila dari data resmi
@@ -59,33 +58,12 @@ async function main() {
   });
 
   /* ---------- Berita ---------- */
-  const kategori = new Map<string, string>();
   for (const nama of kategoriBerita) {
-    const baris = await db.kategoriBerita.upsert({
+    await db.kategoriBerita.upsert({
       where: { slug: slugkan(nama) },
       update: { nama },
       create: { nama, slug: slugkan(nama) },
     });
-    kategori.set(nama, baris.id);
-  }
-
-  for (const b of berita) {
-    const isi = {
-      judul: b.judul,
-      ringkasan: b.ringkasan,
-      konten: b.isi.join("\n\n"),
-      lokasi: b.lokasi,
-      gambarSampul: b.foto || null,
-      suka: b.suka,
-      tanggapan: b.tanggapan,
-      // Sebagian sengaja draf supaya panel admin punya contoh kedua status,
-      // dan supaya terbukti draf tidak bocor ke halaman publik.
-      status: b.draft ? ("draft" as const) : ("terbit" as const),
-      terbitPada: b.draft ? null : new Date(b.tanggal),
-      kategoriId: kategori.get(b.kategori)!,
-      penulisId: dukuh.id,
-    };
-    await db.berita.upsert({ where: { slug: b.slug }, update: isi, create: { ...isi, slug: b.slug } });
   }
 
   /* ---------- Galeri kegiatan ---------- */

@@ -119,9 +119,25 @@ model Berita {
   kategori   KategoriBerita @relation(fields: [kategoriId], references: [id])
   penulisId  String?        @map("penulis_id")
   penulis    Pengguna?      @relation(fields: [penulisId], references: [id], onDelete: SetNull)
+  fotoDokumentasi FotoBerita[]
 
   @@index([status, terbitPada])
   @@map("berita")
+}
+
+model FotoBerita {
+  id          String   @id @default(cuid())
+  beritaId    String   @map("berita_id")
+  url         String
+  alt         String
+  caption     String?
+  urutan      Int      @default(0)
+  dibuatPada  DateTime @default(now()) @map("created_at")
+  berita      Berita   @relation(fields: [beritaId], references: [id], onDelete: Cascade)
+
+  @@unique([beritaId, urutan])
+  @@index([beritaId, urutan])
+  @@map("berita_foto")
 }
 
 model AlbumGaleri {
