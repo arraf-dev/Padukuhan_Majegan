@@ -24,7 +24,10 @@ function organisasi(): Record<string, unknown> {
     name: desa.nama,
     alternateName: NAMA_ORG,
     url: `${situsUrl}/`,
-    logo: { "@type": "ImageObject", url: `${situsUrl}/icon.svg` },
+    logo: {
+      "@type": "ImageObject",
+      url: `${situsUrl}/gambar/logo-padukuhan-majegan.webp`,
+    },
     address: {
       "@type": "PostalAddress",
       streetAddress: "Balai Dusun Majegan, Majegan, Pandowoharjo",

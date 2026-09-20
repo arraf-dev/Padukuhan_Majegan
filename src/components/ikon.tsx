@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { SVGProps } from "react";
 
 /**
@@ -6,6 +7,7 @@ import type { SVGProps } from "react";
  */
 
 type Props = SVGProps<SVGSVGElement> & { ukuran?: number };
+type LogoProps = { ukuran?: number; className?: string };
 
 const svg = (
   { ukuran = 20, ...rest }: Props,
@@ -17,21 +19,18 @@ const svg = (
   </svg>
 );
 
-export const Logo = ({ ukuran = 42, ...rest }: Props) =>
-  svg(
-    { ukuran, ...rest },
-    "0 0 42 42",
-    <>
-      <rect width="42" height="42" rx="10" className="fill-hutan-pekat" />
-      <path
-        d="M6 21 21 9l15 12h-7l-8-6.5L13 21Z"
-        className="fill-emas"
-      />
-      <path d="M10 21h22v4H10z" className="fill-emas" />
-      <path d="M12 25h5v8h-5zm13 0h5v8h-5z" className="fill-krem" />
-      <path d="M16 33h10l-5-7z" className="fill-emas" />
-    </>,
-  );
+/** Lambang resmi Padukuhan Majegan. */
+export const Logo = ({ ukuran = 42, className }: LogoProps) => (
+  <Image
+    src="/gambar/logo-padukuhan-majegan.webp"
+    alt=""
+    aria-hidden="true"
+    width={ukuran}
+    height={ukuran}
+    sizes={`${ukuran}px`}
+    className={`rounded-full object-cover ${className ?? ""}`}
+  />
+);
 
 /** Garis atap joglo kecil — pembatas judul section. */
 export const Atap = ({ ukuran = 30, ...rest }: Props) => (

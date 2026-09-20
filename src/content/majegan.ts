@@ -23,7 +23,7 @@ export const desa = {
   email: "padukuhanmajegan@gmail.com",
   websiteKalurahan: "https://pandowoharjosid.slemankab.go.id/home/",
   // Akun Instagram resmi Padukuhan Majegan.
-  instagramUrl: "https://www.instagram.com/info_majegansleman/",
+  instagramUrl: "https://www.instagram.com/majegansleman?stkn=NDdncDdsajQ1bWx4",
   // Isi setelah akun resmi TikTok dikonfirmasi; footer menampilkan ikon nonaktif
   // agar warga tidak diarahkan ke akun yang hanya ditebak dari nama.
   tiktokUrl: "",

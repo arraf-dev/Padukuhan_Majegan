@@ -12,7 +12,7 @@ export function TentangMajegan({ ringkasan }: { ringkasan: Ringkasan[] }) {
     <section
       id="tentang-majegan"
       aria-labelledby="judul-tentang-majegan"
-      className="wadah scroll-mt-20 grid items-start gap-8 px-4 pt-14 pb-10 md:grid-cols-[1.35fr_.9fr] md:items-stretch md:gap-10 md:px-12 md:pt-18 md:pb-14 lg:grid-cols-[1.25fr_1fr] lg:gap-14 lg:px-16 lg:pt-24 lg:pb-20"
+      className="wadah scroll-mt-20 grid items-start gap-8 px-4 pt-14 pb-10 md:grid-cols-[1.2fr_1fr] md:items-stretch md:gap-10 md:px-12 md:pt-18 md:pb-14 lg:grid-cols-[1.15fr_1fr] lg:gap-14 lg:px-16 lg:pt-24 lg:pb-20"
     >
       <div>
         <p
@@ -72,22 +72,15 @@ export function TentangMajegan({ ringkasan }: { ringkasan: Ringkasan[] }) {
       </div>
 
       <div className="flex min-w-0 flex-col gap-4 lg:gap-5">
-        <figure className="relative isolate flex flex-col items-center overflow-hidden rounded-3xl bg-[#0d3825] px-6 pt-4 pb-8 text-center text-[#f7f2e6] lg:pt-5 lg:pb-9">
-          <div aria-hidden="true" className="pointer-events-none absolute inset-3 rounded-[18px] border border-[#c5a15b]/25" />
+        <figure className="overflow-hidden rounded-3xl border border-garis bg-krem shadow-[0_16px_35px_-28px_rgba(24,63,40,.42)]">
           <Image
-            src="/gambar/majegan-gapura-sawah.png"
-            alt="Simbol gapura Jawa, matahari, dan hamparan sawah Majegan"
-            width={1254}
-            height={1254}
-            sizes="(min-width: 1024px) 224px, 192px"
-            className="size-48 shrink-0 object-contain [mask-image:radial-gradient(ellipse_at_center,black_55%,transparent_72%)] lg:size-56"
+            src="/gambar/kartu-identitas-majegan.webp"
+            alt="Identitas Padukuhan Majegan, Pandowoharjo, Sleman"
+            width={572}
+            height={421}
+            sizes="(min-width: 1024px) 40vw, calc(100vw - 2rem)"
+            className="h-auto w-full object-cover"
           />
-          <figcaption className="relative mt-1">
-            <span className="block text-[10px] font-semibold tracking-[.32em] text-[#d6b875] uppercase">Padukuhan</span>
-            <span className="mt-1.5 block font-serif text-[42px] leading-[1.1] tracking-[-.025em] lg:text-5xl">Majegan</span>
-            <span aria-hidden="true" className="mx-auto mt-4 block h-px w-10 bg-[#c5a15b]/60" />
-            <span className="mt-3 block text-[11px] tracking-[.06em] text-[#f7f2e6]/70">Pandowoharjo · Sleman</span>
-          </figcaption>
         </figure>
 
         <div
